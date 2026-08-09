@@ -80,6 +80,15 @@ main{padding:18px 0}
 .veilig{background:#F2E3DC;border:1px solid #DDBBAD;border-radius:9px;padding:2px 10px;margin:8px 0}
 .veilig .taak{border-top-color:#E7CFC1}
 .veilig .taak:first-child{border-top:0}
+.betrij{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--lijn);font-size:13.5px}
+.betrij:first-of-type{border-top:0}
+.betnieuw{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.betnieuw input,.betnieuw select{padding:7px 8px;font-size:13px}
+.bestrij{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--lijn);font-size:13px}
+.bestrij:first-of-type{border-top:0}
+.bestrij a{color:var(--ink);text-decoration:underline;cursor:pointer}
+label.upl{display:inline-block;margin-top:8px;padding:8px 12px;border-radius:8px;border:1px dashed var(--lijn);background:#F5EFE4;color:var(--ink2);font-size:12.5px;cursor:pointer;text-align:center;width:100%}
+label.upl input{display:none}
 @media(min-width:720px){
   header h1{font-size:26px}
   .rij{grid-template-columns:1fr auto auto;align-items:center}
@@ -104,6 +113,7 @@ main{padding:18px 0}
 <div id="toast"></div>
 <script>
 var API = 'https://joqjslpebnpgghoybdar.supabase.co/functions/v1/verbouw/api';
+var SUPA_URL = 'https://joqjslpebnpgghoybdar.supabase.co';
 var S = { data:null, tab:'overzicht', klusdagFocus:null, pin: localStorage.getItem('vb_pin') || '' };
 var TABS = [['overzicht','Overzicht'],['planning','Planning'],['klusdagen','Klusdagen'],['budget','Budget'],['taken','Taken'],['items','Spullen'],['offertes','Offertes'],['besluiten','Besluiten'],['documenten','Docs'],['notities','Notities']];
 var EUR0 = new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR',maximumFractionDigits:0});
@@ -114,12 +124,14 @@ function eur(n,dec){ if(n==null||isNaN(n)) return '—'; return (dec?EUR2:EUR0).
 function dnl(s){ if(!s) return ''; var d=new Date(s+'T00:00:00'); return isNaN(d)?'':DNL.format(d); }
 function klusdagLabel(k){ var d=new Date(k.datum+'T00:00:00'); return isNaN(d)?k.datum:DNLKORT.format(d); }
 function todayISO(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function fmtBytes(n){ if(n==null) return ''; if(n<1024) return n+' B'; if(n<1024*1024) return Math.round(n/1024)+' KB'; return (n/1024/1024).toFixed(1)+' MB'; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 function num(v){ if(v==null) return null; var s=String(v).trim(); if(s==='') return null; var n=parseFloat(s.replace(',','.')); return isNaN(n)?null:n; }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},2600); }
 function best(p){ if(p.werkelijk!=null) return +p.werkelijk; if(p.offerte!=null) return +p.offerte; if(p.begroot!=null) return +p.begroot; return null; }
 function fasen(){ var m={}; (S.data&&S.data.fases||[]).forEach(function(f){ m[f.nummer]=f.naam; }); return m; }
 function faseNaam(f){ if(f==null) return 'Algemeen'; var m=fasen(); return f+'. '+(m[f]||('Fase '+f)); }
+function betaaldVoorPost(postId){ var t=0; (S.data.betalingen||[]).forEach(function(b){ if(b.post_id===postId && b.status==='betaald') t+=+b.bedrag; }); return t; }
 
 function api(body){
   body.pin = S.pin;
@@ -158,7 +170,7 @@ function render(){
   koppel(m);
 }
 function sommen(){
-  var b=0,o=0,w=0,sub=0,netto=0;
+  var b=0,o=0,w=0,sub=0,netto=0,betaald=0;
   S.data.posten.forEach(function(p){
     var bb=best(p);
     if(p.type==='subsidie'){ if(bb!=null) sub+=bb; }
@@ -167,15 +179,19 @@ function sommen(){
       if(p.offerte!=null) o+=+p.offerte;
       if(p.werkelijk!=null) w+=+p.werkelijk;
       if(bb!=null) netto+=bb;
+      betaald+=betaaldVoorPost(p.id);
     }
   });
-  return {begroot:b, offerte:o, werkelijk:w, subsidie:sub, netto:netto-sub};
+  var netTotaal=netto-sub;
+  return {begroot:b, offerte:o, werkelijk:w, subsidie:sub, netto:netTotaal, betaald:betaald, openstaand:netTotaal-betaald};
 }
 function openTaken(){ return S.data.taken.filter(function(t){return t.status!=='klaar';}).slice().sort(function(a,b){ return (a.volgorde||100)-(b.volgorde||100); }); }
 function rOverzicht(){
   var s=sommen();
   var h='<div class="card"><div class="mut">Beste schatting totale verbouwing</div><div class="groot">'+eur(s.netto)+'</div>';
-  h+='<div class="mut">offertes '+eur(s.offerte)+' · overig begroot '+eur(s.begroot)+' · al betaald '+eur(s.werkelijk)+' · <span class="subs">subsidie −'+eur(s.subsidie)+'</span></div></div>';
+  h+='<div class="mut">offertes '+eur(s.offerte)+' · overig begroot '+eur(s.begroot)+' · <span class="subs">subsidie −'+eur(s.subsidie)+'</span></div>';
+  h+='<div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div>';
+  h+='<div class="mut" style="margin-top:5px">betaald <b style="color:var(--ink)">'+eur(s.betaald)+'</b> · nog te betalen <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></div></div>';
   var hf=S.data.fases.find(function(f){return f.status==='bezig';})||S.data.fases.find(function(f){return f.status==='gepland';});
   var vm=S.data.mijlpalen.filter(function(m){return m.status!=='gehaald';})[0];
   var vandaag=todayISO();
@@ -328,7 +344,7 @@ function rKlusdagen(){
 }
 function rBudget(){
   var s=sommen();
-  var h='<div class="card"><div class="bedragen"><span>Begroot <b>'+eur(s.begroot)+'</b></span><span>Offertes <b>'+eur(s.offerte)+'</b></span><span>Werkelijk <b>'+eur(s.werkelijk)+'</b></span><span class="subs">Netto '+eur(s.netto)+'</span></div></div>';
+  var h='<div class="card"><div class="bedragen"><span>Begroot <b>'+eur(s.begroot)+'</b></span><span>Offertes <b>'+eur(s.offerte)+'</b></span><span>Betaald <b>'+eur(s.betaald)+'</b></span><span class="subs">Nog te betalen '+eur(s.openstaand)+'</span></div></div>';
   var groepen={};
   S.data.posten.forEach(function(p){ (groepen[p.fase]=groepen[p.fase]||[]).push(p); });
   Object.keys(groepen).sort().forEach(function(f){
@@ -337,7 +353,8 @@ function rBudget(){
     h+='<div class="kop"><h2>'+esc(faseNaam(f==='null'?null:+f))+'</h2><span class="som">'+eur(som)+'</span></div><div class="card">';
     lijst.forEach(function(p){
       var st=p.status==='betaald'?'groen':(p.status==='akkoord'?'honing':'');
-      h+='<div class="rij" data-edit="posten:'+p.id+'"><div><div class="naam">'+(p.type==='subsidie'?'⬇ ':'')+esc(p.naam)+'</div><div class="meta">'+esc([p.ruimte,p.leverancier].filter(Boolean).join(' · '))+'</div></div>';
+      var betaaldP=betaaldVoorPost(p.id);
+      h+='<div class="rij" data-edit="posten:'+p.id+'"><div><div class="naam">'+(p.type==='subsidie'?'⬇ ':'')+esc(p.naam)+'</div><div class="meta">'+esc([p.ruimte,p.leverancier].filter(Boolean).join(' · '))+(betaaldP>0?' · betaald '+eur(betaaldP):'')+'</div></div>';
       h+='<div class="bedragen"><span>B '+eur(p.begroot)+'</span><span>O '+eur(p.offerte)+'</span><span>W <b>'+eur(p.werkelijk)+'</b></span></div>';
       h+='<div><span class="chip '+st+'">'+esc(p.status)+'</span></div></div>';
     });
@@ -381,10 +398,20 @@ function rOffertes(){
   var h='';
   S.data.offertes.forEach(function(o){
     var cls=o.status==='akkoord'?'groen':(o.status==='afgewezen'?'':(o.status==='onvolledig'?'klei':'honing'));
-    h+='<div class="card" data-edit="offertes:'+o.id+'" style="cursor:pointer"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><b>'+esc(o.leverancier)+(o.nummer?' · '+esc(o.nummer):'')+'</b><span class="chip '+cls+'">'+esc(o.status)+'</span></div>';
+    var bestanden=S.data.bestanden.filter(function(f){return f.offerte_id===o.id;});
+    h+='<div class="card"><div style="cursor:pointer" data-edit="offertes:'+o.id+'"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><b>'+esc(o.leverancier)+(o.nummer?' · '+esc(o.nummer):'')+'</b><span class="chip '+cls+'">'+esc(o.status)+'</span></div>';
     h+='<div style="margin-top:4px">'+esc(o.omschrijving||'')+'</div><div class="groot" style="font-size:22px;margin-top:4px">'+(o.bedrag!=null?eur(o.bedrag,true):'—')+'</div>';
     if(o.contact) h+='<div class="mut" style="margin-top:4px">☎ '+esc(o.contact)+'</div>';
     if(o.notitie) h+='<div class="mut" style="margin-top:5px">'+esc(o.notitie)+'</div>';
+    h+='</div>';
+    if(bestanden.length){
+      h+='<div style="margin-top:10px">';
+      bestanden.forEach(function(f){
+        h+='<div class="bestrij"><a data-download="'+f.storage_path+'">'+esc(f.bestandsnaam)+'</a><span class="mut">'+fmtBytes(f.grootte)+' <span data-verwijder-bestand="'+f.id+'" data-verwijder-path="'+f.storage_path+'" style="cursor:pointer;color:var(--klei)"> ✕</span></span></div>';
+      });
+      h+='</div>';
+    }
+    h+='<label class="upl">+ offerte-document toevoegen (PDF/foto)<input type="file" accept="application/pdf,image/*" data-upload-offerte="'+o.id+'"></label>';
     h+='</div>';
   });
   return h||'<div class="leeg">Nog geen offertes</div>';
@@ -422,7 +449,7 @@ function rNotities(){
 function koppel(m){
   m.querySelectorAll('[data-edit]').forEach(function(el){
     el.addEventListener('click',function(ev){
-      if(ev.target.closest('[data-check],[data-cycle],[data-mcycle],[data-verplaats],[data-trekker-sel],[data-ploeg-remove],[data-ploeg-open],[data-bevinding-open],[data-kopieer]')) return;
+      if(ev.target.closest('[data-check],[data-cycle],[data-mcycle],[data-verplaats],[data-trekker-sel],[data-ploeg-remove],[data-ploeg-open],[data-bevinding-open],[data-kopieer],[data-download],[data-verwijder-bestand],[data-upload-offerte]')) return;
       var p=el.getAttribute('data-edit').split(':');
       openForm(p[0], p[1]);
     });
@@ -469,6 +496,87 @@ function koppel(m){
   m.querySelectorAll('[data-trekker-sel]').forEach(function(el){
     el.addEventListener('change',function(){ api({action:'update',table:'taken',id:el.getAttribute('data-trekker-sel'),data:{trekker: el.value||null}}).then(laad).catch(function(e){toast(e.message);}); });
   });
+  m.querySelectorAll('[data-download]').forEach(function(el){
+    el.addEventListener('click',function(){ downloadBestand(el.getAttribute('data-download')); });
+  });
+  m.querySelectorAll('[data-verwijder-bestand]').forEach(function(el){
+    el.addEventListener('click',function(ev){
+      ev.stopPropagation();
+      if(!confirm('Bestand verwijderen?')) return;
+      api({action:'delete_bestand',id:el.getAttribute('data-verwijder-bestand'),path:el.getAttribute('data-verwijder-path')}).then(laad).catch(function(e){toast(e.message);});
+    });
+  });
+  m.querySelectorAll('[data-upload-offerte]').forEach(function(el){
+    el.addEventListener('change',function(){
+      var file=el.files&&el.files[0];
+      if(file) uploadBestand(el.getAttribute('data-upload-offerte'), file);
+      el.value='';
+    });
+  });
+}
+
+function downloadBestand(path){
+  api({action:'download_url',path:path}).then(function(r){
+    var u=r.signedUrl; if(u && u.indexOf('http')!==0) u=SUPA_URL+u;
+    window.open(u,'_blank');
+  }).catch(function(e){ toast(e.message); });
+}
+function uploadBestand(offerteId, file){
+  toast('Uploaden…');
+  api({action:'upload_url', offerte_id:offerteId, bestandsnaam:file.name, content_type:file.type}).then(function(r){
+    var u=r.signedUrl; if(u && u.indexOf('http')!==0) u=SUPA_URL+u;
+    return fetch(u,{method:'PUT',headers:{'content-type':file.type||'application/octet-stream'},body:file}).then(function(resp){
+      if(!resp.ok) throw new Error('Upload mislukt ('+resp.status+')');
+      return api({action:'insert',table:'bestanden',data:{offerte_id:offerteId,bestandsnaam:file.name,storage_path:r.path,grootte:file.size,content_type:file.type}});
+    });
+  }).then(function(){ toast('Geupload'); laad(); }).catch(function(e){ toast(e.message); });
+}
+
+function renderBetalingenSectie(pan, postId){
+  var wrap=document.createElement('div');
+  var kop=document.createElement('div'); kop.className='kop'; kop.style.margin='16px 0 6px';
+  var h2=document.createElement('h2'); h2.textContent='Betalingen'; kop.appendChild(h2);
+  var som=document.createElement('span'); som.className='som'; kop.appendChild(som);
+  wrap.appendChild(kop);
+  var lijst=document.createElement('div');
+  wrap.appendChild(lijst);
+  var nieuw=document.createElement('div'); nieuw.className='betnieuw';
+  var iBedrag=document.createElement('input'); iBedrag.placeholder='Bedrag €'; iBedrag.inputMode='decimal';
+  var iDatum=document.createElement('input'); iDatum.type='date';
+  var iOms=document.createElement('input'); iOms.placeholder='Omschrijving (bv. aanbetaling)'; iOms.style.gridColumn='1 / -1';
+  var bToevoegen=document.createElement('button'); bToevoegen.type='button'; bToevoegen.textContent='+ termijn toevoegen'; bToevoegen.style.gridColumn='1 / -1'; bToevoegen.style.cssText+='padding:9px;border-radius:8px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink);cursor:pointer';
+  nieuw.appendChild(iBedrag); nieuw.appendChild(iDatum); nieuw.appendChild(iOms); nieuw.appendChild(bToevoegen);
+  wrap.appendChild(nieuw);
+  function ververs(){
+    var lijstData=(S.data.betalingen||[]).filter(function(b){return b.post_id===postId;});
+    var betaald=0; lijstData.forEach(function(b){ if(b.status==='betaald') betaald+=+b.bedrag; });
+    som.textContent='betaald '+eur(betaald,true);
+    lijst.innerHTML='';
+    if(!lijstData.length){ var l=document.createElement('div'); l.className='mut'; l.textContent='Nog geen termijnen'; lijst.appendChild(l); }
+    lijstData.forEach(function(b){
+      var r=document.createElement('div'); r.className='betrij';
+      var links=document.createElement('div');
+      links.innerHTML='<b>'+eur(+b.bedrag,true)+'</b> <span class="mut">'+(b.datum?dnl(b.datum):'')+(b.omschrijving?' · '+esc(b.omschrijving):'')+'</span>';
+      var rechts=document.createElement('div'); rechts.style.display='flex'; rechts.style.gap='6px'; rechts.style.alignItems='center';
+      var chip=document.createElement('span'); chip.className='chip '+(b.status==='betaald'?'groen':'honing'); chip.textContent=b.status; chip.style.cursor='pointer';
+      chip.onclick=function(){ api({action:'update',table:'betalingen',id:b.id,data:{status:b.status==='betaald'?'gepland':'betaald'}}).then(function(){ return laad(); }).then(ververs); };
+      var wis=document.createElement('span'); wis.textContent='✕'; wis.style.cssText='cursor:pointer;color:var(--klei);padding:0 4px';
+      wis.onclick=function(){ if(confirm('Termijn verwijderen?')) api({action:'delete',table:'betalingen',id:b.id}).then(function(){ return laad(); }).then(ververs); };
+      rechts.appendChild(chip); rechts.appendChild(wis);
+      r.appendChild(links); r.appendChild(rechts);
+      lijst.appendChild(r);
+    });
+  }
+  bToevoegen.onclick=function(){
+    var bedrag=num(iBedrag.value);
+    if(bedrag==null){ toast('Vul een bedrag in'); return; }
+    api({action:'insert',table:'betalingen',data:{post_id:postId,bedrag:bedrag,datum:iDatum.value||todayISO(),omschrijving:iOms.value||null,status:'gepland'}}).then(function(){
+      iBedrag.value=''; iDatum.value=''; iOms.value='';
+      return laad();
+    }).then(ververs).catch(function(e){ toast(e.message); });
+  };
+  ververs();
+  pan.appendChild(wrap);
 }
 
 function openPloegForm(klusdagId){
@@ -604,6 +712,7 @@ function openForm(table, id){
     else { el.value = val==null?'':String(val); }
     velden[f[0]]=[el,f[1]]; pan.appendChild(el);
   });
+  if(table==='posten' && id) renderBetalingenSectie(pan, id);
   var kn=document.createElement('div'); kn.className='knoppen';
   if(id && table!=='fases'){ var del=document.createElement('button'); del.className='del'; del.textContent='Wis'; del.onclick=function(){ if(confirm('Verwijderen?')) api({action:'delete',table:table,id:id}).then(function(){sluit();laad();}).catch(function(e){toast(e.message);}); }; kn.appendChild(del); }
   var ann=document.createElement('button'); ann.textContent='Annuleer'; ann.onclick=sluit; kn.appendChild(ann);
