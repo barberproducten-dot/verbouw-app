@@ -127,15 +127,23 @@ var DNLKORT = new Intl.DateTimeFormat('nl-NL',{weekday:'short',day:'numeric',mon
 var DNLDAG = new Intl.DateTimeFormat('nl-NL',{weekday:'short',day:'numeric',month:'numeric'});
 function eur(n,dec){ if(n==null||isNaN(n)) return '—'; return (dec?EUR2:EUR0).format(n); }
 function dnl(s){ if(!s) return ''; var d=new Date(s+'T00:00:00'); return isNaN(d)?'':DNL.format(d); }
+function dnlk(s){ if(!s) return ''; var d=new Date(s+'T00:00:00'); return isNaN(d)?'':DNLKORT.format(d); }
 function klusdagLabel(k){ var d=new Date(k.datum+'T00:00:00'); return isNaN(d)?k.datum:DNLKORT.format(d); }
 function dagKort(k){ var d=new Date(k.datum+'T00:00:00'); return isNaN(d)?k.datum:DNLDAG.format(d); }
 function todayISO(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function plusDagenISO(n){ var d=new Date(); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function fmtBytes(n){ if(n==null) return ''; if(n<1024) return n+' B'; if(n<1024*1024) return Math.round(n/1024)+' KB'; return (n/1024/1024).toFixed(1)+' MB'; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 function num(v){ if(v==null) return null; var s=String(v).trim(); if(s==='') return null; var n=parseFloat(s.replace(',','.')); return isNaN(n)?null:n; }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},2600); }
 function best(p){ if(p.werkelijk!=null) return +p.werkelijk; if(p.offerte!=null) return +p.offerte; if(p.begroot!=null) return +p.begroot; return null; }
 function betaaldVoorPost(postId){ var t=0; (S.data.betalingen||[]).forEach(function(b){ if(b.post_id===postId && b.status==='betaald') t+=+b.bedrag; }); return t; }
+function openDeadline(postId){
+  var lijst=(S.data.betalingen||[]).filter(function(b){return b.post_id===postId && b.status!=='betaald' && b.datum;});
+  if(!lijst.length) return null;
+  lijst.sort(function(a,b){ return a.datum<b.datum?-1:1; });
+  return lijst[0];
+}
 function kortNaam(n){ if(!n) return ''; return n.length>5? n.slice(0,4)+'.' : n; }
 
 function api(body){
@@ -218,8 +226,17 @@ function openTaken(){ return S.data.taken.filter(function(t){return t.status!=='
 
 function rStart(){
   var vandaag=todayISO();
+  var over7=plusDagenISO(7);
   var alerts=[];
-  S.data.items.forEach(function(i){ if(i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig') alerts.push(i.naam+' had geregeld moeten zijn vóór '+dnl(i.nodig_voor)); });
+  (S.data.betalingen||[]).forEach(function(b){
+    if(b.status!=='betaald' && b.datum){
+      var post=S.data.posten.find(function(p){return p.id===b.post_id;});
+      var naam=post?post.naam:'betaling';
+      if(b.datum<vandaag) alerts.push(eur(+b.bedrag,true)+' — '+naam+' — is over tijd (vóór '+dnlk(b.datum)+')');
+      else if(b.datum<=over7) alerts.push(eur(+b.bedrag,true)+' betalen vóór '+dnlk(b.datum)+' — '+naam);
+    }
+  });
+  S.data.items.forEach(function(i){ if(i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig') alerts.push(i.naam+' had geregeld moeten zijn vóór '+dnlk(i.nodig_voor)); });
   var eerstK=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;})[0];
   if(eerstK){
     var ploegC=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===eerstK.id;}).length;
@@ -229,7 +246,8 @@ function rStart(){
   var h='';
   if(alerts.length){
     h+='<div class="alert"><b>⚠ '+alerts.length+' ding'+(alerts.length===1?'':'en')+' vraagt aandacht</b>';
-    alerts.slice(0,3).forEach(function(a){ h+='<div>'+esc(a)+'</div>'; });
+    alerts.slice(0,4).forEach(function(a){ h+='<div>'+esc(a)+'</div>'; });
+    if(alerts.length>4) h+='<div>… en nog '+(alerts.length-4)+'</div>';
     h+='</div>';
   }
   var vm=S.data.mijlpalen.filter(function(m){return m.status!=='gehaald';})[0];
@@ -357,6 +375,7 @@ function rGeld(){
   return subnav('geld',[['budget','Budget'],['offertes','Offertes']])+(S.subtabs.geld==='offertes'?rOffertes():rBudget());
 }
 function rBudget(){
+  var vandaag=todayISO();
   var s=sommen();
   var h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="groot" style="font-size:26px">'+eur(s.netto)+'</span><span class="mut">subsidie −'+eur(s.subsidie)+'</span></div>';
   h+='<div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div>';
@@ -371,12 +390,20 @@ function rBudget(){
     h+='<div class="tabel">';
     lijst.forEach(function(p){
       var bb=best(p);
-      var bron=p.werkelijk!=null?'':(p.offerte!=null?'offerte':(p.begroot!=null?'begroot':'nog geen bedrag'));
-      h+='<div class="trij'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+(bron?' <span class="tm">'+bron+'</span>':'')+'</span><span class="tb">'+(isSubs?'−':'')+(bb!=null?eur(bb):'—')+'</span></div>';
+      var deadline=openDeadline(p.id);
+      var meta='';
+      if(deadline){
+        var over=deadline.datum<vandaag;
+        meta=' <span class="tm" style="color:var(--klei)'+(over?';font-weight:650':'')+'">'+(over?'⚠ ':'')+eur(+deadline.bedrag)+' vóór '+dnlk(deadline.datum)+'</span>';
+      } else {
+        var bron=p.werkelijk!=null?'':(p.offerte!=null?'offerte':(p.begroot!=null?'begroot':'nog geen bedrag'));
+        if(bron) meta=' <span class="tm">'+bron+'</span>';
+      }
+      h+='<div class="trij'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+meta+'</span><span class="tb">'+(isSubs?'−':'')+(bb!=null?eur(bb):'—')+'</span></div>';
     });
     h+='</div>';
   });
-  h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik een regel voor termijnen en detail</div>';
+  h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik een regel om bedragen aan te passen of een betaaldeadline te zetten</div>';
   return h;
 }
 function rDoen(){
@@ -585,6 +612,8 @@ function renderBetalingenSectie(pan, postId){
   wrap.appendChild(kop);
   var lijst=document.createElement('div');
   wrap.appendChild(lijst);
+  var uitleg=document.createElement('div'); uitleg.className='mut'; uitleg.style.margin='8px 0 4px'; uitleg.textContent='Nieuwe termijn — de datum is de uiterste betaaldatum (deadline).';
+  wrap.appendChild(uitleg);
   var nieuw=document.createElement('div'); nieuw.className='betnieuw';
   var iBedrag=document.createElement('input'); iBedrag.placeholder='Bedrag €'; iBedrag.inputMode='decimal';
   var iDatum=document.createElement('input'); iDatum.type='date';
@@ -601,9 +630,10 @@ function renderBetalingenSectie(pan, postId){
     lijstData.forEach(function(b){
       var r=document.createElement('div'); r.className='betrij';
       var links=document.createElement('div');
-      links.innerHTML='<b>'+eur(+b.bedrag,true)+'</b> <span class="mut">'+(b.datum?dnl(b.datum):'')+(b.omschrijving?' · '+esc(b.omschrijving):'')+'</span>';
+      var datumTekst = b.datum ? (b.status==='betaald' ? dnl(b.datum) : 'vóór '+dnl(b.datum)) : '';
+      links.innerHTML='<b>'+eur(+b.bedrag,true)+'</b> <span class="mut">'+datumTekst+(b.omschrijving?' · '+esc(b.omschrijving):'')+'</span>';
       var rechts=document.createElement('div'); rechts.style.display='flex'; rechts.style.gap='6px'; rechts.style.alignItems='center';
-      var chip=document.createElement('span'); chip.className='chip '+(b.status==='betaald'?'groen':'honing'); chip.textContent=b.status; chip.style.cursor='pointer';
+      var chip=document.createElement('span'); chip.className='chip '+(b.status==='betaald'?'groen':'honing'); chip.textContent=(b.status==='betaald'?'betaald':'nog betalen'); chip.style.cursor='pointer'; chip.title='Tik om te wisselen';
       chip.onclick=function(){ api({action:'update',table:'betalingen',id:b.id,data:{status:b.status==='betaald'?'gepland':'betaald'}}).then(function(){ return laad(); }).then(ververs); };
       var wis=document.createElement('span'); wis.textContent='✕'; wis.style.cssText='cursor:pointer;color:var(--klei);padding:0 4px';
       wis.onclick=function(){ if(confirm('Termijn verwijderen?')) api({action:'delete',table:'betalingen',id:b.id}).then(function(){ return laad(); }).then(ververs); };
