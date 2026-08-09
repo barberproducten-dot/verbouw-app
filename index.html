@@ -10,26 +10,24 @@
 :root{--zand:#F1EAE0;--card:#FBF7F0;--ink:#2E2921;--ink2:#7A7062;--olijf:#6B7052;--salie:#A2A886;--klei:#B4674E;--honing:#BE9055;--lijn:#E2D8C6}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--zand);color:var(--ink);font:16px/1.5 system-ui,'Segoe UI',sans-serif;padding-bottom:44px}
+body{background:var(--zand);color:var(--ink);font:16px/1.5 system-ui,'Segoe UI',sans-serif;padding-bottom:78px;overscroll-behavior-y:none}
 .wrap{max-width:1080px;margin:0 auto;padding:0 14px}
-header{padding:24px 0 10px}
-header h1{font-size:22px;font-weight:650;letter-spacing:.2px}
-header .sub{color:var(--ink2);font-size:13.5px;margin-top:2px}
-nav{position:sticky;top:0;background:var(--zand);z-index:20;display:flex;gap:6px;overflow-x:auto;padding:10px 0;border-bottom:1px solid var(--lijn);scrollbar-width:none}
-nav::-webkit-scrollbar{display:none}
-nav button{flex:0 0 auto;border:1px solid var(--lijn);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:999px;font-size:14px;cursor:pointer}
-nav button.on{background:var(--olijf);border-color:var(--olijf);color:#FDFBF6;font-weight:600}
-main{padding:18px 0}
+header{padding:20px 0 4px}
+header h1{font-size:20px;font-weight:650;letter-spacing:.2px}
+main{padding:14px 0 18px;min-height:60vh}
+main.swiping{transition:opacity .12s}
 .card{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:15px 16px;margin-bottom:12px}
 .kop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:20px 0 8px}
 .kop h2{font-size:15px;font-weight:650;color:var(--ink)}
 .kop .som{font-size:13.5px;color:var(--ink2)}
-.groot{font-size:34px;font-weight:700;letter-spacing:-.5px}
+.groot{font-size:32px;font-weight:700;letter-spacing:-.5px}
 .mut{color:var(--ink2);font-size:13px}
 .chip{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink2);white-space:nowrap;cursor:pointer}
 .chip.groen{background:#E9EBE0;border-color:#C9CDB4;color:#4C513A}
 .chip.klei{background:#F2E3DC;border-color:#DDBBAD;color:#8C4A35}
 .chip.honing{background:#F3E8D5;border-color:#DFC9A3;color:#8A6428}
+.chip.actief{background:var(--olijf);border-color:var(--olijf);color:#FDFBF6;font-weight:600}
+.subnav{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .rij{display:grid;grid-template-columns:1fr;gap:6px;padding:10px 0;border-top:1px solid var(--lijn);cursor:pointer}
 .rij:first-of-type{border-top:0}
 .rij .naam{font-weight:600}
@@ -47,7 +45,12 @@ main{padding:18px 0}
 .mijlp{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--lijn);cursor:pointer}
 .mijlp:first-child{border-top:0}
 .ruit{color:var(--klei);font-size:15px;line-height:1.4;flex:0 0 auto}
-.addbtn{position:fixed;right:18px;bottom:18px;width:54px;height:54px;border-radius:50%;background:var(--klei);color:#FDFBF6;border:0;font-size:28px;line-height:1;cursor:pointer;z-index:30}
+.addbtn{position:fixed;right:16px;bottom:76px;width:52px;height:52px;border-radius:50%;background:var(--klei);color:#FDFBF6;border:0;font-size:27px;line-height:1;cursor:pointer;z-index:30;box-shadow:0 2px 8px rgba(46,41,33,.25)}
+bottomnav{display:none}
+.botnav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--lijn);display:grid;grid-template-columns:repeat(5,1fr);z-index:25;padding-bottom:env(safe-area-inset-bottom)}
+.botnav button{background:none;border:0;padding:9px 2px 8px;font:inherit;font-size:10.5px;color:var(--ink2);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.botnav button.on{color:var(--olijf);font-weight:650}
+.botnav .dot{width:7px;height:7px;border-radius:50%;background:var(--klei);position:absolute;margin-left:14px;margin-top:-2px}
 .taak{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--lijn)}
 .taak:first-child{border-top:0}
 .taak input{width:19px;height:19px;margin-top:2px;accent-color:var(--olijf);flex:0 0 auto}
@@ -65,7 +68,7 @@ main{padding:18px 0}
 .knoppen button{flex:1;padding:11px;border-radius:9px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
 .knoppen .prim{background:var(--olijf);border-color:var(--olijf);color:#FDFBF6;font-weight:600}
 .knoppen .del{background:none;border-color:#DDBBAD;color:var(--klei);flex:0 0 auto;padding:11px 14px}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;background:var(--ink);color:#FDFBF6;padding:9px 16px;border-radius:9px;font-size:14px;display:none;z-index:50}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:var(--ink);color:#FDFBF6;padding:9px 16px;border-radius:9px;font-size:14px;display:none;z-index:50}
 .pinvak{text-align:center}
 .pinvak input{font-size:22px;text-align:center;letter-spacing:6px;margin-top:8px}
 .subs{color:var(--olijf);font-weight:600}
@@ -89,6 +92,12 @@ main{padding:18px 0}
 .bestrij a{color:var(--ink);text-decoration:underline;cursor:pointer}
 label.upl{display:inline-block;margin-top:8px;padding:8px 12px;border-radius:8px;border:1px dashed var(--lijn);background:#F5EFE4;color:var(--ink2);font-size:12.5px;cursor:pointer;text-align:center;width:100%}
 label.upl input{display:none}
+.alert{background:#F2E3DC;border:1px solid #DDBBAD;border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.alert b{color:#8C4A35;font-size:13px}
+.alert div{font-size:12.5px;color:#8C4A35;margin-top:3px}
+.fasekop{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 2px;cursor:pointer;border-top:1px solid var(--lijn)}
+.fasekop:first-child{border-top:0}
+.fasekop b{font-size:14px}
 @media(min-width:720px){
   header h1{font-size:26px}
   .rij{grid-template-columns:1fr auto auto;align-items:center}
@@ -102,11 +111,10 @@ label.upl input{display:none}
 <div class="wrap">
   <header>
     <h1>Verbouwhub</h1>
-    <div class="sub">verbouwdossier</div>
   </header>
-  <nav id="nav"></nav>
   <main id="main"><div class="leeg">Laden…</div></main>
 </div>
+<nav class="botnav" id="botnav"></nav>
 <button class="addbtn" id="addbtn" title="Nieuw">+</button>
 <div id="overlay"><div class="paneel pinvak"><h3>Verbouwhub</h3><div class="mut">Voer de pincode in</div><input id="pininput" inputmode="numeric" autocomplete="off" placeholder="••••••"><div class="knoppen"><button class="prim" id="pinok">Openen</button></div></div></div>
 <div id="modal"><div class="paneel" id="mpaneel"></div></div>
@@ -114,8 +122,14 @@ label.upl input{display:none}
 <script>
 var API = 'https://joqjslpebnpgghoybdar.supabase.co/functions/v1/verbouw/api';
 var SUPA_URL = 'https://joqjslpebnpgghoybdar.supabase.co';
-var S = { data:null, tab:'overzicht', klusdagFocus:null, pin: localStorage.getItem('vb_pin') || '' };
-var TABS = [['overzicht','Overzicht'],['planning','Planning'],['klusdagen','Klusdagen'],['budget','Budget'],['taken','Taken'],['items','Spullen'],['offertes','Offertes'],['besluiten','Besluiten'],['documenten','Docs'],['notities','Notities']];
+var TOPTABS = [
+  ['start','Start'],
+  ['plannen','Plannen'],
+  ['doen','Doen'],
+  ['geld','Geld'],
+  ['dossier','Dossier']
+];
+var S = { data:null, tab:'start', subtabs:{doen:'taken',geld:'budget',dossier:'besluiten'}, klusdagFocus:null, budgetOpen:{}, pin: localStorage.getItem('vb_pin') || '' };
 var EUR0 = new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR',maximumFractionDigits:0});
 var EUR2 = new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'});
 var DNL = new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'short',year:'numeric'});
@@ -155,19 +169,48 @@ function probeerPin(){
   laad();
 }
 
+function huidigeStaat(){ return {tab:S.tab, subtabs:Object.assign({},S.subtabs)}; }
+function gaNaarTab(tab){
+  if(S.tab===tab){ window.scrollTo(0,0); return; }
+  S.tab=tab;
+  history.pushState(huidigeStaat(),'','#'+tab);
+  render();
+  window.scrollTo(0,0);
+}
+function gaNaarSubtab(tab, sub){
+  S.tab=tab; S.subtabs[tab]=sub;
+  history.pushState(huidigeStaat(),'','#'+tab+'-'+sub);
+  render();
+}
+window.addEventListener('popstate', function(e){
+  if(e.state){ S.tab=e.state.tab; S.subtabs=Object.assign(S.subtabs, e.state.subtabs||{}); }
+  else { S.tab='start'; }
+  render();
+});
+
 function render(){
-  var nav=document.getElementById('nav'); nav.innerHTML='';
-  TABS.forEach(function(t){
-    var b=document.createElement('button'); b.textContent=t[1];
+  var nav=document.getElementById('botnav'); nav.innerHTML='';
+  TOPTABS.forEach(function(t){
+    var b=document.createElement('button');
     if(S.tab===t[0]) b.className='on';
-    b.onclick=function(){ S.tab=t[0]; render(); window.scrollTo(0,0); };
+    b.innerHTML=esc(t[1]);
+    b.onclick=function(){ gaNaarTab(t[0]); };
     nav.appendChild(b);
   });
   var m=document.getElementById('main');
   if(!S.data){ m.innerHTML='<div class="leeg">Laden…</div>'; return; }
-  var r={overzicht:rOverzicht,planning:rPlanning,klusdagen:rKlusdagen,budget:rBudget,taken:rTaken,items:rItems,offertes:rOffertes,besluiten:rBesluiten,documenten:rDocumenten,notities:rNotities};
+  var r={start:rStart,plannen:rPlannen,doen:rDoen,geld:rGeld,dossier:rDossier};
   m.innerHTML=r[S.tab]();
   koppel(m);
+}
+function subnav(groep, items){
+  var actief=S.subtabs[groep];
+  var h='<div class="subnav">';
+  items.forEach(function(it){
+    h+='<span class="chip'+(actief===it[0]?' actief':'')+'" data-subtab="'+groep+':'+it[0]+'">'+it[1]+'</span>';
+  });
+  h+='</div>';
+  return h;
 }
 function sommen(){
   var b=0,o=0,w=0,sub=0,netto=0,betaald=0;
@@ -186,53 +229,51 @@ function sommen(){
   return {begroot:b, offerte:o, werkelijk:w, subsidie:sub, netto:netTotaal, betaald:betaald, openstaand:netTotaal-betaald};
 }
 function openTaken(){ return S.data.taken.filter(function(t){return t.status!=='klaar';}).slice().sort(function(a,b){ return (a.volgorde||100)-(b.volgorde||100); }); }
-function rOverzicht(){
-  var s=sommen();
-  var h='<div class="card"><div class="mut">Beste schatting totale verbouwing</div><div class="groot">'+eur(s.netto)+'</div>';
-  h+='<div class="mut">offertes '+eur(s.offerte)+' · overig begroot '+eur(s.begroot)+' · <span class="subs">subsidie −'+eur(s.subsidie)+'</span></div>';
-  h+='<div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div>';
-  h+='<div class="mut" style="margin-top:5px">betaald <b style="color:var(--ink)">'+eur(s.betaald)+'</b> · nog te betalen <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></div></div>';
-  var hf=S.data.fases.find(function(f){return f.status==='bezig';})||S.data.fases.find(function(f){return f.status==='gepland';});
-  var vm=S.data.mijlpalen.filter(function(m){return m.status!=='gehaald';})[0];
+
+function rStart(){
   var vandaag=todayISO();
-  var vk=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;})[0];
-  h+='<div class="twee"><div>';
-  h+='<div class="card"><div class="mut">Waar we staan</div>';
-  if(hf) h+='<div style="margin-top:4px"><b>'+esc(hf.nummer+'. '+hf.naam)+'</b> <span class="chip '+(hf.status==='bezig'?'honing':'')+'">'+esc(hf.status)+'</span>'+(hf.start?'<span class="mut"> · '+dnl(hf.start)+' – '+dnl(hf.eind)+'</span>':'')+'</div>';
-  if(vm) h+='<div class="mut" style="margin-top:6px"><span class="ruit">◆</span> Volgende mijlpaal: <b style="color:var(--ink)">'+esc(vm.titel)+'</b>'+(vm.datum?' · '+dnl(vm.datum):' · datum invullen')+'</div>';
-  h+='</div>';
-  if(vk){
-    var vkPloeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===vk.id;});
-    var vkTaken=S.data.taken.filter(function(t){return t.klusdag_id===vk.id;});
-    h+='<div class="card" data-goto="klusdagen" style="cursor:pointer"><div class="mut">Eerstvolgende klusdag</div><div style="margin-top:3px"><b>'+klusdagLabel(vk)+'</b><span class="mut"> · '+(vkPloeg.length? vkPloeg.length+' ingepland':'nog niemand')+(vkTaken.length?' · '+vkTaken.length+' klussen':'')+'</span></div></div>';
+  var alerts=[];
+  var overdueItems=S.data.items.filter(function(i){return i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig';});
+  overdueItems.forEach(function(i){ alerts.push(i.naam+' had geregeld moeten zijn vóór '+dnl(i.nodig_voor)); });
+  var eerstK=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;})[0];
+  if(eerstK){
+    var ploegC=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===eerstK.id;}).length;
+    var takenC=S.data.taken.filter(function(t){return t.klusdag_id===eerstK.id;}).length;
+    if(!ploegC && takenC) alerts.push(klusdagLabel(eerstK)+' heeft nog niemand ingepland');
   }
-  h+='<div class="kop"><h2>Per fase</h2></div>';
-  var perFase={}, max=1;
-  S.data.posten.forEach(function(p){ if(p.type==='subsidie') return; var bb=best(p); if(bb==null) return; perFase[p.fase]=(perFase[p.fase]||0)+bb; if(perFase[p.fase]>max) max=perFase[p.fase]; });
-  S.data.fases.forEach(function(f){
-    var v=perFase[f.nummer]||0;
-    var tk=S.data.taken.filter(function(t){return t.fase==f.nummer;});
-    var kl=tk.filter(function(t){return t.status==='klaar';}).length;
-    h+='<div class="card fasekaart"><div style="display:flex;justify-content:space-between;gap:8px"><span class="fnaam">'+f.nummer+'. '+esc(f.naam)+'</span><span class="fsom">'+eur(v)+(tk.length?' · '+kl+'/'+tk.length+' taken':'')+'</span></div>';
-    h+='<div class="balkwrap"><div class="balk" style="width:'+Math.round(v/max*100)+'%"></div></div></div>';
-  });
-  h+='</div><div>';
-  h+='<div class="kop"><h2>Nu doen</h2></div><div class="card">';
-  var open=openTaken().slice(0,6);
+  var h='';
+  if(alerts.length){
+    h+='<div class="alert"><b>⚠ '+alerts.length+' ding'+(alerts.length===1?'':'en')+' vraagt aandacht</b>';
+    alerts.slice(0,3).forEach(function(a){ h+='<div>'+esc(a)+'</div>'; });
+    h+='</div>';
+  }
+  var hf=S.data.fases.find(function(f){return f.status==='bezig';})||S.data.fases.find(function(f){return f.status==='gepland';});
+  if(hf) h+='<div class="card"><div class="mut">Waar we staan</div><div style="margin-top:4px"><b>'+esc(hf.nummer+'. '+hf.naam)+'</b> <span class="chip '+(hf.status==='bezig'?'honing':'')+'">'+esc(hf.status)+'</span>'+(hf.start?'<span class="mut"> · '+dnl(hf.start)+' – '+dnl(hf.eind)+'</span>':'')+'</div></div>';
+  if(eerstK){
+    var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===eerstK.id;});
+    var taken=S.data.taken.filter(function(t){return t.klusdag_id===eerstK.id;});
+    var klaar=taken.filter(function(t){return t.status==='klaar';}).length;
+    h+='<div class="card" data-goto="plannen" style="cursor:pointer"><div style="display:flex;justify-content:space-between"><b>Volgende klusdag · '+klusdagLabel(eerstK)+'</b><span class="mut">→</span></div>';
+    h+='<div class="mut" style="margin-top:3px">'+(ploeg.length?ploeg.length+' helpers':'nog niemand')+(taken.length?' · '+klaar+'/'+taken.length+' klussen klaar':'')+(eerstK.starttijd?' · start '+String(eerstK.starttijd).slice(0,5):'')+'</div>';
+    if(taken.length) h+='<div class="balkwrap"><div class="balk" style="width:'+Math.round(klaar/taken.length*100)+'%"></div></div>';
+    h+='</div>';
+  }
+  h+='<div class="kop"><h2>Nu doen</h2><span class="som" data-goto="doen" style="cursor:pointer">alles →</span></div><div class="card">';
+  var open=openTaken().slice(0,5);
   if(!open.length) h+='<div class="leeg">Alles klaar ✔</div>';
   open.forEach(function(t){ h+='<div class="taak" data-edit="taken:'+t.id+'"><span class="chip">'+esc(t.fase==null?'alg':'F'+t.fase)+'</span><span class="tt">'+esc(t.titel)+'</span></div>'; });
   h+='</div>';
-  var nodig=S.data.items.filter(function(i){return i.status==='nodig';});
-  var somNodig=0; nodig.forEach(function(i){ if(i.prijs!=null) somNodig+=+i.prijs; });
-  h+='<div class="kop"><h2>Nog kopen</h2></div><div class="card">'+(nodig.length? nodig.length+' spullen · ca. '+eur(somNodig) : 'Niks op de lijst')+'</div>';
+  var s=sommen();
+  h+='<div class="card" data-goto="geld" style="cursor:pointer"><div class="mut">Geldstand</div><div style="display:flex;justify-content:space-between;margin-top:4px"><b>betaald '+eur(s.betaald)+'</b><b style="color:var(--klei)">nog te betalen '+eur(s.openstaand)+'</b></div>';
+  h+='<div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div></div>';
   var lb=S.data.besluiten[0];
-  if(lb) h+='<div class="kop"><h2>Laatste besluit</h2></div><div class="card" data-edit="besluiten:'+lb.id+'" style="cursor:pointer"><b>'+esc(lb.titel)+'</b><div class="mut" style="margin-top:3px">'+dnl(lb.datum)+'</div></div>';
-  h+='</div></div>';
+  if(lb) h+='<div class="card" data-goto-sub="dossier:besluiten" style="cursor:pointer"><div class="mut">Laatste besluit</div><b>'+esc(lb.titel)+'</b><div class="mut" style="margin-top:3px">'+dnl(lb.datum)+'</div></div>';
   return h;
 }
+
 function rPlanning(){
   var met=S.data.fases.filter(function(f){return f.start&&f.eind;});
-  var h='<div class="kop"><h2>Fase-tijdlijn</h2><span class="som">klik een fase om te plannen</span></div><div class="card">';
+  var h='<div class="kop"><h2>Fase-tijdlijn</h2></div><div class="card">';
   var minT=null,maxT=null;
   met.forEach(function(f){ var a=+new Date(f.start),b=+new Date(f.eind); if(minT==null||a<minT)minT=a; if(maxT==null||b>maxT)maxT=b; });
   var span=(maxT>minT)?(maxT-minT):1;
@@ -248,13 +289,12 @@ function rPlanning(){
     h+='</div>';
   });
   h+='</div>';
-  if(met.length) h+='<div class="mut" style="margin:-4px 0 12px 2px">'+dnl(new Date(minT).toISOString().slice(0,10))+' – '+dnl(new Date(maxT).toISOString().slice(0,10))+' · <span style="color:#6B7052">■</span> klaar <span style="color:#BE9055">■</span> bezig <span style="color:#A2A886">■</span> gepland</div>';
   h+='<div class="kop"><h2>Mijlpalen</h2></div><div class="card">';
   if(!S.data.mijlpalen.length) h+='<div class="leeg">Nog geen mijlpalen</div>';
   S.data.mijlpalen.forEach(function(m){
     h+='<div class="mijlp" data-edit="mijlpalen:'+m.id+'"><span class="ruit">◆</span><div style="flex:1"><div'+(m.status==='gehaald'?' style="text-decoration:line-through;color:var(--ink2)"':'')+'><b>'+esc(m.titel)+'</b>'+(m.fase!=null?' <span class="chip">F'+m.fase+'</span>':'')+'</div><div class="mut">'+(m.datum?dnl(m.datum):'datum invullen')+(m.notitie?' · '+esc(m.notitie):'')+'</div></div><span class="chip '+(m.status==='gehaald'?'groen':'honing')+'" data-mcycle="'+m.id+'">'+esc(m.status)+'</span></div>';
   });
-  h+='</div><div class="mut">Tip: de + rechtsonder voegt hier een mijlpaal toe.</div>';
+  h+='</div>';
   return h;
 }
 function rKlusdagen(){
@@ -263,7 +303,7 @@ function rKlusdagen(){
     var volgende=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;})[0];
     S.klusdagFocus=(volgende||S.data.klusdagen[0]||{}).id;
   }
-  var h='<div class="mut" style="margin-bottom:8px">ploeg-pool: '+S.data.mensen.length+' mensen</div>';
+  var h='<div class="kop"><h2>Klusdagen</h2><span class="som">ploeg-pool: '+S.data.mensen.length+'</span></div>';
   if(!S.data.klusdagen.length) return h+'<div class="leeg">Nog geen klusdagen — gebruik + om er een te maken</div>';
   h+='<div class="weekstrip">';
   S.data.klusdagen.forEach(function(k){
@@ -342,23 +382,32 @@ function rKlusdagen(){
   h+='</div>';
   return h;
 }
+function rPlannen(){ return rPlanning()+rKlusdagen(); }
+
 function rBudget(){
   var s=sommen();
   var h='<div class="card"><div class="bedragen"><span>Begroot <b>'+eur(s.begroot)+'</b></span><span>Offertes <b>'+eur(s.offerte)+'</b></span><span>Betaald <b>'+eur(s.betaald)+'</b></span><span class="subs">Nog te betalen '+eur(s.openstaand)+'</span></div></div>';
   var groepen={};
   S.data.posten.forEach(function(p){ (groepen[p.fase]=groepen[p.fase]||[]).push(p); });
+  var actieveFaseNum=(S.data.fases.find(function(f){return f.status==='bezig';})||S.data.fases.find(function(f){return f.status==='gepland';})||{}).nummer;
   Object.keys(groepen).sort().forEach(function(f){
     var lijst=groepen[f], som=0;
     lijst.forEach(function(p){ var bb=best(p); if(bb!=null) som+= (p.type==='subsidie'? -bb : bb); });
-    h+='<div class="kop"><h2>'+esc(faseNaam(f==='null'?null:+f))+'</h2><span class="som">'+eur(som)+'</span></div><div class="card">';
-    lijst.forEach(function(p){
-      var st=p.status==='betaald'?'groen':(p.status==='akkoord'?'honing':'');
-      var betaaldP=betaaldVoorPost(p.id);
-      h+='<div class="rij" data-edit="posten:'+p.id+'"><div><div class="naam">'+(p.type==='subsidie'?'⬇ ':'')+esc(p.naam)+'</div><div class="meta">'+esc([p.ruimte,p.leverancier].filter(Boolean).join(' · '))+(betaaldP>0?' · betaald '+eur(betaaldP):'')+'</div></div>';
-      h+='<div class="bedragen"><span>B '+eur(p.begroot)+'</span><span>O '+eur(p.offerte)+'</span><span>W <b>'+eur(p.werkelijk)+'</b></span></div>';
-      h+='<div><span class="chip '+st+'">'+esc(p.status)+'</span></div></div>';
-    });
-    h+='</div>';
+    var faseNum=f==='null'?null:+f;
+    if(S.budgetOpen[f]===undefined) S.budgetOpen[f]=(faseNum===actieveFaseNum || faseNum==null);
+    var open=S.budgetOpen[f];
+    h+='<div class="fasekop" data-fase-toggle="'+f+'"><b>'+(open?'▾':'▸')+' '+esc(faseNaam(faseNum))+'</b><span class="mut">'+eur(som)+'</span></div>';
+    if(open){
+      h+='<div class="card">';
+      lijst.forEach(function(p){
+        var st=p.status==='betaald'?'groen':(p.status==='akkoord'?'honing':'');
+        var betaaldP=betaaldVoorPost(p.id);
+        h+='<div class="rij" data-edit="posten:'+p.id+'"><div><div class="naam">'+(p.type==='subsidie'?'⬇ ':'')+esc(p.naam)+'</div><div class="meta">'+esc([p.ruimte,p.leverancier].filter(Boolean).join(' · '))+(betaaldP>0?' · betaald '+eur(betaaldP):'')+'</div></div>';
+        h+='<div class="bedragen"><span>B '+eur(p.begroot)+'</span><span>O '+eur(p.offerte)+'</span><span>W <b>'+eur(p.werkelijk)+'</b></span></div>';
+        h+='<div><span class="chip '+st+'">'+esc(p.status)+'</span></div></div>';
+      });
+      h+='</div>';
+    }
   });
   return h;
 }
@@ -394,6 +443,9 @@ function rItems(){
   });
   return h+'</div>';
 }
+function rDoen(){
+  return subnav('doen',[['taken','Taken'],['spullen','Spullen']])+(S.subtabs.doen==='spullen'?rItems():rTaken());
+}
 function rOffertes(){
   var h='';
   S.data.offertes.forEach(function(o){
@@ -415,6 +467,9 @@ function rOffertes(){
     h+='</div>';
   });
   return h||'<div class="leeg">Nog geen offertes</div>';
+}
+function rGeld(){
+  return subnav('geld',[['budget','Budget'],['offertes','Offertes']])+(S.subtabs.geld==='offertes'?rOffertes():rBudget());
 }
 function rBesluiten(){
   var h='<div class="mut" style="margin-bottom:10px">Wat is besloten, wanneer en waarom — zodat je nooit hoeft te reconstrueren.</div>';
@@ -444,6 +499,10 @@ function rNotities(){
     h+='<div class="card" data-edit="notities:'+n.id+'" style="cursor:pointer"><b>'+esc(n.titel)+'</b><div class="mut" style="margin-top:5px;white-space:pre-wrap">'+esc(n.tekst||'')+'</div></div>';
   });
   return h||'<div class="leeg">Nog geen notities</div>';
+}
+function rDossier(){
+  var sub=S.subtabs.dossier;
+  return subnav('dossier',[['besluiten','Besluiten'],['documenten','Docs'],['notities','Notities']])+(sub==='documenten'?rDocumenten():(sub==='notities'?rNotities():rBesluiten()));
 }
 
 function koppel(m){
@@ -476,7 +535,16 @@ function koppel(m){
     el.addEventListener('click',function(){ S.klusdagFocus=el.getAttribute('data-goto-day'); render(); });
   });
   m.querySelectorAll('[data-goto]').forEach(function(el){
-    el.addEventListener('click',function(){ S.tab=el.getAttribute('data-goto'); render(); window.scrollTo(0,0); });
+    el.addEventListener('click',function(){ gaNaarTab(el.getAttribute('data-goto')); });
+  });
+  m.querySelectorAll('[data-goto-sub]').forEach(function(el){
+    el.addEventListener('click',function(){ var p=el.getAttribute('data-goto-sub').split(':'); gaNaarSubtab(p[0],p[1]); });
+  });
+  m.querySelectorAll('[data-subtab]').forEach(function(el){
+    el.addEventListener('click',function(){ var p=el.getAttribute('data-subtab').split(':'); gaNaarSubtab(p[0],p[1]); });
+  });
+  m.querySelectorAll('[data-fase-toggle]').forEach(function(el){
+    el.addEventListener('click',function(){ var f=el.getAttribute('data-fase-toggle'); S.budgetOpen[f]=!S.budgetOpen[f]; render(); });
   });
   m.querySelectorAll('[data-ploeg-remove]').forEach(function(el){
     el.addEventListener('click',function(){ api({action:'delete',table:'klusdag_ploeg',id:el.getAttribute('data-ploeg-remove')}).then(laad).catch(function(e){toast(e.message);}); });
@@ -514,6 +582,22 @@ function koppel(m){
     });
   });
 }
+
+var swipeX=null, swipeY=null;
+document.getElementById('main').addEventListener('touchstart',function(e){
+  if(e.target.closest('.weekstrip')){ swipeX=null; return; }
+  swipeX=e.touches[0].clientX; swipeY=e.touches[0].clientY;
+},{passive:true});
+document.getElementById('main').addEventListener('touchend',function(e){
+  if(swipeX==null) return;
+  var dx=e.changedTouches[0].clientX-swipeX, dy=e.changedTouches[0].clientY-swipeY;
+  swipeX=null;
+  if(Math.abs(dx)>65 && Math.abs(dx)>Math.abs(dy)*1.4){
+    var idx=TOPTABS.findIndex(function(t){return t[0]===S.tab;});
+    var nieuw=dx<0?Math.min(idx+1,TOPTABS.length-1):Math.max(idx-1,0);
+    if(nieuw!==idx) gaNaarTab(TOPTABS[nieuw][0]);
+  }
+},{passive:true});
 
 function downloadBestand(path){
   api({action:'download_url',path:path}).then(function(r){
@@ -736,10 +820,17 @@ function openForm(table, id){
 function sluit(){ document.getElementById('modal').className=''; }
 document.getElementById('modal').addEventListener('click',function(e){ if(e.target.id==='modal') sluit(); });
 document.getElementById('addbtn').onclick=function(){
-  var map={overzicht:'taken',planning:'mijlpalen',klusdagen:'klusdagen',budget:'posten',taken:'taken',items:'items',offertes:'offertes',besluiten:'besluiten',documenten:'documenten',notities:'notities'};
+  var map={
+    start:'taken',
+    plannen:'klusdagen',
+    doen: S.subtabs.doen==='spullen'?'items':'taken',
+    geld: S.subtabs.geld==='offertes'?'offertes':'posten',
+    dossier: S.subtabs.dossier==='documenten'?'documenten':(S.subtabs.dossier==='notities'?'notities':'besluiten')
+  };
   openForm(map[S.tab], null);
 };
 
+history.replaceState(huidigeStaat(),'','#start');
 render();
 if(!S.pin){ showPin(false); } else { laad(); }
 </script>
