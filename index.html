@@ -10,53 +10,60 @@
 :root{--zand:#F1EAE0;--card:#FBF7F0;--ink:#2E2921;--ink2:#7A7062;--olijf:#6B7052;--salie:#A2A886;--klei:#B4674E;--honing:#BE9055;--lijn:#E2D8C6}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--zand);color:var(--ink);font:16px/1.5 system-ui,'Segoe UI',sans-serif;padding-bottom:78px;overscroll-behavior-y:none}
+body{background:var(--zand);color:var(--ink);font:15px/1.5 system-ui,'Segoe UI',sans-serif;padding-bottom:78px;overscroll-behavior-y:none}
 .wrap{max-width:1080px;margin:0 auto;padding:0 14px}
-header{padding:20px 0 4px}
-header h1{font-size:20px;font-weight:650;letter-spacing:.2px}
-main{padding:14px 0 18px;min-height:60vh}
-main.swiping{transition:opacity .12s}
-.card{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:15px 16px;margin-bottom:12px}
-.kop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:20px 0 8px}
-.kop h2{font-size:15px;font-weight:650;color:var(--ink)}
-.kop .som{font-size:13.5px;color:var(--ink2)}
-.groot{font-size:32px;font-weight:700;letter-spacing:-.5px}
-.mut{color:var(--ink2);font-size:13px}
-.chip{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink2);white-space:nowrap;cursor:pointer}
+header{padding:18px 0 2px}
+header h1{font-size:19px;font-weight:650;letter-spacing:.2px}
+main{padding:12px 0 18px;min-height:60vh}
+.card{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:13px 14px;margin-bottom:10px}
+.kop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:16px 0 6px}
+.kop h2{font-size:14px;font-weight:650;color:var(--ink)}
+.kop .som{font-size:13px;color:var(--ink2)}
+.groot{font-size:30px;font-weight:700;letter-spacing:-.5px}
+.mut{color:var(--ink2);font-size:12.5px}
+.chip{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink2);white-space:nowrap;cursor:pointer}
 .chip.groen{background:#E9EBE0;border-color:#C9CDB4;color:#4C513A}
 .chip.klei{background:#F2E3DC;border-color:#DDBBAD;color:#8C4A35}
 .chip.honing{background:#F3E8D5;border-color:#DFC9A3;color:#8A6428}
 .chip.actief{background:var(--olijf);border-color:var(--olijf);color:#FDFBF6;font-weight:600}
-.subnav{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.rij{display:grid;grid-template-columns:1fr;gap:6px;padding:10px 0;border-top:1px solid var(--lijn);cursor:pointer}
-.rij:first-of-type{border-top:0}
-.rij .naam{font-weight:600}
-.rij .meta{color:var(--ink2);font-size:13px}
-.bedragen{display:flex;gap:14px;font-size:13.5px;flex-wrap:wrap}
-.bedragen b{font-weight:650}
-.balkwrap{background:#EADFCE;border-radius:6px;height:10px;overflow:hidden;margin-top:6px}
-.balk{height:100%;background:var(--honing);border-radius:6px}
-.fasekaart .fnaam{font-weight:600;font-size:14.5px}
-.fasekaart .fsom{color:var(--ink2);font-size:13px}
-.plrij{display:grid;grid-template-columns:126px 1fr auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--lijn);cursor:pointer;font-size:13.5px}
-.plrij:first-of-type{border-top:0}
-.plspoor{background:#EADFCE;border-radius:5px;height:9px;position:relative;overflow:hidden}
-.plbalk{position:absolute;top:0;height:9px;border-radius:5px}
-.mijlp{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--lijn);cursor:pointer}
+.subnav{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dot.open{background:#D9CDB8}
+.dot.akkoord{background:var(--honing)}
+.dot.betaald{background:var(--olijf)}
+.catkop{display:flex;justify-content:space-between;align-items:baseline;padding:12px 2px 4px;font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;color:#8A8574;font-weight:650}
+.catkop .cs{font-size:13px;letter-spacing:0;text-transform:none;color:var(--ink);font-weight:650}
+.tabel{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:2px 12px}
+.trij{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid #EFE7D8;cursor:pointer}
+.trij:first-child{border-top:0}
+.trij .tn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trij .tm{color:var(--ink2);font-size:11.5px}
+.trij .tb{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.trij.subs .tb{color:var(--olijf)}
+.balkwrap{background:#EADFCE;border-radius:6px;height:8px;overflow:hidden;margin-top:6px}
+.balk{height:100%;background:var(--olijf);border-radius:6px}
+.mijlp{display:flex;gap:9px;align-items:baseline;padding:7px 0;border-top:1px solid #EFE7D8;cursor:pointer;font-size:14px}
 .mijlp:first-child{border-top:0}
-.ruit{color:var(--klei);font-size:15px;line-height:1.4;flex:0 0 auto}
+.ruit{color:var(--klei);font-size:13px;flex:0 0 auto}
+.matrixwrap{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:10px;overflow-x:auto}
+.matrix{display:grid;gap:3px;font-size:12px;min-width:460px}
+.mkop{font-weight:650;text-align:center;font-size:11.5px;padding:4px 2px;border-radius:6px;cursor:pointer;color:var(--ink2)}
+.mkop.actief{background:var(--olijf);color:#FDFBF6}
+.mrij{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:4px 2px;cursor:pointer}
+.mcel{text-align:center;border-radius:6px;padding:4px 1px;font-size:11px;cursor:pointer;background:#F5EFE4;color:#B4AC9A}
+.mcel.vol{background:#F3E8D5;color:#8A6428;font-weight:600}
+.mcel.kl{background:#E9EBE0;color:#4C513A;text-decoration:line-through}
+.mveilig{color:#8C4A35}
 .addbtn{position:fixed;right:16px;bottom:76px;width:52px;height:52px;border-radius:50%;background:var(--klei);color:#FDFBF6;border:0;font-size:27px;line-height:1;cursor:pointer;z-index:30;box-shadow:0 2px 8px rgba(46,41,33,.25)}
-bottomnav{display:none}
 .botnav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--lijn);display:grid;grid-template-columns:repeat(5,1fr);z-index:25;padding-bottom:env(safe-area-inset-bottom)}
 .botnav button{background:none;border:0;padding:9px 2px 8px;font:inherit;font-size:10.5px;color:var(--ink2);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .botnav button.on{color:var(--olijf);font-weight:650}
-.botnav .dot{width:7px;height:7px;border-radius:50%;background:var(--klei);position:absolute;margin-left:14px;margin-top:-2px}
-.taak{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--lijn)}
+.taak{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-top:1px solid #EFE7D8}
 .taak:first-child{border-top:0}
-.taak input{width:19px;height:19px;margin-top:2px;accent-color:var(--olijf);flex:0 0 auto}
+.taak input{width:18px;height:18px;margin-top:2px;accent-color:var(--olijf);flex:0 0 auto}
 .taak .tt{cursor:pointer}
 .taak.klaar .tt{color:var(--ink2);text-decoration:line-through}
-.leeg{color:var(--ink2);text-align:center;padding:30px 0}
+.leeg{color:var(--ink2);text-align:center;padding:26px 0}
 #overlay,#modal{position:fixed;inset:0;background:rgba(46,41,33,.45);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}
 #overlay.show,#modal.show{display:flex}
 .paneel{background:var(--card);border-radius:14px;padding:20px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto}
@@ -73,37 +80,25 @@ bottomnav{display:none}
 .pinvak input{font-size:22px;text-align:center;letter-spacing:6px;margin-top:8px}
 .subs{color:var(--olijf);font-weight:600}
 .loc{font-size:12px;color:var(--ink2);background:#F5EFE4;border-radius:6px;padding:3px 8px;display:inline-block;margin-top:5px;word-break:break-all}
-.weekstrip{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
-.weekstrip::-webkit-scrollbar{display:none}
-.dagkaart{flex:0 0 108px;background:var(--card);border:1px solid var(--lijn);border-radius:10px;padding:8px;cursor:pointer}
-.dagkaart.actief{border:2px solid var(--olijf);background:#FFFDF8}
-.dknaam{font-size:12.5px;font-weight:650;color:var(--ink)}
-.dkmut{font-size:10.5px;color:var(--ink2);margin-top:2px}
-.dkwarn{font-size:10.5px;color:#8C4A35;margin-top:2px;font-weight:600}
 .veilig{background:#F2E3DC;border:1px solid #DDBBAD;border-radius:9px;padding:2px 10px;margin:8px 0}
 .veilig .taak{border-top-color:#E7CFC1}
 .veilig .taak:first-child{border-top:0}
 .betrij{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--lijn);font-size:13.5px}
 .betrij:first-of-type{border-top:0}
 .betnieuw{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
-.betnieuw input,.betnieuw select{padding:7px 8px;font-size:13px}
+.betnieuw input{padding:7px 8px;font-size:13px}
 .bestrij{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--lijn);font-size:13px}
 .bestrij:first-of-type{border-top:0}
 .bestrij a{color:var(--ink);text-decoration:underline;cursor:pointer}
 label.upl{display:inline-block;margin-top:8px;padding:8px 12px;border-radius:8px;border:1px dashed var(--lijn);background:#F5EFE4;color:var(--ink2);font-size:12.5px;cursor:pointer;text-align:center;width:100%}
 label.upl input{display:none}
-.alert{background:#F2E3DC;border:1px solid #DDBBAD;border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.alert{background:#F2E3DC;border:1px solid #DDBBAD;border-radius:10px;padding:9px 12px;margin-bottom:10px}
 .alert b{color:#8C4A35;font-size:13px}
-.alert div{font-size:12.5px;color:#8C4A35;margin-top:3px}
-.fasekop{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 2px;cursor:pointer;border-top:1px solid var(--lijn)}
-.fasekop:first-child{border-top:0}
-.fasekop b{font-size:14px}
+.alert div{font-size:12.5px;color:#8C4A35;margin-top:2px}
+.dagdetail{border:1px solid var(--lijn);border-left:3px solid var(--olijf);border-radius:12px;background:var(--card);padding:13px 14px;margin-top:10px}
 @media(min-width:720px){
-  header h1{font-size:26px}
-  .rij{grid-template-columns:1fr auto auto;align-items:center}
+  header h1{font-size:24px}
   .twee{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
-  .plrij{grid-template-columns:170px 1fr auto}
-  .dagkaart{flex-basis:130px}
 }
 </style>
 </head>
@@ -122,30 +117,26 @@ label.upl input{display:none}
 <script>
 var API = 'https://joqjslpebnpgghoybdar.supabase.co/functions/v1/verbouw/api';
 var SUPA_URL = 'https://joqjslpebnpgghoybdar.supabase.co';
-var TOPTABS = [
-  ['start','Start'],
-  ['plannen','Plannen'],
-  ['doen','Doen'],
-  ['geld','Geld'],
-  ['dossier','Dossier']
-];
-var S = { data:null, tab:'start', subtabs:{doen:'taken',geld:'budget',dossier:'besluiten'}, klusdagFocus:null, budgetOpen:{}, pin: localStorage.getItem('vb_pin') || '' };
+var TOPTABS = [['start','Start'],['plannen','Plannen'],['doen','Doen'],['geld','Geld'],['dossier','Dossier']];
+var CATS = ['Aankoop & advies','Sloop & voorbereiding','Isolatie & kozijnen','Verwarming & installaties','Wanden & afwerking','Keuken & badkamer','Vloeren & inrichting','Overig','Subsidies'];
+var S = { data:null, tab:'start', subtabs:{doen:'taken',geld:'budget',dossier:'besluiten'}, klusdagFocus:null, klaarOpen:false, pin: localStorage.getItem('vb_pin') || '' };
 var EUR0 = new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR',maximumFractionDigits:0});
 var EUR2 = new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'});
 var DNL = new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'short',year:'numeric'});
 var DNLKORT = new Intl.DateTimeFormat('nl-NL',{weekday:'short',day:'numeric',month:'short'});
+var DNLDAG = new Intl.DateTimeFormat('nl-NL',{weekday:'short',day:'numeric',month:'numeric'});
 function eur(n,dec){ if(n==null||isNaN(n)) return '—'; return (dec?EUR2:EUR0).format(n); }
 function dnl(s){ if(!s) return ''; var d=new Date(s+'T00:00:00'); return isNaN(d)?'':DNL.format(d); }
 function klusdagLabel(k){ var d=new Date(k.datum+'T00:00:00'); return isNaN(d)?k.datum:DNLKORT.format(d); }
+function dagKort(k){ var d=new Date(k.datum+'T00:00:00'); return isNaN(d)?k.datum:DNLDAG.format(d); }
 function todayISO(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function fmtBytes(n){ if(n==null) return ''; if(n<1024) return n+' B'; if(n<1024*1024) return Math.round(n/1024)+' KB'; return (n/1024/1024).toFixed(1)+' MB'; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 function num(v){ if(v==null) return null; var s=String(v).trim(); if(s==='') return null; var n=parseFloat(s.replace(',','.')); return isNaN(n)?null:n; }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},2600); }
 function best(p){ if(p.werkelijk!=null) return +p.werkelijk; if(p.offerte!=null) return +p.offerte; if(p.begroot!=null) return +p.begroot; return null; }
-function fasen(){ var m={}; (S.data&&S.data.fases||[]).forEach(function(f){ m[f.nummer]=f.naam; }); return m; }
-function faseNaam(f){ if(f==null) return 'Algemeen'; var m=fasen(); return f+'. '+(m[f]||('Fase '+f)); }
 function betaaldVoorPost(postId){ var t=0; (S.data.betalingen||[]).forEach(function(b){ if(b.post_id===postId && b.status==='betaald') t+=+b.bedrag; }); return t; }
+function kortNaam(n){ if(!n) return ''; return n.length>5? n.slice(0,4)+'.' : n; }
 
 function api(body){
   body.pin = S.pin;
@@ -168,6 +159,7 @@ function probeerPin(){
   document.getElementById('overlay').className='';
   laad();
 }
+document.addEventListener('visibilitychange',function(){ if(!document.hidden && S.data) laad(); });
 
 function huidigeStaat(){ return {tab:S.tab, subtabs:Object.assign({},S.subtabs)}; }
 function gaNaarTab(tab){
@@ -193,7 +185,7 @@ function render(){
   TOPTABS.forEach(function(t){
     var b=document.createElement('button');
     if(S.tab===t[0]) b.className='on';
-    b.innerHTML=esc(t[1]);
+    b.textContent=t[1];
     b.onclick=function(){ gaNaarTab(t[0]); };
     nav.appendChild(b);
   });
@@ -213,28 +205,21 @@ function subnav(groep, items){
   return h;
 }
 function sommen(){
-  var b=0,o=0,w=0,sub=0,netto=0,betaald=0;
+  var netto=0,sub=0,betaald=0;
   S.data.posten.forEach(function(p){
     var bb=best(p);
     if(p.type==='subsidie'){ if(bb!=null) sub+=bb; }
-    else{
-      if(p.begroot!=null) b+=+p.begroot;
-      if(p.offerte!=null) o+=+p.offerte;
-      if(p.werkelijk!=null) w+=+p.werkelijk;
-      if(bb!=null) netto+=bb;
-      betaald+=betaaldVoorPost(p.id);
-    }
+    else{ if(bb!=null) netto+=bb; betaald+=betaaldVoorPost(p.id); }
   });
   var netTotaal=netto-sub;
-  return {begroot:b, offerte:o, werkelijk:w, subsidie:sub, netto:netTotaal, betaald:betaald, openstaand:netTotaal-betaald};
+  return {subsidie:sub, netto:netTotaal, betaald:betaald, openstaand:netTotaal-betaald};
 }
 function openTaken(){ return S.data.taken.filter(function(t){return t.status!=='klaar';}).slice().sort(function(a,b){ return (a.volgorde||100)-(b.volgorde||100); }); }
 
 function rStart(){
   var vandaag=todayISO();
   var alerts=[];
-  var overdueItems=S.data.items.filter(function(i){return i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig';});
-  overdueItems.forEach(function(i){ alerts.push(i.naam+' had geregeld moeten zijn vóór '+dnl(i.nodig_voor)); });
+  S.data.items.forEach(function(i){ if(i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig') alerts.push(i.naam+' had geregeld moeten zijn vóór '+dnl(i.nodig_voor)); });
   var eerstK=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;})[0];
   if(eerstK){
     var ploegC=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===eerstK.id;}).length;
@@ -247,256 +232,229 @@ function rStart(){
     alerts.slice(0,3).forEach(function(a){ h+='<div>'+esc(a)+'</div>'; });
     h+='</div>';
   }
-  var hf=S.data.fases.find(function(f){return f.status==='bezig';})||S.data.fases.find(function(f){return f.status==='gepland';});
-  if(hf) h+='<div class="card"><div class="mut">Waar we staan</div><div style="margin-top:4px"><b>'+esc(hf.nummer+'. '+hf.naam)+'</b> <span class="chip '+(hf.status==='bezig'?'honing':'')+'">'+esc(hf.status)+'</span>'+(hf.start?'<span class="mut"> · '+dnl(hf.start)+' – '+dnl(hf.eind)+'</span>':'')+'</div></div>';
+  var vm=S.data.mijlpalen.filter(function(m){return m.status!=='gehaald';})[0];
+  h+='<div class="card">';
+  if(vm) h+='<div style="display:flex;justify-content:space-between;gap:8px"><span><span class="ruit">◆</span> <b>'+esc(vm.titel)+'</b></span><span class="mut">'+(vm.datum?dnl(vm.datum):'datum invullen')+'</span></div>';
   if(eerstK){
     var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===eerstK.id;});
     var taken=S.data.taken.filter(function(t){return t.klusdag_id===eerstK.id;});
     var klaar=taken.filter(function(t){return t.status==='klaar';}).length;
-    h+='<div class="card" data-goto="plannen" style="cursor:pointer"><div style="display:flex;justify-content:space-between"><b>Volgende klusdag · '+klusdagLabel(eerstK)+'</b><span class="mut">→</span></div>';
-    h+='<div class="mut" style="margin-top:3px">'+(ploeg.length?ploeg.length+' helpers':'nog niemand')+(taken.length?' · '+klaar+'/'+taken.length+' klussen klaar':'')+(eerstK.starttijd?' · start '+String(eerstK.starttijd).slice(0,5):'')+'</div>';
-    if(taken.length) h+='<div class="balkwrap"><div class="balk" style="width:'+Math.round(klaar/taken.length*100)+'%"></div></div>';
-    h+='</div>';
+    h+='<div data-goto="plannen" style="cursor:pointer;margin-top:'+(vm?'8px':'0')+';padding-top:'+(vm?'8px':'0')+';'+(vm?'border-top:1px solid #EFE7D8':'')+'"><div style="display:flex;justify-content:space-between"><b>Klusdag '+klusdagLabel(eerstK)+'</b><span class="mut">→</span></div>';
+    h+='<div class="mut">'+(ploeg.length?ploeg.length+' helpers':'nog niemand')+(taken.length?' · '+klaar+'/'+taken.length+' klussen':' · nog geen klussen gekoppeld')+(eerstK.starttijd?' · start '+String(eerstK.starttijd).slice(0,5):'')+'</div></div>';
   }
-  h+='<div class="kop"><h2>Nu doen</h2><span class="som" data-goto="doen" style="cursor:pointer">alles →</span></div><div class="card">';
+  h+='</div>';
+  h+='<div class="kop"><h2>Nu doen</h2><span class="som" data-goto="doen" style="cursor:pointer">alles →</span></div><div class="tabel">';
   var open=openTaken().slice(0,5);
   if(!open.length) h+='<div class="leeg">Alles klaar ✔</div>';
-  open.forEach(function(t){ h+='<div class="taak" data-edit="taken:'+t.id+'"><span class="chip">'+esc(t.fase==null?'alg':'F'+t.fase)+'</span><span class="tt">'+esc(t.titel)+'</span></div>'; });
+  open.forEach(function(t){ h+='<div class="trij" data-edit="taken:'+t.id+'"><span class="dot open"></span><span class="tn">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+'</span></div>'; });
   h+='</div>';
   var s=sommen();
-  h+='<div class="card" data-goto="geld" style="cursor:pointer"><div class="mut">Geldstand</div><div style="display:flex;justify-content:space-between;margin-top:4px"><b>betaald '+eur(s.betaald)+'</b><b style="color:var(--klei)">nog te betalen '+eur(s.openstaand)+'</b></div>';
+  h+='<div class="kop"><h2>Geld</h2><span class="som" data-goto="geld" style="cursor:pointer">detail →</span></div>';
+  h+='<div class="card" data-goto="geld" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="groot" style="font-size:24px">'+eur(s.netto)+'</span><span class="mut">betaald '+eur(s.betaald)+' · open <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></span></div>';
   h+='<div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div></div>';
   var lb=S.data.besluiten[0];
-  if(lb) h+='<div class="card" data-goto-sub="dossier:besluiten" style="cursor:pointer"><div class="mut">Laatste besluit</div><b>'+esc(lb.titel)+'</b><div class="mut" style="margin-top:3px">'+dnl(lb.datum)+'</div></div>';
+  if(lb) h+='<div class="kop"><h2>Laatste besluit</h2></div><div class="card" data-edit="besluiten:'+lb.id+'" style="cursor:pointer"><b>'+esc(lb.titel)+'</b><div class="mut" style="margin-top:2px">'+dnl(lb.datum)+'</div></div>';
   return h;
 }
 
-function rPlanning(){
-  var met=S.data.fases.filter(function(f){return f.start&&f.eind;});
-  var h='<div class="kop"><h2>Fase-tijdlijn</h2></div><div class="card">';
-  var minT=null,maxT=null;
-  met.forEach(function(f){ var a=+new Date(f.start),b=+new Date(f.eind); if(minT==null||a<minT)minT=a; if(maxT==null||b>maxT)maxT=b; });
-  var span=(maxT>minT)?(maxT-minT):1;
-  S.data.fases.forEach(function(f){
-    var kleur=f.status==='klaar'?'#6B7052':(f.status==='bezig'?'#BE9055':'#A2A886');
-    h+='<div class="plrij" data-edit="fases:'+f.id+'"><span>'+f.nummer+'. '+esc(f.naam)+'</span>';
-    if(f.start&&f.eind&&minT!=null){
-      var l=Math.round((+new Date(f.start)-minT)/span*100), w=Math.max(3,Math.round((+new Date(f.eind)-+new Date(f.start))/span*100));
-      h+='<div class="plspoor"><div class="plbalk" style="left:'+l+'%;width:'+Math.min(w,100-l)+'%;background:'+kleur+'"></div></div><span class="mut">'+dnl(f.start)+' – '+dnl(f.eind)+'</span>';
-    } else {
-      h+='<div class="plspoor"></div><span class="chip">nog plannen</span>';
-    }
-    h+='</div>';
-  });
-  h+='</div>';
-  h+='<div class="kop"><h2>Mijlpalen</h2></div><div class="card">';
+function rPlannen(){
+  var vandaag=todayISO();
+  var h='<div class="kop" style="margin-top:0"><h2>Mijlpalen</h2></div><div class="tabel">';
   if(!S.data.mijlpalen.length) h+='<div class="leeg">Nog geen mijlpalen</div>';
   S.data.mijlpalen.forEach(function(m){
-    h+='<div class="mijlp" data-edit="mijlpalen:'+m.id+'"><span class="ruit">◆</span><div style="flex:1"><div'+(m.status==='gehaald'?' style="text-decoration:line-through;color:var(--ink2)"':'')+'><b>'+esc(m.titel)+'</b>'+(m.fase!=null?' <span class="chip">F'+m.fase+'</span>':'')+'</div><div class="mut">'+(m.datum?dnl(m.datum):'datum invullen')+(m.notitie?' · '+esc(m.notitie):'')+'</div></div><span class="chip '+(m.status==='gehaald'?'groen':'honing')+'" data-mcycle="'+m.id+'">'+esc(m.status)+'</span></div>';
+    h+='<div class="mijlp" data-edit="mijlpalen:'+m.id+'"><span class="ruit">◆</span><span style="flex:1;'+(m.status==='gehaald'?'text-decoration:line-through;color:var(--ink2)':'')+'">'+esc(m.titel)+'</span><span class="mut">'+(m.datum?dnl(m.datum):'datum invullen')+'</span></div>';
   });
   h+='</div>';
-  return h;
-}
-function rKlusdagen(){
-  var vandaag=todayISO();
+  if(!S.data.klusdagen.length) return h+'<div class="kop"><h2>Sloopweek</h2></div><div class="leeg">Nog geen klusdagen — gebruik +</div>';
   if(!S.klusdagFocus || !S.data.klusdagen.some(function(k){return k.id===S.klusdagFocus;})){
     var volgende=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;})[0];
     S.klusdagFocus=(volgende||S.data.klusdagen[0]||{}).id;
   }
-  var h='<div class="kop"><h2>Klusdagen</h2><span class="som">ploeg-pool: '+S.data.mensen.length+'</span></div>';
-  if(!S.data.klusdagen.length) return h+'<div class="leeg">Nog geen klusdagen — gebruik + om er een te maken</div>';
-  h+='<div class="weekstrip">';
-  S.data.klusdagen.forEach(function(k){
-    var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===k.id;});
-    var taken=S.data.taken.filter(function(t){return t.klusdag_id===k.id;});
-    var klaar=taken.filter(function(t){return t.status==='klaar';}).length;
-    var items=S.data.items.filter(function(i){return i.klusdag_id===k.id;});
-    var overdue=items.some(function(i){return i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig';});
-    h+='<div class="dagkaart'+(k.id===S.klusdagFocus?' actief':'')+'" data-goto-day="'+k.id+'">';
-    h+='<div class="dknaam">'+klusdagLabel(k)+'</div>';
-    if(!ploeg.length && taken.length) h+='<div class="dkwarn">⚠ niemand</div>';
-    else h+='<div class="dkmut">'+(ploeg.length? ploeg.length+' pers.':'—')+'</div>';
-    h+='<div class="dkmut">'+(taken.length? klaar+'/'+taken.length+' klussen':'geen klussen')+'</div>';
-    if(overdue) h+='<div class="dkwarn">⚠ regelpunt</div>';
-    h+='<div class="balkwrap" style="height:5px;margin-top:4px"><div class="balk" style="width:'+(taken.length?Math.round(klaar/taken.length*100):0)+'%"></div></div></div>';
+  var dagen=S.data.klusdagen;
+  var geplande=S.data.taken.filter(function(t){return t.klusdag_id;});
+  h+='<div class="kop"><h2>Sloopweek — wie doet wat</h2><span class="som">tik dagkop voor dagdetail</span></div>';
+  h+='<div class="matrixwrap"><div class="matrix" style="grid-template-columns:minmax(120px,1.4fr) repeat('+dagen.length+',minmax(52px,1fr))">';
+  h+='<div></div>';
+  dagen.forEach(function(k){ h+='<div class="mkop'+(k.id===S.klusdagFocus?' actief':'')+'" data-goto-day="'+k.id+'">'+esc(dagKort(k))+'</div>'; });
+  h+='<div class="mrij mut">ploeg</div>';
+  dagen.forEach(function(k){
+    var n=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===k.id;}).length;
+    var heeftKlussen=S.data.taken.some(function(t){return t.klusdag_id===k.id;});
+    h+='<div class="mcel'+(n?' vol':'')+'" data-goto-day="'+k.id+'">'+(n? n+'×' : (heeftKlussen?'<span class="mveilig">⚠</span>':'—'))+'</div>';
+  });
+  geplande.forEach(function(t){
+    h+='<div class="mrij'+(t.is_veiligheid?' mveilig':'')+'" data-edit="taken:'+t.id+'">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+'</div>';
+    dagen.forEach(function(k){
+      if(t.klusdag_id===k.id){
+        var cls=t.status==='klaar'?' kl':' vol';
+        h+='<div class="mcel'+cls+'" data-edit="taken:'+t.id+'">'+(t.status==='klaar'?'✓ ':'')+esc(t.trekker?kortNaam(t.trekker):'?')+'</div>';
+      } else h+='<div class="mcel" data-cel-plan="'+t.id+':'+k.id+'"></div>';
+    });
+  });
+  if(!geplande.length){
+    h+='<div class="mrij mut" style="grid-column:1 / -1;text-align:center;padding:10px">Nog geen klussen aan dagen gekoppeld — plan ze hieronder in</div>';
+  }
+  h+='</div></div>';
+  var k=S.data.klusdagen.find(function(x){return x.id===S.klusdagFocus;});
+  if(k) h+=rDagdetail(k, vandaag);
+  var ongepland=S.data.taken.filter(function(t){return !t.klusdag_id && t.status!=='klaar';});
+  h+='<div class="kop"><h2>Nog in te plannen</h2><span class="som">'+ongepland.length+'</span></div><div class="tabel">';
+  if(!ongepland.length) h+='<div class="leeg">Alles is aan een dag gekoppeld</div>';
+  ongepland.forEach(function(t){
+    h+='<div class="trij"><span class="tn" data-edit="taken:'+t.id+'">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+'</span>';
+    h+='<select data-verplaats="'+t.id+'" style="font-size:11.5px;padding:3px 6px;width:auto;border:1px solid var(--lijn);border-radius:7px;background:#FFFDF8;color:var(--ink2)"><option value="">dag ▾</option>';
+    S.data.klusdagen.forEach(function(kd){ h+='<option value="'+kd.id+'">'+dagKort(kd)+'</option>'; });
+    h+='</select></div>';
   });
   h+='</div>';
-  var k=S.data.klusdagen.find(function(x){return x.id===S.klusdagFocus;});
-  if(k){
-    var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===k.id;});
-    var taken=S.data.taken.filter(function(t){return t.klusdag_id===k.id;});
-    var veilig=taken.filter(function(t){return t.is_veiligheid;});
-    var gelukt=taken.filter(function(t){return !t.is_veiligheid && t.status==='klaar';});
-    var nogdoen=taken.filter(function(t){return !t.is_veiligheid && t.status!=='klaar';});
-    var items=S.data.items.filter(function(i){return i.klusdag_id===k.id;});
-    var bevindingen=S.data.bevindingen.filter(function(b){return b.klusdag_id===k.id;});
-    h+='<div class="card" style="margin-top:12px">';
-    h+='<div style="cursor:pointer" data-edit="klusdagen:'+k.id+'"><b style="font-size:15px">'+klusdagLabel(k)+(k.doel?' — '+esc(k.doel):'')+'</b>'+(k.starttijd?'<div class="mut">start '+esc(String(k.starttijd).slice(0,5))+'</div>':'<div class="mut">doel en starttijd instellen →</div>')+'</div>';
-    h+='<div style="margin:10px 0"><span class="mut">ploeg: </span>';
-    if(!ploeg.length) h+='<span class="mut">nog niemand · </span>';
-    ploeg.forEach(function(p){ h+='<span class="chip groen" data-ploeg-remove="'+p.id+'">'+esc(p.naam)+' ×</span> '; });
-    h+='<span class="chip" data-ploeg-open="'+k.id+'" style="border-style:dashed">+ helper</span></div>';
-    if(veilig.length){
-      h+='<div class="veilig">';
-      veilig.forEach(function(t){ h+='<div class="taak'+(t.status==='klaar'?' klaar':'')+'"><input type="checkbox" '+(t.status==='klaar'?'checked':'')+' data-check="'+t.id+'"><div><span class="tt" data-edit="taken:'+t.id+'">⚠ '+esc(t.titel)+'</span></div></div>'; });
-      h+='</div>';
-    }
-    h+='<div class="kop" style="margin:14px 0 4px"><h2>Gelukt</h2><span class="som">'+gelukt.length+'</span></div>';
-    if(!gelukt.length) h+='<div class="mut">Nog niks afgevinkt</div>';
-    gelukt.forEach(function(t){ h+='<div class="taak klaar"><input type="checkbox" checked data-check="'+t.id+'"><div><span class="tt" data-edit="taken:'+t.id+'">'+esc(t.titel)+'</span>'+(t.trekker?' <span class="chip groen">'+esc(t.trekker)+'</span>':'')+'</div></div>'; });
-    h+='<div class="kop" style="margin:14px 0 4px"><h2>Nog doen</h2><span class="som">'+nogdoen.length+'</span></div>';
-    if(!nogdoen.length) h+='<div class="mut">Alles hier is klaar</div>';
+  return h;
+}
+function rDagdetail(k, vandaag){
+  var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===k.id;});
+  var taken=S.data.taken.filter(function(t){return t.klusdag_id===k.id;});
+  var veilig=taken.filter(function(t){return t.is_veiligheid;});
+  var gelukt=taken.filter(function(t){return !t.is_veiligheid && t.status==='klaar';});
+  var nogdoen=taken.filter(function(t){return !t.is_veiligheid && t.status!=='klaar';});
+  var items=S.data.items.filter(function(i){return i.klusdag_id===k.id;});
+  var bevindingen=S.data.bevindingen.filter(function(b){return b.klusdag_id===k.id;});
+  var h='<div class="dagdetail">';
+  h+='<div style="cursor:pointer" data-edit="klusdagen:'+k.id+'"><b>'+klusdagLabel(k)+(k.doel?' — '+esc(k.doel):'')+'</b>'+(k.starttijd?'<span class="mut"> · start '+esc(String(k.starttijd).slice(0,5))+'</span>':'<span class="mut"> · doel/starttijd instellen →</span>')+'</div>';
+  h+='<div style="margin:8px 0">';
+  ploeg.forEach(function(p){ h+='<span class="chip groen" data-ploeg-remove="'+p.id+'">'+esc(p.naam)+' ×</span> '; });
+  h+='<span class="chip" data-ploeg-open="'+k.id+'" style="border-style:dashed">+ helper</span></div>';
+  if(veilig.length){
+    h+='<div class="veilig">';
+    veilig.forEach(function(t){ h+='<div class="taak'+(t.status==='klaar'?' klaar':'')+'"><input type="checkbox" '+(t.status==='klaar'?'checked':'')+' data-check="'+t.id+'"><span class="tt" data-edit="taken:'+t.id+'">⚠ '+esc(t.titel)+'</span></div>'; });
+    h+='</div>';
+  }
+  if(nogdoen.length||gelukt.length){
     nogdoen.forEach(function(t){
-      h+='<div class="taak"><input type="checkbox" data-check="'+t.id+'"><div style="flex:1"><span class="tt" data-edit="taken:'+t.id+'">'+esc(t.titel)+'</span>';
-      h+='<div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap"><select data-trekker-sel="'+t.id+'" style="font-size:11px;padding:3px 6px;width:auto"><option value="">wie? ▾</option>';
+      h+='<div class="taak"><input type="checkbox" data-check="'+t.id+'"><div style="flex:1"><span class="tt" data-edit="taken:'+t.id+'">'+esc(t.titel)+'</span> ';
+      h+='<select data-trekker-sel="'+t.id+'" style="font-size:11px;padding:2px 5px;width:auto;border:1px solid var(--lijn);border-radius:7px;background:#FFFDF8;color:var(--ink2)"><option value="">wie? ▾</option>';
       S.data.mensen.forEach(function(mp){ h+='<option value="'+esc(mp.naam)+'"'+(t.trekker===mp.naam?' selected':'')+'>'+esc(mp.naam)+'</option>'; });
-      h+='</select><select data-verplaats="'+t.id+'" style="font-size:11px;padding:3px 6px;width:auto"><option value="">nog niet gepland</option>';
-      S.data.klusdagen.forEach(function(kd){ h+='<option value="'+kd.id+'"'+(t.klusdag_id===kd.id?' selected':'')+'>→ '+klusdagLabel(kd)+'</option>'; });
-      h+='</select></div></div></div>';
+      h+='</select></div></div>';
     });
-    h+='<div class="kop" style="margin:14px 0 4px"><h2>Regelen &amp; meenemen</h2><span class="som">'+items.length+'</span></div>';
-    if(!items.length) h+='<div class="mut">Niks gekoppeld aan deze dag</div>';
+    gelukt.forEach(function(t){ h+='<div class="taak klaar"><input type="checkbox" checked data-check="'+t.id+'"><span class="tt" data-edit="taken:'+t.id+'">'+esc(t.titel)+(t.trekker?' · '+esc(t.trekker):'')+'</span></div>'; });
+  } else h+='<div class="mut" style="padding:4px 0">Nog geen klussen aan deze dag gekoppeld</div>';
+  if(items.length){
+    h+='<div class="kop" style="margin:10px 0 2px"><h2 style="font-size:12.5px">Regelen &amp; meenemen</h2></div>';
     items.forEach(function(i){
       var overdue=i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig';
       var cls=i.status==='in_huis'?'groen':(i.status==='besteld'?'honing':(overdue?'klei':''));
-      h+='<div class="rij" style="padding:7px 0"><div data-edit="items:'+i.id+'"><div class="naam">'+(overdue?'⚠ ':'')+esc(i.naam)+(i.soort?' <span class="mut">('+esc(i.soort)+')</span>':'')+'</div>'+(i.nodig_voor?'<div class="meta">nodig vóór '+dnl(i.nodig_voor)+'</div>':'')+'</div><div><span class="chip '+cls+'" data-cycle="'+i.id+'">'+esc(i.status.replace('_',' '))+'</span></div></div>';
+      h+='<div class="trij"><span class="tn" data-edit="items:'+i.id+'">'+(overdue?'⚠ ':'')+esc(i.naam)+(i.soort?' <span class="tm">('+esc(i.soort)+')</span>':'')+'</span><span class="chip '+cls+'" data-cycle="'+i.id+'">'+esc(i.status.replace('_',' '))+'</span></div>';
     });
-    h+='<div class="kop" style="margin:14px 0 4px"><h2>Bevindingen</h2><span class="chip" data-bevinding-open="'+k.id+'" style="border-style:dashed">+ bevinding</span></div>';
-    if(!bevindingen.length) h+='<div class="mut">Nog niks opgevallen</div>';
-    bevindingen.forEach(function(b){
-      var tag=b.status==='taak_gemaakt'?'→ taak':(b.status==='besluit_gemaakt'?'→ besluit':'genoteerd');
-      h+='<div class="mut" style="padding:4px 0">'+esc(b.tekst)+' <span class="chip">'+tag+'</span></div>';
-    });
-    h+='<div style="margin-top:14px"><span class="chip" data-kopieer="'+k.id+'">Kopieer dagbriefing</span></div>';
-    h+='</div>';
   }
-  var ongepland=S.data.taken.filter(function(t){return !t.klusdag_id && t.status!=='klaar';});
-  h+='<div class="kop"><h2>Nog in te plannen</h2><span class="som">'+ongepland.length+'</span></div><div class="card">';
-  if(!ongepland.length) h+='<div class="leeg">Alles is aan een dag gekoppeld</div>';
-  ongepland.forEach(function(t){
-    h+='<div class="taak"><div style="flex:1"><span class="tt" data-edit="taken:'+t.id+'">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+'</span>';
-    h+='<div style="margin-top:4px"><select data-verplaats="'+t.id+'" style="font-size:11px;padding:3px 6px;width:auto"><option value="">plan op dag ▾</option>';
-    S.data.klusdagen.forEach(function(kd){ h+='<option value="'+kd.id+'">'+klusdagLabel(kd)+'</option>'; });
-    h+='</select></div></div></div>';
+  h+='<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"><span class="chip" data-bevinding-open="'+k.id+'" style="border-style:dashed">+ bevinding</span><span class="chip" data-kopieer="'+k.id+'">Kopieer dagbriefing</span></div>';
+  bevindingen.forEach(function(b){
+    var tag=b.status==='taak_gemaakt'?'→ taak':(b.status==='besluit_gemaakt'?'→ besluit':'genoteerd');
+    h+='<div class="mut" style="padding:3px 0">'+esc(b.tekst)+' <span class="chip">'+tag+'</span></div>';
   });
   h+='</div>';
   return h;
 }
-function rPlannen(){ return rPlanning()+rKlusdagen(); }
 
+function rGeld(){
+  return subnav('geld',[['budget','Budget'],['offertes','Offertes']])+(S.subtabs.geld==='offertes'?rOffertes():rBudget());
+}
 function rBudget(){
   var s=sommen();
-  var h='<div class="card"><div class="bedragen"><span>Begroot <b>'+eur(s.begroot)+'</b></span><span>Offertes <b>'+eur(s.offerte)+'</b></span><span>Betaald <b>'+eur(s.betaald)+'</b></span><span class="subs">Nog te betalen '+eur(s.openstaand)+'</span></div></div>';
+  var h='<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="groot" style="font-size:26px">'+eur(s.netto)+'</span><span class="mut">subsidie −'+eur(s.subsidie)+'</span></div>';
+  h+='<div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div>';
+  h+='<div class="mut" style="margin-top:4px">betaald <b style="color:var(--ink)">'+eur(s.betaald)+'</b> · nog te betalen <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></div></div>';
   var groepen={};
-  S.data.posten.forEach(function(p){ (groepen[p.fase]=groepen[p.fase]||[]).push(p); });
-  var actieveFaseNum=(S.data.fases.find(function(f){return f.status==='bezig';})||S.data.fases.find(function(f){return f.status==='gepland';})||{}).nummer;
-  Object.keys(groepen).sort().forEach(function(f){
-    var lijst=groepen[f], som=0;
-    lijst.forEach(function(p){ var bb=best(p); if(bb!=null) som+= (p.type==='subsidie'? -bb : bb); });
-    var faseNum=f==='null'?null:+f;
-    if(S.budgetOpen[f]===undefined) S.budgetOpen[f]=(faseNum===actieveFaseNum || faseNum==null);
-    var open=S.budgetOpen[f];
-    h+='<div class="fasekop" data-fase-toggle="'+f+'"><b>'+(open?'▾':'▸')+' '+esc(faseNaam(faseNum))+'</b><span class="mut">'+eur(som)+'</span></div>';
-    if(open){
-      h+='<div class="card">';
-      lijst.forEach(function(p){
-        var st=p.status==='betaald'?'groen':(p.status==='akkoord'?'honing':'');
-        var betaaldP=betaaldVoorPost(p.id);
-        h+='<div class="rij" data-edit="posten:'+p.id+'"><div><div class="naam">'+(p.type==='subsidie'?'⬇ ':'')+esc(p.naam)+'</div><div class="meta">'+esc([p.ruimte,p.leverancier].filter(Boolean).join(' · '))+(betaaldP>0?' · betaald '+eur(betaaldP):'')+'</div></div>';
-        h+='<div class="bedragen"><span>B '+eur(p.begroot)+'</span><span>O '+eur(p.offerte)+'</span><span>W <b>'+eur(p.werkelijk)+'</b></span></div>';
-        h+='<div><span class="chip '+st+'">'+esc(p.status)+'</span></div></div>';
-      });
-      h+='</div>';
-    }
-  });
-  return h;
-}
-function rTaken(){
-  var h='', groepen={};
-  S.data.taken.forEach(function(t){ (groepen[t.fase]=groepen[t.fase]||[]).push(t); });
-  var keys=Object.keys(groepen).sort(function(a,b){ if(a==='null')return -1; if(b==='null')return 1; return a-b; });
-  keys.forEach(function(f){
-    var lijst=groepen[f];
-    var kl=lijst.filter(function(t){return t.status==='klaar';}).length;
-    h+='<div class="kop"><h2>'+esc(faseNaam(f==='null'?null:+f))+'</h2><span class="som">'+kl+'/'+lijst.length+'</span></div><div class="card">';
-    lijst.forEach(function(t){
-      var kd=t.klusdag_id ? S.data.klusdagen.find(function(x){return x.id===t.klusdag_id;}) : null;
-      h+='<div class="taak'+(t.status==='klaar'?' klaar':'')+'"><input type="checkbox" '+(t.status==='klaar'?'checked':'')+' data-check="'+t.id+'"><div><div class="tt" data-edit="taken:'+t.id+'">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+(t.status==='bezig'?' <span class="chip honing">bezig</span>':'')+(t.trekker?' <span class="chip groen">'+esc(t.trekker)+'</span>':'')+(kd?' <span class="chip">'+klusdagLabel(kd)+'</span>':'')+'</div>'+(t.notitie?'<div class="meta mut">'+esc(t.notitie)+'</div>':'')+'</div></div>';
+  S.data.posten.forEach(function(p){ var c=p.categorie||'Overig'; (groepen[c]=groepen[c]||[]).push(p); });
+  var volgorde=CATS.filter(function(c){return groepen[c];}).concat(Object.keys(groepen).filter(function(c){return CATS.indexOf(c)<0;}));
+  volgorde.forEach(function(c){
+    var lijst=groepen[c], som=0, isSubs=(c==='Subsidies');
+    lijst.forEach(function(p){ var bb=best(p); if(bb!=null) som+=bb; });
+    h+='<div class="catkop"><span>'+esc(c)+'</span><span class="cs">'+(isSubs?'−':'')+eur(som)+'</span></div>';
+    h+='<div class="tabel">';
+    lijst.forEach(function(p){
+      var bb=best(p);
+      var bron=p.werkelijk!=null?'':(p.offerte!=null?'offerte':(p.begroot!=null?'begroot':'nog geen bedrag'));
+      h+='<div class="trij'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+(bron?' <span class="tm">'+bron+'</span>':'')+'</span><span class="tb">'+(isSubs?'−':'')+(bb!=null?eur(bb):'—')+'</span></div>';
     });
     h+='</div>';
   });
-  return h||'<div class="leeg">Nog geen taken</div>';
+  h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik een regel voor termijnen en detail</div>';
+  return h;
+}
+function rDoen(){
+  return subnav('doen',[['taken','Taken'],['spullen','Spullen']])+(S.subtabs.doen==='spullen'?rItems():rTaken());
+}
+function rTaken(){
+  var open=openTaken();
+  var klaar=S.data.taken.filter(function(t){return t.status==='klaar';});
+  var h='<div class="kop" style="margin-top:0"><h2>Open</h2><span class="som">'+open.length+'</span></div><div class="tabel">';
+  if(!open.length) h+='<div class="leeg">Alles klaar ✔</div>';
+  open.forEach(function(t){
+    var kd=t.klusdag_id ? S.data.klusdagen.find(function(x){return x.id===t.klusdag_id;}) : null;
+    h+='<div class="taak"><input type="checkbox" data-check="'+t.id+'"><span class="tt" style="flex:1" data-edit="taken:'+t.id+'">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+'</span><span class="tm" style="white-space:nowrap">'+esc([t.trekker,kd?dagKort(kd):null].filter(Boolean).join(' · '))+'</span></div>';
+  });
+  h+='</div>';
+  h+='<div class="kop"><h2 style="cursor:pointer" data-toggle-klaar="1">Klaar '+(S.klaarOpen?'▾':'▸')+'</h2><span class="som">'+klaar.length+'</span></div>';
+  if(S.klaarOpen){
+    h+='<div class="tabel">';
+    klaar.forEach(function(t){ h+='<div class="taak klaar"><input type="checkbox" checked data-check="'+t.id+'"><span class="tt" data-edit="taken:'+t.id+'">'+esc(t.titel)+'</span></div>'; });
+    h+='</div>';
+  }
+  return h;
 }
 function rItems(){
   var vandaag=todayISO();
   var nodig=S.data.items.filter(function(i){return i.status==='nodig';}), som=0;
   nodig.forEach(function(i){ if(i.prijs!=null) som+=+i.prijs; });
-  var h='<div class="card"><div class="bedragen"><span>Nog kopen <b>'+nodig.length+'</b></span><span>ca. <b>'+eur(som)+'</b></span></div></div><div class="card">';
+  var h='<div class="mut" style="margin-bottom:6px">Nog kopen/regelen: <b>'+nodig.length+'</b> · ca. '+eur(som)+'</div><div class="tabel">';
   if(!S.data.items.length) return h+'<div class="leeg">Lijst is leeg</div></div>';
   S.data.items.forEach(function(i){
     var overdue=i.nodig_voor && i.nodig_voor<vandaag && i.status==='nodig';
     var cls=i.status==='in_huis'?'groen':(i.status==='besteld'?'honing':(overdue?'klei':''));
     var kd=i.klusdag_id ? S.data.klusdagen.find(function(x){return x.id===i.klusdag_id;}) : null;
-    h+='<div class="rij"><div data-edit="items:'+i.id+'"><div class="naam">'+(overdue?'⚠ ':'')+esc(i.naam)+'</div><div class="meta">'+esc([i.soort,i.aantal,i.winkel,i.ruimte].filter(Boolean).join(' · '))+(kd?' · '+klusdagLabel(kd):'')+(i.nodig_voor?' · vóór '+dnl(i.nodig_voor):'')+'</div></div>';
-    h+='<div class="bedragen"><span>'+eur(i.prijs,true)+'</span></div>';
-    h+='<div><span class="chip '+cls+'" data-cycle="'+i.id+'">'+esc(i.status.replace('_',' '))+'</span></div></div>';
+    h+='<div class="trij"><span class="tn" data-edit="items:'+i.id+'">'+(overdue?'⚠ ':'')+esc(i.naam)+' <span class="tm">'+esc([i.soort,kd?dagKort(kd):null,i.nodig_voor?'vóór '+dnl(i.nodig_voor):null].filter(Boolean).join(' · '))+'</span></span>';
+    h+='<span class="tb tm">'+(i.prijs!=null?eur(i.prijs,true):'')+'</span>';
+    h+='<span class="chip '+cls+'" data-cycle="'+i.id+'">'+esc(i.status.replace('_',' '))+'</span></div>';
   });
   return h+'</div>';
-}
-function rDoen(){
-  return subnav('doen',[['taken','Taken'],['spullen','Spullen']])+(S.subtabs.doen==='spullen'?rItems():rTaken());
 }
 function rOffertes(){
   var h='';
   S.data.offertes.forEach(function(o){
     var cls=o.status==='akkoord'?'groen':(o.status==='afgewezen'?'':(o.status==='onvolledig'?'klei':'honing'));
     var bestanden=S.data.bestanden.filter(function(f){return f.offerte_id===o.id;});
-    h+='<div class="card"><div style="cursor:pointer" data-edit="offertes:'+o.id+'"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><b>'+esc(o.leverancier)+(o.nummer?' · '+esc(o.nummer):'')+'</b><span class="chip '+cls+'">'+esc(o.status)+'</span></div>';
-    h+='<div style="margin-top:4px">'+esc(o.omschrijving||'')+'</div><div class="groot" style="font-size:22px;margin-top:4px">'+(o.bedrag!=null?eur(o.bedrag,true):'—')+'</div>';
-    if(o.contact) h+='<div class="mut" style="margin-top:4px">☎ '+esc(o.contact)+'</div>';
-    if(o.notitie) h+='<div class="mut" style="margin-top:5px">'+esc(o.notitie)+'</div>';
+    h+='<div class="card"><div style="cursor:pointer" data-edit="offertes:'+o.id+'"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><b>'+esc(o.leverancier)+(o.nummer?' · '+esc(o.nummer):'')+'</b><span style="display:flex;gap:8px;align-items:baseline"><span class="tb">'+(o.bedrag!=null?eur(o.bedrag,true):'—')+'</span><span class="chip '+cls+'">'+esc(o.status)+'</span></span></div>';
+    h+='<div class="mut" style="margin-top:2px">'+esc(o.omschrijving||'')+(o.contact?' · ☎ '+esc(o.contact):'')+'</div>';
+    if(o.notitie) h+='<div class="mut" style="margin-top:4px">'+esc(o.notitie)+'</div>';
     h+='</div>';
     if(bestanden.length){
-      h+='<div style="margin-top:10px">';
       bestanden.forEach(function(f){
         h+='<div class="bestrij"><a data-download="'+f.storage_path+'">'+esc(f.bestandsnaam)+'</a><span class="mut">'+fmtBytes(f.grootte)+' <span data-verwijder-bestand="'+f.id+'" data-verwijder-path="'+f.storage_path+'" style="cursor:pointer;color:var(--klei)"> ✕</span></span></div>';
       });
-      h+='</div>';
     }
-    h+='<label class="upl">+ offerte-document toevoegen (PDF/foto)<input type="file" accept="application/pdf,image/*" data-upload-offerte="'+o.id+'"></label>';
+    h+='<label class="upl">+ offerte-document (PDF/foto)<input type="file" accept="application/pdf,image/*" data-upload-offerte="'+o.id+'"></label>';
     h+='</div>';
   });
   return h||'<div class="leeg">Nog geen offertes</div>';
 }
-function rGeld(){
-  return subnav('geld',[['budget','Budget'],['offertes','Offertes']])+(S.subtabs.geld==='offertes'?rOffertes():rBudget());
-}
 function rBesluiten(){
-  var h='<div class="mut" style="margin-bottom:10px">Wat is besloten, wanneer en waarom — zodat je nooit hoeft te reconstrueren.</div>';
-  if(!S.data.besluiten.length) h+='<div class="leeg">Nog geen besluiten vastgelegd</div>';
+  var h='';
   S.data.besluiten.forEach(function(b){
     h+='<div class="card" data-edit="besluiten:'+b.id+'" style="cursor:pointer"><div style="display:flex;justify-content:space-between;gap:10px"><b>'+esc(b.titel)+'</b><span class="mut" style="white-space:nowrap">'+dnl(b.datum)+'</span></div>';
-    if(b.fase!=null) h+='<div style="margin-top:4px"><span class="chip">'+esc(faseNaam(b.fase))+'</span></div>';
-    if(b.waarom) h+='<div class="mut" style="margin-top:6px">'+esc(b.waarom)+'</div>';
+    if(b.waarom) h+='<div class="mut" style="margin-top:4px">'+esc(b.waarom)+'</div>';
     h+='</div>';
   });
-  return h;
+  return h||'<div class="leeg">Nog geen besluiten vastgelegd</div>';
 }
 function rDocumenten(){
-  var h='<div class="mut" style="margin-bottom:10px">Register: welk document bestaat en waar het ligt.</div>';
-  if(!S.data.documenten.length) h+='<div class="leeg">Nog geen documenten</div>';
+  var h='';
   S.data.documenten.forEach(function(d){
-    h+='<div class="card" data-edit="documenten:'+d.id+'" style="cursor:pointer"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><b>'+esc(d.naam)+'</b>'+(d.soort?'<span class="chip">'+esc(d.soort)+'</span>':'')+'</div>';
-    if(d.locatie) h+='<div class="loc">'+esc(d.locatie)+'</div>';
-    if(d.notitie) h+='<div class="mut" style="margin-top:5px">'+esc(d.notitie)+'</div>';
-    h+='</div>';
+    h+='<div class="trij" data-edit="documenten:'+d.id+'"><span class="tn">'+esc(d.naam)+(d.soort?' <span class="tm">'+esc(d.soort)+'</span>':'')+'</span></div>';
   });
-  return h;
+  return '<div class="tabel">'+(h||'<div class="leeg">Nog geen documenten</div>')+'</div><div class="mut" style="margin-top:8px">Tik voor locatie en notities.</div>';
 }
 function rNotities(){
   var h='';
   S.data.notities.forEach(function(n){
-    h+='<div class="card" data-edit="notities:'+n.id+'" style="cursor:pointer"><b>'+esc(n.titel)+'</b><div class="mut" style="margin-top:5px;white-space:pre-wrap">'+esc(n.tekst||'')+'</div></div>';
+    h+='<div class="card" data-edit="notities:'+n.id+'" style="cursor:pointer"><b>'+esc(n.titel)+'</b><div class="mut" style="margin-top:4px;white-space:pre-wrap">'+esc(n.tekst||'')+'</div></div>';
   });
   return h||'<div class="leeg">Nog geen notities</div>';
 }
@@ -508,7 +466,7 @@ function rDossier(){
 function koppel(m){
   m.querySelectorAll('[data-edit]').forEach(function(el){
     el.addEventListener('click',function(ev){
-      if(ev.target.closest('[data-check],[data-cycle],[data-mcycle],[data-verplaats],[data-trekker-sel],[data-ploeg-remove],[data-ploeg-open],[data-bevinding-open],[data-kopieer],[data-download],[data-verwijder-bestand],[data-upload-offerte]')) return;
+      if(ev.target.closest('[data-check],[data-cycle],[data-mcycle],[data-verplaats],[data-trekker-sel],[data-ploeg-remove],[data-ploeg-open],[data-bevinding-open],[data-kopieer],[data-download],[data-verwijder-bestand],[data-upload-offerte],[data-cel-plan],[data-goto-day]')) return;
       var p=el.getAttribute('data-edit').split(':');
       openForm(p[0], p[1]);
     });
@@ -537,14 +495,17 @@ function koppel(m){
   m.querySelectorAll('[data-goto]').forEach(function(el){
     el.addEventListener('click',function(){ gaNaarTab(el.getAttribute('data-goto')); });
   });
-  m.querySelectorAll('[data-goto-sub]').forEach(function(el){
-    el.addEventListener('click',function(){ var p=el.getAttribute('data-goto-sub').split(':'); gaNaarSubtab(p[0],p[1]); });
-  });
   m.querySelectorAll('[data-subtab]').forEach(function(el){
     el.addEventListener('click',function(){ var p=el.getAttribute('data-subtab').split(':'); gaNaarSubtab(p[0],p[1]); });
   });
-  m.querySelectorAll('[data-fase-toggle]').forEach(function(el){
-    el.addEventListener('click',function(){ var f=el.getAttribute('data-fase-toggle'); S.budgetOpen[f]=!S.budgetOpen[f]; render(); });
+  m.querySelectorAll('[data-toggle-klaar]').forEach(function(el){
+    el.addEventListener('click',function(){ S.klaarOpen=!S.klaarOpen; render(); });
+  });
+  m.querySelectorAll('[data-cel-plan]').forEach(function(el){
+    el.addEventListener('click',function(){
+      var p=el.getAttribute('data-cel-plan').split(':');
+      api({action:'update',table:'taken',id:p[0],data:{klusdag_id:p[1]}}).then(laad).catch(function(e){toast(e.message);});
+    });
   });
   m.querySelectorAll('[data-ploeg-remove]').forEach(function(el){
     el.addEventListener('click',function(){ api({action:'delete',table:'klusdag_ploeg',id:el.getAttribute('data-ploeg-remove')}).then(laad).catch(function(e){toast(e.message);}); });
@@ -585,7 +546,7 @@ function koppel(m){
 
 var swipeX=null, swipeY=null;
 document.getElementById('main').addEventListener('touchstart',function(e){
-  if(e.target.closest('.weekstrip')){ swipeX=null; return; }
+  if(e.target.closest('.matrixwrap')){ swipeX=null; return; }
   swipeX=e.touches[0].clientX; swipeY=e.touches[0].clientY;
 },{passive:true});
 document.getElementById('main').addEventListener('touchend',function(e){
@@ -749,13 +710,13 @@ function kopieerDagbriefing(klusdagId){
 
 var FORMS = {
   fases:[['naam','text','Fase-naam*'],['start','datum','Start'],['eind','datum','Eind'],['status','select:gepland,bezig,klaar','Status'],['notitie','area','Notitie']],
-  mijlpalen:[['titel','text','Mijlpaal*'],['datum','datum','Datum'],['fase','fase','Fase'],['status','select:gepland,gehaald','Status'],['notitie','area','Notitie']],
+  mijlpalen:[['titel','text','Mijlpaal*'],['datum','datum','Datum'],['status','select:gepland,gehaald','Status'],['notitie','area','Notitie']],
   klusdagen:[['datum','datum','Datum*'],['doel','text','Doel van de dag'],['starttijd','tijd','Starttijd'],['status','select:gepland,gesloten','Status'],['notitie','area','Notitie']],
-  posten:[['naam','text','Naam*'],['fase','fase','Fase'],['ruimte','text','Ruimte'],['leverancier','text','Leverancier'],['type','select:kosten,subsidie','Type'],['begroot','geld','Begroot € (incl. btw)'],['offerte','geld','Offerte €'],['werkelijk','geld','Werkelijk €'],['status','select:open,akkoord,betaald','Status'],['notitie','area','Notitie']],
-  taken:[['titel','text','Taak*'],['fase','fase','Fase'],['klusdag_id','klusdag','Klusdag'],['trekker','text','Wie pakt dit op'],['is_veiligheid','boolsel','Veiligheidsstap'],['status','select:open,bezig,klaar','Status'],['volgorde','number','Volgorde'],['notitie','area','Notitie']],
-  items:[['naam','text','Wat*'],['fase','fase','Fase'],['ruimte','text','Ruimte'],['aantal','text','Aantal'],['prijs','geld','Prijs €'],['soort','select:kopen,huren,regelen,meenemen','Soort'],['klusdag_id','klusdag','Nodig op klusdag'],['nodig_voor','datum','Nodig vóór (deadline)'],['status','select:nodig,besteld,in_huis','Status'],['winkel','text','Winkel'],['notitie','area','Notitie']],
+  posten:[['naam','text','Naam*'],['categorie','catsel','Categorie'],['ruimte','text','Ruimte'],['leverancier','text','Leverancier'],['type','select:kosten,subsidie','Type'],['begroot','geld','Begroot € (incl. btw)'],['offerte','geld','Offerte €'],['werkelijk','geld','Werkelijk €'],['status','select:open,akkoord,betaald','Status'],['notitie','area','Notitie']],
+  taken:[['titel','text','Taak*'],['klusdag_id','klusdag','Klusdag'],['trekker','text','Wie pakt dit op'],['is_veiligheid','boolsel','Veiligheidsstap'],['status','select:open,bezig,klaar','Status'],['volgorde','number','Volgorde'],['notitie','area','Notitie']],
+  items:[['naam','text','Wat*'],['soort','select:kopen,huren,regelen,meenemen','Soort'],['klusdag_id','klusdag','Nodig op klusdag'],['nodig_voor','datum','Nodig vóór (deadline)'],['aantal','text','Aantal'],['prijs','geld','Prijs €'],['status','select:nodig,besteld,in_huis','Status'],['winkel','text','Winkel'],['ruimte','text','Ruimte'],['notitie','area','Notitie']],
   offertes:[['leverancier','text','Leverancier*'],['nummer','text','Offertenummer'],['omschrijving','text','Omschrijving'],['bedrag','geld','Bedrag € incl. btw'],['status','select:ontvangen,vergelijken,akkoord,afgewezen,onvolledig','Status'],['contact','text','Contact'],['notitie','area','Notitie']],
-  besluiten:[['titel','text','Besluit*'],['datum','datum','Datum'],['fase','fase','Fase'],['waarom','area','Waarom / onderbouwing']],
+  besluiten:[['titel','text','Besluit*'],['datum','datum','Datum'],['waarom','area','Waarom / onderbouwing']],
   documenten:[['naam','text','Document*'],['soort','text','Soort (offerte, rapport…)'],['locatie','text','Waar ligt het'],['notitie','area','Notitie']],
   notities:[['titel','text','Titel*'],['tekst','area','Tekst']]
 };
@@ -771,10 +732,9 @@ function openForm(table, id){
     var lab=document.createElement('label'); lab.textContent=f[2]; pan.appendChild(lab);
     var el;
     if(f[1]==='area'){ el=document.createElement('textarea'); }
-    else if(f[1]==='fase'){
+    else if(f[1]==='catsel'){
       el=document.createElement('select');
-      var o0=document.createElement('option'); o0.value=''; o0.textContent='Algemeen'; el.appendChild(o0);
-      S.data.fases.forEach(function(fs){ var o=document.createElement('option'); o.value=String(fs.nummer); o.textContent=fs.nummer+'. '+fs.naam; el.appendChild(o); });
+      CATS.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; el.appendChild(o); });
     }
     else if(f[1]==='klusdag'){
       el=document.createElement('select');
@@ -793,6 +753,7 @@ function openForm(table, id){
     var val=rec[f[0]];
     if(f[1]==='boolsel'){ el.value = val===true?'true':'false'; }
     else if(f[1]==='tijd'){ el.value = val? String(val).slice(0,5) : ''; }
+    else if(f[1]==='catsel'){ el.value = val||'Overig'; }
     else { el.value = val==null?'':String(val); }
     velden[f[0]]=[el,f[1]]; pan.appendChild(el);
   });
@@ -806,7 +767,6 @@ function openForm(table, id){
     Object.keys(velden).forEach(function(k){
       var v=velden[k][0].value, tp=velden[k][1];
       if(tp==='geld'||tp==='number') data[k]=num(v);
-      else if(tp==='fase') data[k]= v===''?null:+v;
       else if(tp==='boolsel') data[k]= (v==='true');
       else data[k]= (typeof v==='string'&&v.trim()==='')?null:v;
     });
