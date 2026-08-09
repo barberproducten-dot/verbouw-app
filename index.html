@@ -534,31 +534,22 @@ function openBevindingForm(klusdagId){
   document.getElementById('modal').className='show';
 }
 function kopieerDagbriefing(klusdagId){
+  var NL=String.fromCharCode(10);
   var k=S.data.klusdagen.find(function(x){return x.id===klusdagId;});
   if(!k){ toast('Dag niet gevonden'); return; }
   var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===klusdagId;}).map(function(p){return p.naam;});
   var veilig=S.data.taken.filter(function(t){return t.klusdag_id===klusdagId && t.is_veiligheid && t.status!=='klaar';});
   var nogdoen=S.data.taken.filter(function(t){return t.klusdag_id===klusdagId && !t.is_veiligheid && t.status!=='klaar';});
   var regel=S.data.items.filter(function(i){return i.klusdag_id===klusdagId;});
-  var r='Klusdag '+dnl(k.datum)+(k.starttijd?' · start '+String(k.starttijd).slice(0,5):'')+'
-';
-  if(k.doel) r+='Doel: '+k.doel+'
-';
-  r+='
-Ploeg: '+(ploeg.length?ploeg.join(', '):'nog niemand')+'
-';
-  if(veilig.length){ r+='
-Veiligheid:
-'; veilig.forEach(function(t){ r+='- '+t.titel+'
-'; }); }
-  if(nogdoen.length){ r+='
-Nog te doen:
-'; nogdoen.forEach(function(t){ r+='- '+t.titel+(t.trekker?' ('+t.trekker+')':'')+'
-'; }); }
-  if(regel.length){ r+='
-Regelen/meenemen:
-'; regel.forEach(function(i){ r+='- '+i.naam+(i.nodig_voor?' (vóór '+dnl(i.nodig_voor)+')':'')+' — '+i.status.replace('_',' ')+'
-'; }); }
+  var regels=[];
+  regels.push('Klusdag '+dnl(k.datum)+(k.starttijd?' · start '+String(k.starttijd).slice(0,5):''));
+  if(k.doel) regels.push('Doel: '+k.doel);
+  regels.push('');
+  regels.push('Ploeg: '+(ploeg.length?ploeg.join(', '):'nog niemand'));
+  if(veilig.length){ regels.push(''); regels.push('Veiligheid:'); veilig.forEach(function(t){ regels.push('- '+t.titel); }); }
+  if(nogdoen.length){ regels.push(''); regels.push('Nog te doen:'); nogdoen.forEach(function(t){ regels.push('- '+t.titel+(t.trekker?' ('+t.trekker+')':'')); }); }
+  if(regel.length){ regels.push(''); regels.push('Regelen/meenemen:'); regel.forEach(function(i){ regels.push('- '+i.naam+(i.nodig_voor?' (vóór '+dnl(i.nodig_voor)+')':'')+' — '+i.status.replace('_',' ')); }); }
+  var r=regels.join(NL);
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(r).then(function(){ toast('Dagbriefing gekopieerd'); }).catch(function(){ toast('Kopiëren niet gelukt'); });
   } else { toast('Kopiëren niet ondersteund in deze browser'); }
