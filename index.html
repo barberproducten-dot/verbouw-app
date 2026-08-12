@@ -104,6 +104,9 @@ label.upl input{display:none}
 .editcel{cursor:text;border-bottom:1px dashed transparent}
 .editcel:hover{border-bottom-color:var(--ink2)}
 .editcel input{width:70px;border:1.5px solid var(--olijf);border-radius:5px;padding:1px 4px;font:inherit;font-size:inherit;background:#FFFDF8;text-align:right}
+.editcel.voorlopig{color:var(--ink2);font-weight:500;font-style:italic}
+.editcel.voorlopig:hover{border-bottom-color:var(--klei)}
+.trij.nieuw{padding:6px 0}
 @media(min-width:900px){
   body{padding-bottom:0}
   .botnav{left:0;right:auto;top:0;bottom:0;width:72px;grid-template-columns:1fr;grid-auto-rows:min-content;background:#454a3c;border-top:0;border-right:1px solid #363a2f;padding:14px 5px;gap:2px;align-content:start}
@@ -146,6 +149,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){retu
 function num(v){ if(v==null) return null; var s=String(v).trim(); if(s==='') return null; var n=parseFloat(s.replace(',','.')); return isNaN(n)?null:n; }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},2600); }
 function best(p){ if(p.werkelijk!=null) return +p.werkelijk; if(p.offerte!=null) return +p.offerte; if(p.begroot!=null) return +p.begroot; return null; }
+function bestVeld(p){ if(p.werkelijk!=null) return 'werkelijk'; if(p.offerte!=null) return 'offerte'; return 'begroot'; }
 function betaaldVoorPost(postId){ var t=0; (S.data.betalingen||[]).forEach(function(b){ if(b.post_id===postId && b.status==='betaald') t+=+b.bedrag; }); return t; }
 function openDeadline(postId){ var l=(S.data.betalingen||[]).filter(function(b){return b.post_id===postId && b.status!=='betaald' && b.datum;}); if(!l.length) return null; l.sort(function(a,b){return a.datum<b.datum?-1:1;}); return l[0]; }
 function dekkingRij(){ return (S.data.dekking && S.data.dekking[0]) || {id:1}; }
@@ -338,9 +342,10 @@ function rBudgetCat(vandaag){
       var deadline=openDeadline(p.id); var meta='';
       if(p.leverancier) meta+=' <span class="tm">'+esc(p.leverancier)+'</span>';
       if(deadline){ var over=deadline.datum<vandaag; meta+=' <span class="tm" style="color:var(--klei)'+(over?';font-weight:650':'')+'">'+(over?'⚠ ':'')+eur(+deadline.bedrag)+' vóór '+dnlk(deadline.datum)+'</span>'; }
-      h+='<div class="trij'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+meta+'</span><span class="tb editcel" data-editcel="posten:'+p.id+':werkelijk">'+(isSubs?'−':'')+(best(p)!=null?eur(best(p)):'—')+'</span></div>';
+      var veld=bestVeld(p); var voorlopig=(veld!=='werkelijk');
+      h+='<div class="trij'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+meta+'</span><span class="tb editcel'+(voorlopig?' voorlopig':'')+'" data-editcel="posten:'+p.id+':'+veld+'" title="'+(voorlopig?(veld==='offerte'?'offerte, nog niet definitief':'begroot, nog niet definitief'):'werkelijk bedrag')+'">'+(isSubs?'−':'')+(best(p)!=null?eur(best(p)):'—')+'</span></div>';
     });
-    h+='<div class="trij" data-nieuwe-post="'+esc(c)+'"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuwe post</span></div></div>';
+    h+='<div class="trij nieuw" data-nieuwe-post="'+esc(c)+'"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuwe post</span></div></div>';
   });
   h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik het bedrag om te typen, tik de rest voor het volledige formulier</div>';
   return h;
@@ -406,10 +411,19 @@ function koppel(m){
     el.addEventListener('click',function(){
       if(el.querySelector('input')) return;
       var cat=el.getAttribute('data-nieuwe-post'); el.innerHTML='';
-      var inp=document.createElement('input'); inp.type='text'; inp.placeholder='Naam, Enter om te bewaren'; inp.style.cssText='width:100%;border:1.5px solid var(--olijf);border-radius:6px;padding:4px 7px;font:inherit;font-size:13px';
-      el.appendChild(inp); inp.focus();
-      inp.addEventListener('keydown', function(e){ if(e.key==='Enter' && inp.value.trim()){ api({action:'insert',table:'posten',data:{naam:inp.value.trim(),categorie:cat,type:'kosten',status:'open'}}).then(laad).catch(function(e2){toast(e2.message);}); } });
-      inp.addEventListener('blur', function(){ if(!inp.value.trim()) render(); });
+      var iNaam=document.createElement('input'); iNaam.type='text'; iNaam.placeholder='Naam'; iNaam.style.cssText='flex:1;min-width:0;border:1.5px solid var(--olijf);border-radius:6px;padding:4px 7px;font:inherit;font-size:13px';
+      var iBedrag=document.createElement('input'); iBedrag.type='text'; iBedrag.inputMode='decimal'; iBedrag.placeholder='begroot €'; iBedrag.style.cssText='width:92px;flex:0 0 auto;border:1.5px solid var(--olijf);border-radius:6px;padding:4px 7px;font:inherit;font-size:13px;text-align:right';
+      el.style.cssText='display:flex;gap:6px'; el.appendChild(iNaam); el.appendChild(iBedrag); iNaam.focus();
+      var opgeslagen=false;
+      function opslaan(){
+        if(opgeslagen || !iNaam.value.trim()) return; opgeslagen=true;
+        var data={naam:iNaam.value.trim(),categorie:cat,type:'kosten',status:'open'};
+        var bedrag=num(iBedrag.value); if(bedrag!=null) data.begroot=bedrag;
+        api({action:'insert',table:'posten',data:data}).then(laad).catch(function(e2){toast(e2.message); opgeslagen=false;});
+      }
+      iNaam.addEventListener('keydown', function(e){ if(e.key==='Enter'){ if(iBedrag.value.trim()||!iNaam.value.trim()) opslaan(); else iBedrag.focus(); } });
+      iBedrag.addEventListener('keydown', function(e){ if(e.key==='Enter') opslaan(); });
+      iBedrag.addEventListener('blur', function(){ setTimeout(function(){ if(!opgeslagen && document.activeElement!==iNaam) opslaan(); if(!opgeslagen && !iNaam.value.trim()) render(); },150); });
     });
   });
   m.querySelectorAll('[data-editcel]').forEach(function(el){
