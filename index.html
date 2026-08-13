@@ -55,6 +55,7 @@ main{padding:12px 0 18px;min-height:60vh}
 .botnav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--lijn);display:grid;grid-template-columns:repeat(5,1fr);z-index:25;padding-bottom:env(safe-area-inset-bottom)}
 .botnav button{background:none;border:0;padding:9px 2px 8px;font:inherit;font-size:10.5px;color:var(--ink2);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .botnav button.on{color:var(--olijf);font-weight:650}
+.botnav button.sidesub{display:none}
 .taak{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-top:1px solid #EFE7D8}
 .taak:first-child{border-top:0}
 .taak input{width:18px;height:18px;margin-top:2px;accent-color:var(--olijf);flex:0 0 auto}
@@ -107,16 +108,26 @@ label.upl input{display:none}
 .editcel.voorlopig{color:var(--ink2);font-weight:500;font-style:italic}
 .editcel.voorlopig:hover{border-bottom-color:var(--klei)}
 .trij.nieuw{padding:6px 0}
+.trij-sd,.sdkop{display:none}
 @media(min-width:900px){
   body{padding-bottom:0}
-  .botnav{left:0;right:auto;top:0;bottom:0;width:72px;grid-template-columns:1fr;grid-auto-rows:min-content;background:#454a3c;border-top:0;border-right:1px solid #363a2f;padding:14px 5px;gap:2px;align-content:start}
-  .botnav button{color:#B8B2A0;padding:9px 2px}
+  .botnav{left:0;right:auto;top:0;bottom:0;width:150px;grid-template-columns:1fr;grid-auto-rows:min-content;background:#454a3c;border-top:0;border-right:1px solid #363a2f;padding:14px 6px;gap:1px;align-content:start}
+  .botnav button{color:#B8B2A0;padding:8px 10px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:13px}
   .botnav button.on{background:#6B7052;color:#FDFBF6;border-radius:8px}
-  .wrap{margin-left:72px;max-width:1100px}
+  .botnav button.sidesub{display:flex;font-size:11.5px;padding:5px 10px 5px 22px;color:#9B9683}
+  .botnav button.sidesub.on{background:#565c49;color:#FDFBF6;border-radius:6px;font-weight:500}
+  .wrap{margin-left:150px;max-width:1100px}
   .addbtn{left:auto;right:24px;bottom:24px}
   .dekking{max-width:560px}
   .rij{grid-template-columns:1fr auto auto;align-items:center}
   .twee{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  .subnav{display:none}
+  .trij-compact{display:none}
+  .trij-sd{display:grid;grid-template-columns:14px 2fr 1fr 1fr 1fr 1fr;gap:10px;align-items:center}
+  .sdkop{display:grid;grid-template-columns:14px 2fr 1fr 1fr 1fr 1fr;gap:10px;padding:0 12px 4px;font-size:10px;letter-spacing:.5px;color:#8A8574}
+  .sdkop span:not(:first-child):not(:nth-child(2)){text-align:right}
+  .sdcel{text-align:right;font-variant-numeric:tabular-nums;font-size:13px}
+  .sdcel.editcel input{width:76px}
 }
 </style>
 </head>
@@ -131,7 +142,7 @@ label.upl input{display:none}
 var API = 'https://joqjslpebnpgghoybdar.supabase.co/functions/v1/verbouw/api';
 var SUPA_URL = 'https://joqjslpebnpgghoybdar.supabase.co';
 var TOPTABS = [['start','Start'],['plannen','Plannen'],['doen','Doen'],['geld','Geld'],['dossier','Dossier']];
-var S = { data:null, tab:'start', subtabs:{doen:'taken',geld:'budget',dossier:'besluiten'}, klusdagFocus:null, klaarOpen:false, pin: localStorage.getItem('vb_pin') || '' };
+var S = { data:null, tab:'start', subtabs:{doen:'taken',geld:'overzicht',dossier:'besluiten'}, klusdagFocus:null, klaarOpen:false, pin: localStorage.getItem('vb_pin') || '' };
 var EUR0 = new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR',maximumFractionDigits:0});
 var EUR2 = new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'});
 var DNL = new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'short',year:'numeric'});
@@ -175,7 +186,12 @@ window.addEventListener('popstate', function(e){ if(e.state){ S.tab=e.state.tab;
 
 function render(){
   var nav=document.getElementById('botnav'); nav.innerHTML='';
-  TOPTABS.forEach(function(t){ var b=document.createElement('button'); if(S.tab===t[0]) b.className='on'; b.textContent=t[1]; b.onclick=function(){ gaNaarTab(t[0]); }; nav.appendChild(b); });
+  TOPTABS.forEach(function(t){
+    var b=document.createElement('button'); if(S.tab===t[0]) b.className='on'; b.textContent=t[1]; b.onclick=function(){ gaNaarTab(t[0]); }; nav.appendChild(b);
+    if(t[0]==='geld' && S.tab==='geld'){
+      GELDSUBS.forEach(function(gs){ var sb=document.createElement('button'); sb.className='sidesub'+(S.subtabs.geld===gs[0]?' on':''); sb.textContent=gs[1]; sb.onclick=function(){ gaNaarSubtab('geld',gs[0]); }; nav.appendChild(sb); });
+    }
+  });
   var m=document.getElementById('main');
   if(!S.data){ m.innerHTML='<div class="leeg">Laden…</div>'; return; }
   var r={start:rStart,plannen:rPlannen,doen:rDoen,geld:rGeld,dossier:rDossier};
@@ -188,15 +204,21 @@ function subnav(groep, items){
   items.forEach(function(it){ h+='<span class="chip'+(actief===it[0]?' actief':'')+'" data-subtab="'+groep+':'+it[0]+'">'+it[1]+'</span>'; });
   return h+'</div>';
 }
-function sommen(){
-  var netto=0,sub=0,betaald=0;
+function hypotheekSom(){ var t=0; (S.data.hypotheekdelen||[]).forEach(function(h){ t+=+h.bedrag; }); return t; }
+function berekenFinancien(){
+  var dk=dekkingRij(); var aankoop=0, verbouw=0, subsidie=0, betaald=0;
   S.data.posten.forEach(function(p){
     var bb=best(p);
-    if(p.type==='subsidie'){ if(bb!=null) sub+=bb; }
-    else{ if(bb!=null) netto+=bb; betaald+=betaaldVoorPost(p.id); }
+    if(p.type==='subsidie'){ if(bb!=null) subsidie+=bb; }
+    else{ if(bb!=null){ if(p.categorie==='Aankoop & advies') aankoop+=bb; else verbouw+=bb; } betaald+=betaaldVoorPost(p.id); }
   });
-  var netTotaal=netto-sub;
-  return {subsidie:sub, netto:netTotaal, betaald:betaald, openstaand:netTotaal-betaald};
+  var verbouwNetto=verbouw-subsidie;
+  var financiering=hypotheekSom()+(+dk.eigen_geld||0)+(+dk.verduurzaming||0);
+  var koopsom=+dk.koopsom||0;
+  var huisKosten=koopsom+aankoop;
+  var verbouwbudget=financiering-huisKosten;
+  var netto=aankoop+verbouwNetto;
+  return { financiering:financiering, koopsom:koopsom, aankoop:aankoop, huisKosten:huisKosten, verbouwbudget:verbouwbudget, verbouw:verbouw, subsidie:subsidie, verbouwNetto:verbouwNetto, ruimte:verbouwbudget-verbouwNetto, netto:netto, betaald:betaald, openstaand:netto-betaald };
 }
 function openTaken(){ return S.data.taken.filter(function(t){return t.status!=='klaar';}).slice().sort(function(a,b){ return (a.volgorde||100)-(b.volgorde||100); }); }
 
@@ -231,11 +253,11 @@ function rStart(){
   if(!open.length) h+='<div class="leeg">Alles klaar ✔</div>';
   open.forEach(function(t){ h+='<div class="trij" data-edit="taken:'+t.id+'"><span class="dot open"></span><span class="tn">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+'</span></div>'; });
   h+='</div>';
-  var s=sommen(); var dk=dekkingRij(); var beschikbaar=(dk.eigen_geld||0)+(dk.hypotheek_bouwdepot||0);
+  var s=berekenFinancien();
   h+='<div class="kop"><h2>Geld</h2><span class="som" data-goto="geld" style="cursor:pointer">detail →</span></div>';
   h+='<div class="card" data-goto="geld" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="groot" style="font-size:24px">'+eur(s.netto)+'</span><span class="mut">betaald '+eur(s.betaald)+' · open <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></span></div>';
   h+='<div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div>';
-  if(beschikbaar>0) h+='<div class="mut" style="margin-top:4px">dekking '+eur(beschikbaar)+' — ruimte <b style="color:'+(beschikbaar-s.netto<0?'var(--klei)':'var(--olijf)')+'">'+(beschikbaar-s.netto<0?'−':'+')+eur(Math.abs(beschikbaar-s.netto))+'</b></div>';
+  if(s.financiering>0) h+='<div class="mut" style="margin-top:4px">verbouwbudget '+eur(s.verbouwbudget)+' — ruimte <b style="color:'+(s.ruimte<0?'var(--klei)':'var(--olijf)')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</b></div>';
   h+='</div>';
   var lb=S.data.besluiten[0];
   if(lb) h+='<div class="kop"><h2>Laatste besluit</h2></div><div class="card" data-edit="besluiten:'+lb.id+'" style="cursor:pointer"><b>'+esc(lb.titel)+'</b><div class="mut" style="margin-top:2px">'+dnl(lb.datum)+'</div></div>';
@@ -312,28 +334,54 @@ function rDagdetail(k, vandaag){
 }
 function rPlannen(){ return rPlanning(); }
 
-function rDekking(){
-  var s=sommen(); var dk=dekkingRij();
-  var beschikbaar=(dk.eigen_geld||0)+(dk.hypotheek_bouwdepot||0); var ruimte=beschikbaar-s.netto;
-  var depotOpgenomen=0;
-  (S.data.betalingen||[]).forEach(function(b){ if(b.status==='betaald' && b.bron==='depot') depotOpgenomen+=+b.bedrag; });
-  var depotSaldo=(dk.hypotheek_bouwdepot||0)-depotOpgenomen;
-  var h='<div class="dekking">';
-  h+='<div class="dkaart"><div class="dklabel">Beschikbaar</div><div class="dkgroot">'+eur(beschikbaar)+'</div><div class="dksub">eigen <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span> · depot <span class="editcel" data-editcel="dekking:1:hypotheek_bouwdepot">'+eur(dk.hypotheek_bouwdepot||0)+'</span></div></div>';
-  h+='<div class="dkaart"><div class="dklabel">Kosten</div><div class="dkgroot">'+eur(s.netto)+'</div><div class="dksub">betaald '+eur(s.betaald)+' · open '+eur(s.openstaand)+'</div></div>';
-  h+='<div class="dkaart '+(ruimte<0?'dkneg':'dkpos')+'"><div class="dklabel">Ruimte</div><div class="dkgroot">'+(ruimte<0?'−':'+')+eur(Math.abs(ruimte))+'</div><div class="dksub">'+(ruimte<0?'tekort':'over')+'</div></div>';
+var GELDSUBS=[['overzicht','Overzicht'],['budget','Budget'],['hypotheek','Hypotheek'],['offertes','Offertes']];
+function rGeldRegel(label, bedrag, teken, groot){
+  return '<div style="display:flex;justify-content:space-between;padding:'+(groot?'6px':'3px')+' 0'+(groot?';border-top:1px solid #E2D8C6;margin-top:3px':'')+';font-size:'+(groot?'14px':'12.5px')+'"><span style="color:'+(groot?'var(--ink)':'var(--ink2)')+';font-weight:'+(groot?'650':'400')+'">'+esc(label)+'</span><span style="font-weight:'+(groot?'650':'500')+'">'+(teken||'')+' '+eur(Math.abs(bedrag))+'</span></div>';
+}
+function rGeldOverzicht(){
+  var s=berekenFinancien(); var dk=dekkingRij();
+  var h='<div class="card">';
+  h+='<div style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Financiering</div>';
+  h+=rGeldRegel('Hypotheek + overbrugging', hypotheekSom(), '');
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Eigen geld <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span> + verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(dk.verduurzaming||0)+'</span></span><span style="font-weight:500">+ '+eur((+dk.eigen_geld||0)+(+dk.verduurzaming||0))+'</span></div>';
+  h+=rGeldRegel('Financiering totaal', s.financiering, '', true);
+  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Huis</div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Koopsom <span class="editcel" data-editcel="dekking:1:koopsom">'+eur(dk.koopsom||0)+'</span></span><span style="font-weight:500">− '+eur(dk.koopsom||0)+'</span></div>';
+  h+=rGeldRegel('Aankoopkosten (advies, notaris, taxaties…)', s.aankoop, '−');
+  h+=rGeldRegel('Verbouwbudget', s.verbouwbudget, '', true);
+  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Verbouwing</div>';
+  h+=rGeldRegel('Gepland (excl. subsidie)', s.verbouwNetto, '−');
+  h+='<div style="display:flex;justify-content:space-between;padding:5px 6px;margin-top:5px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">Ruimte</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
   h+='</div>';
-  if(dk.hypotheek_bouwdepot) h+='<div class="card" style="padding:8px 12px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span><b>Bouwdepot</b> opgenomen '+eur(depotOpgenomen)+'</span><span>saldo <b>'+eur(depotSaldo)+'</b></span></div><div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(depotOpgenomen/(dk.hypotheek_bouwdepot||1)*100)))+'%"></div></div></div>';
+  h+='<div class="card"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span><b>Betaald tot nu</b> '+eur(s.betaald)+'</span><span>nog te betalen <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></span></div><div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div></div>';
   return h;
 }
-function rGeld(){ return subnav('geld',[['budget','Budget'],['offertes','Offertes']])+(S.subtabs.geld==='offertes'?rOffertes():(rDekking()+rBudget())); }
+function rHypotheek(){
+  var dk=dekkingRij(); var som=hypotheekSom();
+  var depotOpgenomen=0; (S.data.betalingen||[]).forEach(function(b){ if(b.status==='betaald' && b.bron==='depot') depotOpgenomen+=+b.bedrag; });
+  var h='<div class="catkop"><span>Hypotheek &amp; overbrugging</span><span class="cs">'+eur(som)+'</span></div><div class="tabel">';
+  (S.data.hypotheekdelen||[]).forEach(function(hd){
+    h+='<div class="trij" data-edit="hypotheekdelen:'+hd.id+'"><span class="tn">'+esc(hd.naam)+(hd.rente!=null?' <span class="tm">'+(+hd.rente).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2})+'% tot '+esc(hd.eind_datum||'')+'</span>':'')+'</span><span class="tb">'+eur(+hd.bedrag)+'</span></div>';
+  });
+  h+='<div class="trij" data-nieuw-hypdeel="1"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuw deel</span></div></div>';
+  h+='<div class="card" style="margin-top:10px;padding:8px 12px"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span><b>Bouwdepot</b> opgenomen '+eur(depotOpgenomen)+'</span><span>saldo <b>'+eur(som-depotOpgenomen)+'</b></span></div><div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(depotOpgenomen/(som||1)*100)))+'%"></div></div></div>';
+  return h;
+}
+function rGeld(){
+  var sub=S.subtabs.geld;
+  var h=subnav('geld',GELDSUBS);
+  if(sub==='offertes') return h+rOffertes();
+  if(sub==='hypotheek') return h+rHypotheek();
+  if(sub==='budget') return h+rBudget();
+  return h+rGeldOverzicht();
+}
 function rBudget(){ return rBudgetCat(todayISO()); }
 function rBudgetCat(vandaag){
   var CATS=['Aankoop & advies','Sloop & voorbereiding','Isolatie & kozijnen','Verwarming & installaties','Wanden & afwerking','Keuken & badkamer','Vloeren & inrichting','Overig','Subsidies'];
   var groepen={};
   S.data.posten.forEach(function(p){ var c=p.categorie||'Overig'; (groepen[c]=groepen[c]||[]).push(p); });
   var volgorde=CATS.filter(function(c){return groepen[c];}).concat(Object.keys(groepen).filter(function(c){return CATS.indexOf(c)<0;}));
-  var h='';
+  var h='<div class="sdkop"><span></span><span>POST</span><span>BEGROOT</span><span>OFFERTE</span><span>WERKELIJK</span><span>BETAALD</span></div>';
   volgorde.forEach(function(c){
     var lijst=groepen[c], som=0, isSubs=(c==='Subsidies');
     lijst.forEach(function(p){ var bb=best(p); if(bb!=null) som+=bb; });
@@ -342,12 +390,17 @@ function rBudgetCat(vandaag){
       var deadline=openDeadline(p.id); var meta='';
       if(p.leverancier) meta+=' <span class="tm">'+esc(p.leverancier)+'</span>';
       if(deadline){ var over=deadline.datum<vandaag; meta+=' <span class="tm" style="color:var(--klei)'+(over?';font-weight:650':'')+'">'+(over?'⚠ ':'')+eur(+deadline.bedrag)+' vóór '+dnlk(deadline.datum)+'</span>'; }
-      var veld=bestVeld(p); var voorlopig=(veld!=='werkelijk');
-      h+='<div class="trij'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+meta+'</span><span class="tb editcel'+(voorlopig?' voorlopig':'')+'" data-editcel="posten:'+p.id+':'+veld+'" title="'+(voorlopig?(veld==='offerte'?'offerte, nog niet definitief':'begroot, nog niet definitief'):'werkelijk bedrag')+'">'+(isSubs?'−':'')+(best(p)!=null?eur(best(p)):'—')+'</span></div>';
+      var veld=bestVeld(p); var voorlopig=(veld!=='werkelijk'); var betaaldP=betaaldVoorPost(p.id);
+      h+='<div class="trij trij-compact'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+meta+'</span><span class="tb editcel'+(voorlopig?' voorlopig':'')+'" data-editcel="posten:'+p.id+':'+veld+'" title="'+(voorlopig?(veld==='offerte'?'offerte, nog niet definitief':'begroot, nog niet definitief'):'werkelijk bedrag')+'">'+(isSubs?'−':'')+(best(p)!=null?eur(best(p)):'—')+'</span></div>';
+      h+='<div class="trij trij-sd'+(isSubs?' subs':'')+'" data-edit="posten:'+p.id+'"><span class="dot '+esc(p.status||'open')+'"></span><span class="tn">'+esc(p.naam)+meta+'</span>'
+        +'<span class="sdcel editcel" data-editcel="posten:'+p.id+':begroot">'+(p.begroot!=null?eur(p.begroot):'—')+'</span>'
+        +'<span class="sdcel editcel" data-editcel="posten:'+p.id+':offerte">'+(p.offerte!=null?eur(p.offerte):'—')+'</span>'
+        +'<span class="sdcel editcel" data-editcel="posten:'+p.id+':werkelijk">'+(p.werkelijk!=null?eur(p.werkelijk):'—')+'</span>'
+        +'<span class="sdcel" style="color:var(--ink2)">'+(betaaldP>0?eur(betaaldP):'—')+'</span></div>';
     });
     h+='<div class="trij nieuw" data-nieuwe-post="'+esc(c)+'"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuwe post</span></div></div>';
   });
-  h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik het bedrag om te typen, tik de rest voor het volledige formulier</div>';
+  h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik een bedrag om te typen (desktop: alle kolommen los), tik de naam voor het volledige formulier</div>';
   return h;
 }
 function rTaken(){
@@ -407,6 +460,7 @@ function rDossier(){
 
 function koppel(m){
   m.querySelectorAll('[data-edit]').forEach(function(el){ el.addEventListener('click',function(ev){ if(ev.target.closest('[data-check],[data-cycle],[data-mcycle],[data-verplaats],[data-trekker-sel],[data-ploeg-remove],[data-ploeg-open],[data-bevinding-open],[data-kopieer],[data-download],[data-verwijder-bestand],[data-upload-offerte],[data-cel-plan],[data-goto-day],[data-editcel]')) return; var p=el.getAttribute('data-edit').split(':'); openForm(p[0], p[1]); }); });
+  m.querySelectorAll('[data-nieuw-hypdeel]').forEach(function(el){ el.addEventListener('click',function(){ openForm('hypotheekdelen', null); }); });
   m.querySelectorAll('[data-nieuwe-post]').forEach(function(el){
     el.addEventListener('click',function(){
       if(el.querySelector('input')) return;
@@ -594,10 +648,11 @@ var FORMS = {
   offertes:[['leverancier','text','Leverancier*'],['nummer','text','Offertenummer'],['omschrijving','text','Omschrijving'],['bedrag','geld','Bedrag € incl. btw'],['status','select:ontvangen,vergelijken,akkoord,afgewezen,onvolledig','Status'],['contact','text','Contact'],['notitie','area','Notitie']],
   besluiten:[['titel','text','Besluit*'],['datum','datum','Datum'],['waarom','area','Waarom / onderbouwing']],
   documenten:[['naam','text','Document*'],['soort','text','Soort (offerte, rapport…)'],['locatie','text','Waar ligt het'],['eind_datum','datum','Garantie tot (optioneel)'],['notitie','area','Notitie']],
-  notities:[['titel','text','Titel*'],['tekst','area','Tekst']]
+  notities:[['titel','text','Titel*'],['tekst','area','Tekst']],
+  hypotheekdelen:[['naam','text','Naam*'],['bedrag','geld','Bedrag €'],['rente','geld','Rente %'],['eind_datum','text','Vast tot (bv. 09-2036)'],['volgorde','number','Volgorde'],['notitie','area','Notitie']]
 };
-var TITELS = {fases:'Fase',mijlpalen:'Mijlpaal',klusdagen:'Klusdag',posten:'Budgetpost',taken:'Taak',items:'Benodigdheid',offertes:'Offerte',besluiten:'Besluit',documenten:'Document',notities:'Notitie'};
-var VERPLICHT = {fases:'naam',mijlpalen:'titel',klusdagen:'datum',posten:'naam',taken:'titel',items:'naam',offertes:'leverancier',besluiten:'titel',documenten:'naam',notities:'titel'};
+var TITELS = {fases:'Fase',mijlpalen:'Mijlpaal',klusdagen:'Klusdag',posten:'Budgetpost',taken:'Taak',items:'Benodigdheid',offertes:'Offerte',besluiten:'Besluit',documenten:'Document',notities:'Notitie',hypotheekdelen:'Hypotheekdeel'};
+var VERPLICHT = {fases:'naam',mijlpalen:'titel',klusdagen:'datum',posten:'naam',taken:'titel',items:'naam',offertes:'leverancier',besluiten:'titel',documenten:'naam',notities:'titel',hypotheekdelen:'naam'};
 function openForm(table, id){
   var rec = id ? S.data[table].find(function(x){return x.id===id;}) : {};
   var pan=document.getElementById('mpaneel'); pan.innerHTML='';
@@ -637,7 +692,8 @@ function openForm(table, id){
 function sluit(){ document.getElementById('modal').className=''; }
 document.getElementById('modal').addEventListener('click',function(e){ if(e.target.id==='modal') sluit(); });
 document.getElementById('addbtn').onclick=function(){
-  var map={ start:'taken', plannen:'klusdagen', doen: S.subtabs.doen==='spullen'?'items':'taken', geld: S.subtabs.geld==='offertes'?'offertes':'posten', dossier: S.subtabs.dossier==='documenten'?'documenten':(S.subtabs.dossier==='notities'?'notities':'besluiten') };
+  var geldMap={offertes:'offertes',hypotheek:'hypotheekdelen',overzicht:'posten',budget:'posten'};
+  var map={ start:'taken', plannen:'klusdagen', doen: S.subtabs.doen==='spullen'?'items':'taken', geld: geldMap[S.subtabs.geld]||'posten', dossier: S.subtabs.dossier==='documenten'?'documenten':(S.subtabs.dossier==='notities'?'notities':'besluiten') };
   openForm(map[S.tab], null);
 };
 
