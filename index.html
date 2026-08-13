@@ -343,7 +343,7 @@ function rGeldOverzicht(){
   var h='<div class="card">';
   h+='<div style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Financiering</div>';
   h+=rGeldRegel('Hypotheek + overbrugging', hypotheekSom(), '');
-  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Eigen geld <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span> + verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(dk.verduurzaming||0)+'</span></span><span style="font-weight:500">+ '+eur((+dk.eigen_geld||0)+(+dk.verduurzaming||0))+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verkoop Bachstraat (bruto) <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span> + verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(dk.verduurzaming||0)+'</span></span><span style="font-weight:500">+ '+eur((+dk.eigen_geld||0)+(+dk.verduurzaming||0))+'</span></div>';
   h+=rGeldRegel('Financiering totaal', s.financiering, '', true);
   h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Huis</div>';
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Koopsom <span class="editcel" data-editcel="dekking:1:koopsom">'+eur(dk.koopsom||0)+'</span></span><span style="font-weight:500">− '+eur(dk.koopsom||0)+'</span></div>';
