@@ -204,7 +204,8 @@ function subnav(groep, items){
   items.forEach(function(it){ h+='<span class="chip'+(actief===it[0]?' actief':'')+'" data-subtab="'+groep+':'+it[0]+'">'+it[1]+'</span>'; });
   return h+'</div>';
 }
-function hypotheekSom(){ var t=0; (S.data.hypotheekdelen||[]).forEach(function(h){ t+=+h.bedrag; }); return t; }
+function hypotheekSom(){ var t=0; (S.data.hypotheekdelen||[]).forEach(function(h){ if(!h.is_overbrugging) t+=+h.bedrag; }); return t; }
+function overbruggingSom(){ var t=0; (S.data.hypotheekdelen||[]).forEach(function(h){ if(h.is_overbrugging) t+=+h.bedrag; }); return t; }
 function berekenFinancien(){
   var dk=dekkingRij(); var aankoop=0, verbouw=0, subsidie=0, betaald=0;
   S.data.posten.forEach(function(p){
@@ -213,12 +214,15 @@ function berekenFinancien(){
     else{ if(bb!=null){ if(p.categorie==='Aankoop & advies') aankoop+=bb; else verbouw+=bb; } betaald+=betaaldVoorPost(p.id); }
   });
   var verbouwNetto=verbouw-subsidie;
-  var financiering=hypotheekSom()+(+dk.eigen_geld||0)+(+dk.verduurzaming||0);
-  var koopsom=+dk.koopsom||0;
-  var huisKosten=koopsom+aankoop;
-  var verbouwbudget=financiering-huisKosten;
+  var hyp=hypotheekSom(), overbrugging=overbruggingSom();
+  var verkoop=+dk.eigen_geld||0, verduurzaming=+dk.verduurzaming||0;
+  var financiering=hyp+overbrugging+verkoop+verduurzaming;
+  var koopsom=+dk.koopsom||0, restschuld=+dk.restschuld_oud||0;
+  var aflossingen=restschuld+overbrugging;
+  var startbudget=financiering-koopsom-aflossingen;
+  var verbouwbudget=startbudget-aankoop;
   var netto=aankoop+verbouwNetto;
-  return { financiering:financiering, koopsom:koopsom, aankoop:aankoop, huisKosten:huisKosten, verbouwbudget:verbouwbudget, verbouw:verbouw, subsidie:subsidie, verbouwNetto:verbouwNetto, ruimte:verbouwbudget-verbouwNetto, netto:netto, betaald:betaald, openstaand:netto-betaald };
+  return { hyp:hyp, overbrugging:overbrugging, verkoop:verkoop, verduurzaming:verduurzaming, financiering:financiering, koopsom:koopsom, restschuld:restschuld, aflossingen:aflossingen, startbudget:startbudget, aankoop:aankoop, verbouwbudget:verbouwbudget, verbouw:verbouw, subsidie:subsidie, verbouwNetto:verbouwNetto, ruimte:verbouwbudget-verbouwNetto, netto:netto, betaald:betaald, openstaand:netto-betaald };
 }
 function openTaken(){ return S.data.taken.filter(function(t){return t.status!=='klaar';}).slice().sort(function(a,b){ return (a.volgorde||100)-(b.volgorde||100); }); }
 
@@ -341,30 +345,31 @@ function rGeldRegel(label, bedrag, teken, groot){
 function rGeldOverzicht(){
   var s=berekenFinancien(); var dk=dekkingRij();
   var h='<div class="card">';
-  h+='<div style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Financiering</div>';
-  h+=rGeldRegel('Hypotheek + overbrugging', hypotheekSom(), '');
-  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verkoop Bachstraat (bruto) <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span> + verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(dk.verduurzaming||0)+'</span></span><span style="font-weight:500">+ '+eur((+dk.eigen_geld||0)+(+dk.verduurzaming||0))+'</span></div>';
-  h+=rGeldRegel('Financiering totaal', s.financiering, '', true);
-  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Huis</div>';
-  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Koopsom <span class="editcel" data-editcel="dekking:1:koopsom">'+eur(dk.koopsom||0)+'</span></span><span style="font-weight:500">− '+eur(dk.koopsom||0)+'</span></div>';
-  h+=rGeldRegel('Aankoopkosten (advies, notaris, taxaties…)', s.aankoop, '−');
-  h+=rGeldRegel('Verbouwbudget', s.verbouwbudget, '', true);
-  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Verbouwing</div>';
-  h+=rGeldRegel('Gepland (excl. subsidie)', s.verbouwNetto, '−');
+  h+='<div style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Er komt binnen</div>';
+  h+=rGeldRegel('Hypotheek nieuwe woning', s.hyp, '+');
+  h+=rGeldRegel('Overbruggingskrediet', s.overbrugging, '+');
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verkoop Bachstraat <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span></span><span style="font-weight:500">+ '+eur(dk.eigen_geld||0)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verduurzamingsbudget <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(dk.verduurzaming||0)+'</span></span><span style="font-weight:500">+ '+eur(dk.verduurzaming||0)+'</span></div>';
+  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Er gaat af</div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Koopsom nieuwe woning <span class="editcel" data-editcel="dekking:1:koopsom">'+eur(dk.koopsom||0)+'</span></span><span style="font-weight:500">− '+eur(dk.koopsom||0)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Aflossing hypotheek Bachstraat <span class="editcel" data-editcel="dekking:1:restschuld_oud">'+eur(dk.restschuld_oud||0)+'</span></span><span style="font-weight:500">− '+eur(dk.restschuld_oud||0)+'</span></div>';
+  h+=rGeldRegel('Aflossing overbruggingskrediet', s.overbrugging, '−');
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 8px;margin-top:6px;border-radius:6px;background:#2E2921"><span style="font-weight:650;color:#F1EAE0">Startbudget om te klussen</span><span style="font-weight:650;color:#F1EAE0">'+eur(s.startbudget)+'</span></div>';
+  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Daarvan gebruikt</div>';
+  h+=rGeldRegel('Aankoopkosten (advies, notaris, taxaties, makelaar)', s.aankoop, '−');
+  h+=rGeldRegel('Verbouwing gepland (excl. subsidie)', s.verbouwNetto, '−');
   h+='<div style="display:flex;justify-content:space-between;padding:5px 6px;margin-top:5px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">Ruimte</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
   h+='</div>';
   h+='<div class="card"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span><b>Betaald tot nu</b> '+eur(s.betaald)+'</span><span>nog te betalen <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></span></div><div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div></div>';
   return h;
 }
 function rHypotheek(){
-  var dk=dekkingRij(); var som=hypotheekSom();
-  var depotOpgenomen=0; (S.data.betalingen||[]).forEach(function(b){ if(b.status==='betaald' && b.bron==='depot') depotOpgenomen+=+b.bedrag; });
+  var som=hypotheekSom()+overbruggingSom();
   var h='<div class="catkop"><span>Hypotheek &amp; overbrugging</span><span class="cs">'+eur(som)+'</span></div><div class="tabel">';
   (S.data.hypotheekdelen||[]).forEach(function(hd){
-    h+='<div class="trij" data-edit="hypotheekdelen:'+hd.id+'"><span class="tn">'+esc(hd.naam)+(hd.rente!=null?' <span class="tm">'+(+hd.rente).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2})+'% tot '+esc(hd.eind_datum||'')+'</span>':'')+'</span><span class="tb">'+eur(+hd.bedrag)+'</span></div>';
+    h+='<div class="trij" data-edit="hypotheekdelen:'+hd.id+'"><span class="tn">'+esc(hd.naam)+(hd.is_overbrugging?' <span class="chip klei">wordt afgelost bij verkoop</span>':'')+(hd.rente!=null?' <span class="tm">'+(+hd.rente).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2})+'% tot '+esc(hd.eind_datum||'')+'</span>':'')+'</span><span class="tb">'+eur(+hd.bedrag)+'</span></div>';
   });
   h+='<div class="trij" data-nieuw-hypdeel="1"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuw deel</span></div></div>';
-  h+='<div class="card" style="margin-top:10px;padding:8px 12px"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span><b>Bouwdepot</b> opgenomen '+eur(depotOpgenomen)+'</span><span>saldo <b>'+eur(som-depotOpgenomen)+'</b></span></div><div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(depotOpgenomen/(som||1)*100)))+'%"></div></div></div>';
   return h;
 }
 function rGeld(){
@@ -649,7 +654,7 @@ var FORMS = {
   besluiten:[['titel','text','Besluit*'],['datum','datum','Datum'],['waarom','area','Waarom / onderbouwing']],
   documenten:[['naam','text','Document*'],['soort','text','Soort (offerte, rapport…)'],['locatie','text','Waar ligt het'],['eind_datum','datum','Garantie tot (optioneel)'],['notitie','area','Notitie']],
   notities:[['titel','text','Titel*'],['tekst','area','Tekst']],
-  hypotheekdelen:[['naam','text','Naam*'],['bedrag','geld','Bedrag €'],['rente','geld','Rente %'],['eind_datum','text','Vast tot (bv. 09-2036)'],['volgorde','number','Volgorde'],['notitie','area','Notitie']]
+  hypotheekdelen:[['naam','text','Naam*'],['bedrag','geld','Bedrag €'],['rente','geld','Rente %'],['eind_datum','text','Vast tot (bv. 09-2036)'],['is_overbrugging','boolsel','Overbrugging (wordt afgelost bij verkoop)'],['volgorde','number','Volgorde'],['notitie','area','Notitie']]
 };
 var TITELS = {fases:'Fase',mijlpalen:'Mijlpaal',klusdagen:'Klusdag',posten:'Budgetpost',taken:'Taak',items:'Benodigdheid',offertes:'Offerte',besluiten:'Besluit',documenten:'Document',notities:'Notitie',hypotheekdelen:'Hypotheekdeel'};
 var VERPLICHT = {fases:'naam',mijlpalen:'titel',klusdagen:'datum',posten:'naam',taken:'titel',items:'naam',offertes:'leverancier',besluiten:'titel',documenten:'naam',notities:'titel',hypotheekdelen:'naam'};
