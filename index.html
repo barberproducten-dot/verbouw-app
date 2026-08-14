@@ -224,9 +224,9 @@ function berekenFinancien(){
   var financiering=hyp+overbrugging+verkoop;
   var koopsom=+dk.koopsom||0, restschuld=+dk.restschuld_oud||0;
   var aflossingen=restschuld+overbrugging;
-  var klusbudget=financiering-koopsom-aflossingen-aankoop;
+  var klusbudget=financiering-koopsom-aflossingen-aankoop-verduurzaming;
   var vrijUitVerkoop=verkoop-restschuld-overbrugging;
-  var marge=klusbudget-vrijUitVerkoop-depot-verduurzaming;
+  var marge=klusbudget-vrijUitVerkoop-depot;
   var netto=aankoop+verbouwNetto;
   return { hyp:hyp, overbrugging:overbrugging, verkoop:verkoop, verduurzaming:verduurzaming, depot:depot, financiering:financiering, koopsom:koopsom, restschuld:restschuld, aflossingen:aflossingen, aankoop:aankoop, verbouwbudget:klusbudget, vrijUitVerkoop:vrijUitVerkoop, marge:marge, verbouw:verbouw, subsidie:subsidie, verbouwNetto:verbouwNetto, ruimte:klusbudget-verbouwNetto, netto:netto, betaald:betaald, openstaand:netto-betaald };
 }
@@ -352,7 +352,7 @@ function rGeldOverzicht(){
   var s=berekenFinancien(); var dk=dekkingRij();
   var h='<div class="card">';
   h+='<div style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Er komt binnen</div>';
-  h+=rGeldRegel('Hypotheek nieuwe woning (incl. bouwdepot + verduurzaming)', s.hyp, '+');
+  h+=rGeldRegel('Hypotheek nieuwe woning (incl. bouwdepot)', s.hyp, '+');
   h+=rGeldRegel('Overbruggingskrediet', s.overbrugging, '+');
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verkoop Bachstraat <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span></span><span style="font-weight:500">+ '+eur(dk.eigen_geld||0)+'</span></div>';
   h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:#F5EFE4;font-size:13px"><span style="font-weight:650">Totaal binnen</span><span style="font-weight:650">'+eur(s.financiering)+'</span></div>';
@@ -361,14 +361,15 @@ function rGeldOverzicht(){
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Aflossing hypotheek Bachstraat <span class="editcel" data-editcel="dekking:1:restschuld_oud">'+eur(dk.restschuld_oud||0)+'</span></span><span style="font-weight:500">− '+eur(dk.restschuld_oud||0)+'</span></div>';
   h+=rGeldRegel('Aflossing overbruggingskrediet', s.overbrugging, '−');
   h+=rGeldRegel('Aankoopkosten (advies, notaris, taxaties, makelaar)', s.aankoop, '−');
-  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:#F5EFE4;font-size:13px"><span style="font-weight:650">Totaal eraf</span><span style="font-weight:650">− '+eur(s.koopsom+s.aflossingen+s.aankoop)+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 12px;margin-top:10px;border-radius:8px;background:#2E2921"><span style="font-weight:650;color:#F1EAE0;font-size:15px">Klusbudget</span><span style="font-weight:650;color:#F1EAE0;font-size:20px">'+eur(s.verbouwbudget)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verduurzaming — apart potje, niet vrij besteedbaar <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(dk.verduurzaming||0)+'</span></span><span style="font-weight:500">− '+eur(dk.verduurzaming||0)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:#F5EFE4;font-size:13px"><span style="font-weight:650">Totaal eraf</span><span style="font-weight:650">− '+eur(s.koopsom+s.aflossingen+s.aankoop+s.verduurzaming)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 12px;margin-top:10px;border-radius:8px;background:#2E2921"><span style="font-weight:650;color:#F1EAE0;font-size:15px">Klusbudget — vrij besteedbaar</span><span style="font-weight:650;color:#F1EAE0;font-size:20px">'+eur(s.verbouwbudget)+'</span></div>';
   h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">';
   h+='<span class="chip honing">bouwdepot <span class="editcel" data-editcel="dekking:1:hypotheek_bouwdepot" style="border-bottom-color:currentColor">'+eur(s.depot)+'</span></span>';
-  h+='<span class="chip honing">verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming" style="border-bottom-color:currentColor">'+eur(s.verduurzaming)+'</span></span>';
   h+='<span class="chip honing">vrij uit verkoop '+eur(s.vrijUitVerkoop)+'</span>';
   h+='<span class="chip">marge '+eur(s.marge)+'</span>';
   h+='</div>';
+  h+='<div class="mut" style="margin-top:6px">apart gehouden: verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(s.verduurzaming)+'</span> — alleen voor ISDE-achtige energiemaatregelen, niet meegeteld in het klusbudget hierboven</div>';
   h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Daarvan gepland</div>';
   h+=rGeldRegel('Verbouwing gepland (excl. subsidie)', s.verbouwNetto, '−');
   h+='<div style="display:flex;justify-content:space-between;padding:8px 10px;margin-top:5px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">Ruimte over</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
@@ -398,14 +399,15 @@ function rGeld(){
   return h+rGeldOverzicht();
 }
 function rBudget(){ return rBudgetCat(todayISO()); }
+function catNamen(){ return (S.data.categorieen||[]).map(function(c){return c.naam;}); }
 function rBudgetCat(vandaag){
-  var CATS=['Aankoop & advies','Sloop & voorbereiding','Isolatie & kozijnen','Verwarming & installaties','Wanden & afwerking','Keuken & badkamer','Vloeren & inrichting','Overig','Subsidies'];
+  var CATS=catNamen();
   var groepen={};
   S.data.posten.forEach(function(p){ var c=p.categorie||'Overig'; (groepen[c]=groepen[c]||[]).push(p); });
-  var volgorde=CATS.filter(function(c){return groepen[c];}).concat(Object.keys(groepen).filter(function(c){return CATS.indexOf(c)<0;}));
+  var volgorde=CATS.concat(Object.keys(groepen).filter(function(c){return CATS.indexOf(c)<0;}));
   var h='<div class="sdkop"><span></span><span>POST</span><span>BEGROOT</span><span>OFFERTE</span><span>WERKELIJK</span><span>BETAALD</span></div>';
   volgorde.forEach(function(c){
-    var lijst=groepen[c], som=0, tBegroot=0, tOfferte=0, tWerkelijk=0, tBetaald=0, isSubs=(c==='Subsidies');
+    var lijst=groepen[c]||[], som=0, tBegroot=0, tOfferte=0, tWerkelijk=0, tBetaald=0, isSubs=(c==='Subsidies');
     lijst.forEach(function(p){
       var bb=best(p); if(bb!=null) som+=bb;
       if(p.begroot!=null) tBegroot+=+p.begroot;
@@ -414,7 +416,7 @@ function rBudgetCat(vandaag){
       tBetaald+=betaaldVoorPost(p.id);
     });
     h+='<div class="catkop"><span>'+esc(c)+'</span><span class="cs">'+(isSubs?'−':'')+eur(som)+'</span></div>';
-    h+='<div class="trij-sd sdtotaal"><span></span><span>Totaal</span><span class="sdcel">'+(tBegroot?eur(tBegroot):'—')+'</span><span class="sdcel">'+(tOfferte?eur(tOfferte):'—')+'</span><span class="sdcel">'+(tWerkelijk?eur(tWerkelijk):'—')+'</span><span class="sdcel">'+(tBetaald?eur(tBetaald):'—')+'</span></div>';
+    if(lijst.length) h+='<div class="trij-sd sdtotaal"><span></span><span>Totaal</span><span class="sdcel">'+(tBegroot?eur(tBegroot):'—')+'</span><span class="sdcel">'+(tOfferte?eur(tOfferte):'—')+'</span><span class="sdcel">'+(tWerkelijk?eur(tWerkelijk):'—')+'</span><span class="sdcel">'+(tBetaald?eur(tBetaald):'—')+'</span></div>';
     h+='<div class="tabel">';
     lijst.forEach(function(p){
       var deadline=openDeadline(p.id); var meta='';
@@ -430,6 +432,8 @@ function rBudgetCat(vandaag){
     });
     h+='<div class="trij nieuw" data-nieuwe-post="'+esc(c)+'"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuwe post</span></div></div>';
   });
+  h='<div style="overflow-x:auto">'+h+'</div>';
+  h+='<div class="trij nieuw" data-nieuwe-categorie="1" style="background:var(--card);border:1px solid var(--lijn);border-radius:10px;padding:8px 12px;margin-top:8px"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuwe categorie</span></div>';
   h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik een bedrag om te typen (desktop: alle kolommen los), tik de naam voor het volledige formulier</div>';
   return h;
 }
@@ -509,6 +513,22 @@ function koppel(m){
       iNaam.addEventListener('keydown', function(e){ if(e.key==='Enter'){ if(iBedrag.value.trim()||!iNaam.value.trim()) opslaan(); else iBedrag.focus(); } });
       iBedrag.addEventListener('keydown', function(e){ if(e.key==='Enter') opslaan(); });
       iBedrag.addEventListener('blur', function(){ setTimeout(function(){ if(!opgeslagen && document.activeElement!==iNaam) opslaan(); if(!opgeslagen && !iNaam.value.trim()) render(); },150); });
+    });
+  });
+  m.querySelectorAll('[data-nieuwe-categorie]').forEach(function(el){
+    el.addEventListener('click',function(){
+      if(el.querySelector('input')) return;
+      el.innerHTML='';
+      var inp=document.createElement('input'); inp.type='text'; inp.placeholder='Naam van de categorie, Enter om te bewaren'; inp.style.cssText='width:100%;border:1.5px solid var(--olijf);border-radius:6px;padding:5px 8px;font:inherit;font-size:13px';
+      el.appendChild(inp); inp.focus();
+      var opgeslagen=false;
+      function opslaan(){
+        if(opgeslagen || !inp.value.trim()) return; opgeslagen=true;
+        var volgorde=100; (S.data.categorieen||[]).forEach(function(c){ if(c.volgorde>=volgorde) volgorde=c.volgorde+10; });
+        api({action:'insert',table:'categorieen',data:{naam:inp.value.trim(),volgorde:volgorde}}).then(laad).catch(function(e2){toast(e2.message); opgeslagen=false;});
+      }
+      inp.addEventListener('keydown', function(e){ if(e.key==='Enter') opslaan(); });
+      inp.addEventListener('blur', function(){ if(!opgeslagen) render(); });
     });
   });
   m.querySelectorAll('[data-editcel]').forEach(function(el){
@@ -732,7 +752,7 @@ function openForm(table, id){
   var pan=document.getElementById('mpaneel'); pan.innerHTML='';
   var h3=document.createElement('h3'); h3.textContent=(id?'Bewerk ':'Nieuwe ')+TITELS[table].toLowerCase(); pan.appendChild(h3);
   var velden={};
-  var CATS2=['Aankoop & advies','Sloop & voorbereiding','Isolatie & kozijnen','Verwarming & installaties','Wanden & afwerking','Keuken & badkamer','Vloeren & inrichting','Overig','Subsidies'];
+  var CATS2=catNamen();
   FORMS[table].forEach(function(f){
     var lab=document.createElement('label'); lab.textContent=f[2]; pan.appendChild(lab);
     var el;
