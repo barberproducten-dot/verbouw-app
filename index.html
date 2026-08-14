@@ -108,6 +108,9 @@ label.upl input{display:none}
 .editcel.voorlopig{color:var(--ink2);font-weight:500;font-style:italic}
 .editcel.voorlopig:hover{border-bottom-color:var(--klei)}
 .trij.nieuw{padding:6px 0}
+.begrij{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-top:1px solid #EFE7D8;font-size:13.5px;cursor:pointer}
+.begrij:first-of-type{border-top:0}
+.begrij:hover span:first-child{color:var(--olijf)}
 .trij-sd,.sdkop{display:none}
 @media(min-width:900px){
   body{padding-bottom:0}
@@ -398,7 +401,24 @@ function rGeld(){
   if(sub==='budget') return h+rBudget();
   return h+rGeldOverzicht();
 }
-function rBudget(){ return rBudgetCat(todayISO()); }
+function rBegroting(){
+  var s=berekenFinancien();
+  var groepen={};
+  S.data.posten.forEach(function(p){ var c=p.categorie||'Overig'; if(c==='Aankoop & advies') return; var bb=best(p); if(bb!=null){ groepen[c]=(groepen[c]||0)+(p.type==='subsidie'?-bb:bb); } });
+  var CATS=catNamen().filter(function(c){return c!=='Aankoop & advies';});
+  var alle=CATS.filter(function(c){return groepen[c]!=null;}).concat(Object.keys(groepen).filter(function(c){return CATS.indexOf(c)<0;}));
+  var h='<div class="card" style="margin-bottom:12px">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:6px;border-bottom:1px solid var(--lijn)"><span style="font-weight:650">Klusbudget</span><span style="font-weight:650;font-size:17px">'+eur(s.verbouwbudget)+'</span></div>';
+  alle.forEach(function(c){
+    h+='<div class="begrij" data-scroll-cat="'+esc(c)+'"><span>'+esc(c)+'</span><span style="font-variant-numeric:tabular-nums;font-weight:500">'+(groepen[c]<0?'− ':'')+eur(Math.abs(groepen[c]))+'</span></div>';
+  });
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--lijn);font-size:13px"><span style="font-weight:650">Totaal gepland</span><span style="font-weight:650">'+eur(s.verbouwNetto)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 8px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'Tekort':'Nog te verdelen')+'</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
+  h+='<div class="mut" style="margin-top:6px">Aankoop &amp; advies '+eur(s.aankoop)+' staat hier niet tussen — die is al verrekend in het klusbudget. Tik een regel om naar die categorie te springen.</div>';
+  h+='</div>';
+  return h;
+}
+function rBudget(){ return rBegroting()+rBudgetCat(todayISO()); }
 function catNamen(){ return (S.data.categorieen||[]).map(function(c){return c.naam;}); }
 function rBudgetCat(vandaag){
   var CATS=catNamen();
@@ -415,7 +435,7 @@ function rBudgetCat(vandaag){
       if(p.werkelijk!=null) tWerkelijk+=+p.werkelijk;
       tBetaald+=betaaldVoorPost(p.id);
     });
-    h+='<div class="catkop"><span>'+esc(c)+'</span><span class="cs">'+(isSubs?'−':'')+eur(som)+'</span></div>';
+    h+='<div class="catkop" data-cat-anchor="'+esc(c)+'"><span>'+esc(c)+'</span><span class="cs">'+(isSubs?'−':'')+eur(som)+'</span></div>';
     if(lijst.length) h+='<div class="trij-sd sdtotaal"><span></span><span>Totaal</span><span class="sdcel">'+(tBegroot?eur(tBegroot):'—')+'</span><span class="sdcel">'+(tOfferte?eur(tOfferte):'—')+'</span><span class="sdcel">'+(tWerkelijk?eur(tWerkelijk):'—')+'</span><span class="sdcel">'+(tBetaald?eur(tBetaald):'—')+'</span></div>';
     h+='<div class="tabel">';
     lijst.forEach(function(p){
@@ -529,6 +549,13 @@ function koppel(m){
       }
       inp.addEventListener('keydown', function(e){ if(e.key==='Enter') opslaan(); });
       inp.addEventListener('blur', function(){ if(!opgeslagen) render(); });
+    });
+  });
+  m.querySelectorAll('[data-scroll-cat]').forEach(function(el){
+    el.addEventListener('click',function(){
+      var naam=el.getAttribute('data-scroll-cat'); var doel=null;
+      m.querySelectorAll('[data-cat-anchor]').forEach(function(a){ if(a.getAttribute('data-cat-anchor')===naam) doel=a; });
+      if(doel) doel.scrollIntoView({behavior:'smooth',block:'start'});
     });
   });
   m.querySelectorAll('[data-editcel]').forEach(function(el){
