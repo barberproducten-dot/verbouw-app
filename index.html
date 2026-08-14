@@ -127,7 +127,12 @@ label.upl input{display:none}
   .sdkop{display:grid;grid-template-columns:14px 2fr 1fr 1fr 1fr 1fr;gap:10px;padding:0 12px 4px;font-size:10px;letter-spacing:.5px;color:#8A8574}
   .sdkop span:not(:first-child):not(:nth-child(2)){text-align:right}
   .sdcel{text-align:right;font-variant-numeric:tabular-nums;font-size:13px}
+  .sdcel.editcel{color:var(--ink2)}
+  .sdcel.editcel:hover{color:var(--ink);border-bottom:1px dashed var(--olijf)}
   .sdcel.editcel input{width:76px}
+  .sdtotaal{padding:3px 12px;border-top:1px solid #E2D8C6;margin-top:2px}
+  .sdtotaal span{font-weight:650;font-size:12px}
+  .sdtotaal span:nth-child(2){color:var(--ink2);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:.4px}
 }
 </style>
 </head>
@@ -350,16 +355,27 @@ function rGeldOverzicht(){
   h+=rGeldRegel('Hypotheek nieuwe woning (incl. bouwdepot + verduurzaming)', s.hyp, '+');
   h+=rGeldRegel('Overbruggingskrediet', s.overbrugging, '+');
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verkoop Bachstraat <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span></span><span style="font-weight:500">+ '+eur(dk.eigen_geld||0)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:#F5EFE4;font-size:13px"><span style="font-weight:650">Totaal binnen</span><span style="font-weight:650">'+eur(s.financiering)+'</span></div>';
   h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Er gaat af</div>';
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Koopsom nieuwe woning <span class="editcel" data-editcel="dekking:1:koopsom">'+eur(dk.koopsom||0)+'</span></span><span style="font-weight:500">− '+eur(dk.koopsom||0)+'</span></div>';
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Aflossing hypotheek Bachstraat <span class="editcel" data-editcel="dekking:1:restschuld_oud">'+eur(dk.restschuld_oud||0)+'</span></span><span style="font-weight:500">− '+eur(dk.restschuld_oud||0)+'</span></div>';
   h+=rGeldRegel('Aflossing overbruggingskrediet', s.overbrugging, '−');
   h+=rGeldRegel('Aankoopkosten (advies, notaris, taxaties, makelaar)', s.aankoop, '−');
-  h+='<div style="display:flex;justify-content:space-between;padding:6px 8px;margin-top:6px;border-radius:6px;background:#2E2921"><span style="font-weight:650;color:#F1EAE0">Klusbudget</span><span style="font-weight:650;color:#F1EAE0">'+eur(s.verbouwbudget)+'</span></div>';
-  h+='<div class="mut" style="padding:4px 2px 0">= bouwdepot <span class="editcel" data-editcel="dekking:1:hypotheek_bouwdepot">'+eur(s.depot)+'</span> + verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(s.verduurzaming)+'</span> + vrij uit verkoop '+eur(s.vrijUitVerkoop)+' (alles boven '+eur(s.restschuld+s.overbrugging)+') + marge '+eur(s.marge)+'</div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:#F5EFE4;font-size:13px"><span style="font-weight:650">Totaal eraf</span><span style="font-weight:650">− '+eur(s.koopsom+s.aflossingen+s.aankoop)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 12px;margin-top:10px;border-radius:8px;background:#2E2921"><span style="font-weight:650;color:#F1EAE0;font-size:15px">Klusbudget</span><span style="font-weight:650;color:#F1EAE0;font-size:20px">'+eur(s.verbouwbudget)+'</span></div>';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">';
+  h+='<span class="chip honing">bouwdepot <span class="editcel" data-editcel="dekking:1:hypotheek_bouwdepot" style="border-bottom-color:currentColor">'+eur(s.depot)+'</span></span>';
+  h+='<span class="chip honing">verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming" style="border-bottom-color:currentColor">'+eur(s.verduurzaming)+'</span></span>';
+  h+='<span class="chip honing">vrij uit verkoop '+eur(s.vrijUitVerkoop)+'</span>';
+  h+='<span class="chip">marge '+eur(s.marge)+'</span>';
+  h+='</div>';
   h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Daarvan gepland</div>';
   h+=rGeldRegel('Verbouwing gepland (excl. subsidie)', s.verbouwNetto, '−');
-  h+='<div style="display:flex;justify-content:space-between;padding:5px 6px;margin-top:5px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">Ruimte</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:8px 10px;margin-top:5px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">Ruimte over</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
+  h+='<div style="border-top:1px solid #E2D8C6;margin-top:12px;padding-top:8px;font-size:11.5px;color:var(--ink2)">';
+  h+='<div style="display:flex;justify-content:space-between;gap:10px"><span>Check adviseur: aflossingen '+eur(s.restschuld)+' + '+eur(s.overbrugging)+'</span><span>= '+eur(s.restschuld+s.overbrugging)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;gap:10px"><span>Vrij uit verkoop: '+eur(s.verkoop)+' − '+eur(s.restschuld+s.overbrugging)+'</span><span>= '+eur(s.vrijUitVerkoop)+'</span></div>';
+  h+='</div>';
   h+='</div>';
   h+='<div class="card"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span><b>Betaald tot nu</b> '+eur(s.betaald)+'</span><span>nog te betalen <b style="color:var(--klei)">'+eur(s.openstaand)+'</b></span></div><div class="balkwrap"><div class="balk" style="width:'+Math.max(0,Math.min(100,Math.round(s.betaald/(s.netto||1)*100)))+'%"></div></div></div>';
   return h;
@@ -389,9 +405,17 @@ function rBudgetCat(vandaag){
   var volgorde=CATS.filter(function(c){return groepen[c];}).concat(Object.keys(groepen).filter(function(c){return CATS.indexOf(c)<0;}));
   var h='<div class="sdkop"><span></span><span>POST</span><span>BEGROOT</span><span>OFFERTE</span><span>WERKELIJK</span><span>BETAALD</span></div>';
   volgorde.forEach(function(c){
-    var lijst=groepen[c], som=0, isSubs=(c==='Subsidies');
-    lijst.forEach(function(p){ var bb=best(p); if(bb!=null) som+=bb; });
-    h+='<div class="catkop"><span>'+esc(c)+'</span><span class="cs">'+(isSubs?'−':'')+eur(som)+'</span></div><div class="tabel">';
+    var lijst=groepen[c], som=0, tBegroot=0, tOfferte=0, tWerkelijk=0, tBetaald=0, isSubs=(c==='Subsidies');
+    lijst.forEach(function(p){
+      var bb=best(p); if(bb!=null) som+=bb;
+      if(p.begroot!=null) tBegroot+=+p.begroot;
+      if(p.offerte!=null) tOfferte+=+p.offerte;
+      if(p.werkelijk!=null) tWerkelijk+=+p.werkelijk;
+      tBetaald+=betaaldVoorPost(p.id);
+    });
+    h+='<div class="catkop"><span>'+esc(c)+'</span><span class="cs">'+(isSubs?'−':'')+eur(som)+'</span></div>';
+    h+='<div class="trij-sd sdtotaal"><span></span><span>Totaal</span><span class="sdcel">'+(tBegroot?eur(tBegroot):'—')+'</span><span class="sdcel">'+(tOfferte?eur(tOfferte):'—')+'</span><span class="sdcel">'+(tWerkelijk?eur(tWerkelijk):'—')+'</span><span class="sdcel">'+(tBetaald?eur(tBetaald):'—')+'</span></div>';
+    h+='<div class="tabel">';
     lijst.forEach(function(p){
       var deadline=openDeadline(p.id); var meta='';
       if(p.leverancier) meta+=' <span class="tm">'+esc(p.leverancier)+'</span>';
@@ -440,7 +464,8 @@ function rOffertes(){
     if(o.notitie) h+='<div class="mut" style="margin-top:4px">'+esc(o.notitie)+'</div>';
     h+='</div>';
     if(bestanden.length){ bestanden.forEach(function(f){ h+='<div class="bestrij"><a data-download="'+f.storage_path+'">'+esc(f.bestandsnaam)+'</a><span class="mut">'+fmtBytes(f.grootte)+' <span data-verwijder-bestand="'+f.id+'" data-verwijder-path="'+f.storage_path+'" style="cursor:pointer;color:var(--klei)"> ✕</span></span></div>'; }); }
-    h+='<label class="upl">+ offerte-document (PDF/foto)<input type="file" accept="application/pdf,image/*" data-upload-offerte="'+o.id+'"></label></div>';
+    h+='<label class="upl">+ offerte-document (PDF/foto) — leest automatisch bedrag/leverancier/datum uit<input type="file" accept="application/pdf,image/*" data-upload-offerte="'+o.id+'"></label>';
+    h+='<div data-ai-offerte="'+o.id+'" style="margin-top:6px"></div></div>';
   });
   return h||'<div class="leeg">Nog geen offertes</div>';
 }
@@ -518,6 +543,19 @@ function koppel(m){
   m.querySelectorAll('[data-download]').forEach(function(el){ el.addEventListener('click',function(){ downloadBestand(el.getAttribute('data-download')); }); });
   m.querySelectorAll('[data-verwijder-bestand]').forEach(function(el){ el.addEventListener('click',function(ev){ ev.stopPropagation(); if(!confirm('Bestand verwijderen?')) return; api({action:'delete_bestand',id:el.getAttribute('data-verwijder-bestand'),path:el.getAttribute('data-verwijder-path')}).then(laad).catch(function(e){toast(e.message);}); }); });
   m.querySelectorAll('[data-upload-offerte]').forEach(function(el){ el.addEventListener('change',function(){ var file=el.files&&el.files[0]; if(file) uploadBestand(el.getAttribute('data-upload-offerte'), file); el.value=''; }); });
+  m.querySelectorAll('[data-ai-overnemen-offerte]').forEach(function(el){ el.addEventListener('click',function(){
+    var box=document.querySelector('[data-ai-offerte="'+el.getAttribute('data-ai-overnemen-offerte')+'"]'); var d=box&&box._aiData; if(!d) return;
+    var data={}; if(d.bedrag!=null) data.bedrag=d.bedrag; if(d.leverancier) data.leverancier=d.leverancier; if(d.nummer) data.nummer=d.nummer;
+    api({action:'update',table:'offertes',id:el.getAttribute('data-ai-overnemen-offerte'),data:data}).then(function(){ toast('Overgenomen'); laad(); }).catch(function(e){ toast(e.message); });
+  }); });
+  m.querySelectorAll('[data-ai-overnemen-post]').forEach(function(el){ el.addEventListener('click',function(){
+    var postId=el.getAttribute('data-ai-overnemen-post'); var box=document.querySelector('[data-ai-post="'+postId+'"]'); var d=box&&box._aiData; if(!d||d.bedrag==null) return;
+    api({action:'insert',table:'betalingen',data:{post_id:postId,bedrag:d.bedrag,datum:d.vervaldatum||todayISO(),omschrijving:d.omschrijving||(d.nummer?'factuur '+d.nummer:'factuur'),status:'gepland'}}).then(function(){ toast('Betaaltermijn aangemaakt'); return laad(); }).then(function(){ openForm('posten', postId); }).catch(function(e){ toast(e.message); });
+  }); });
+  m.querySelectorAll('[data-ai-leverancier-post]').forEach(function(el){ el.addEventListener('click',function(){
+    var postId=el.getAttribute('data-ai-leverancier-post'); var box=document.querySelector('[data-ai-post="'+postId+'"]'); var d=box&&box._aiData; if(!d||!d.leverancier) return;
+    api({action:'update',table:'posten',id:postId,data:{leverancier:d.leverancier}}).then(function(){ toast('Leverancier overgenomen'); return laad(); }).then(function(){ openForm('posten', postId); }).catch(function(e){ toast(e.message); });
+  }); });
 }
 
 var swipeX=null, swipeY=null;
@@ -529,15 +567,37 @@ document.getElementById('main').addEventListener('touchend',function(e){
 },{passive:true});
 
 function downloadBestand(path){ api({action:'download_url',path:path}).then(function(r){ var u=r.signedUrl; if(u && u.indexOf('http')!==0) u=SUPA_URL+u; window.open(u,'_blank'); }).catch(function(e){ toast(e.message); }); }
-function uploadBestand(offerteId, file){
+function uploadBestandGeneriek(koppel, file, naAnalyse){
   toast('Uploaden…');
-  api({action:'upload_url', offerte_id:offerteId, bestandsnaam:file.name, content_type:file.type}).then(function(r){
+  var body=Object.assign({action:'upload_url', bestandsnaam:file.name, content_type:file.type}, koppel);
+  return api(body).then(function(r){
     var u=r.signedUrl; if(u && u.indexOf('http')!==0) u=SUPA_URL+u;
     return fetch(u,{method:'PUT',headers:{'content-type':file.type||'application/octet-stream'},body:file}).then(function(resp){
       if(!resp.ok) throw new Error('Upload mislukt ('+resp.status+')');
-      return api({action:'insert',table:'bestanden',data:{offerte_id:offerteId,bestandsnaam:file.name,storage_path:r.path,grootte:file.size,content_type:file.type}});
+      var data=Object.assign({bestandsnaam:file.name,storage_path:r.path,grootte:file.size,content_type:file.type}, koppel);
+      return api({action:'insert',table:'bestanden',data:data});
+    }).then(function(){
+      toast('Geupload'); laad();
+      if(naAnalyse){ toast('Bezig met uitlezen…'); api({action:'analyseer_bestand',path:r.path,content_type:file.type}).then(function(ar){ naAnalyse(ar.data); }).catch(function(e){ toast('Automatisch uitlezen: '+e.message); }); }
     });
-  }).then(function(){ toast('Geupload'); laad(); }).catch(function(e){ toast(e.message); });
+  }).catch(function(e){ toast(e.message); });
+}
+function uploadBestand(offerteId, file){ uploadBestandGeneriek({offerte_id:offerteId}, file, function(data){ toonAiOfferte(offerteId, data); }); }
+function toonAiOfferte(offerteId, d){
+  if(!d) return;
+  var el=document.querySelector('[data-ai-offerte="'+offerteId+'"]'); if(!el) return;
+  var velden=[]; if(d.leverancier) velden.push('leverancier: '+d.leverancier); if(d.bedrag!=null) velden.push('bedrag: '+eur(d.bedrag,true)); if(d.nummer) velden.push('nr: '+d.nummer); if(d.vervaldatum) velden.push('vervalt: '+dnl(d.vervaldatum));
+  if(!velden.length){ el.innerHTML='<span class="mut">Kon niets herkennen in dit document.</span>'; return; }
+  el.innerHTML='<div class="mut">Gevonden: '+esc(velden.join(' · '))+'</div><span class="chip groen" data-ai-overnemen-offerte="'+offerteId+'">Overnemen in offerte</span>';
+  el._aiData=d;
+}
+function toonAiPost(postId, d){
+  if(!d) return;
+  var el=document.querySelector('[data-ai-post="'+postId+'"]'); if(!el) return;
+  var velden=[]; if(d.bedrag!=null) velden.push('bedrag: '+eur(d.bedrag,true)); if(d.vervaldatum) velden.push('vervalt: '+dnl(d.vervaldatum)); if(d.leverancier) velden.push('leverancier: '+d.leverancier);
+  if(!velden.length){ el.innerHTML='<span class="mut">Kon niets herkennen in dit document.</span>'; return; }
+  el.innerHTML='<div class="mut">Gevonden: '+esc(velden.join(' · '))+'</div><span class="chip groen" data-ai-overnemen-post="'+postId+'">Zet als betaaltermijn</span>'+(d.leverancier?' <span class="chip" data-ai-leverancier-post="'+postId+'">Zet als leverancier</span>':'');
+  el._aiData=d;
 }
 
 function renderBetalingenSectie(pan, postId){
@@ -551,6 +611,14 @@ function renderBetalingenSectie(pan, postId){
   var iOms=document.createElement('input'); iOms.placeholder='Omschrijving (bv. aanbetaling)'; iOms.style.gridColumn='1 / -1';
   var bToevoegen=document.createElement('button'); bToevoegen.type='button'; bToevoegen.textContent='+ termijn toevoegen'; bToevoegen.style.gridColumn='1 / -1'; bToevoegen.style.cssText+='padding:9px;border-radius:8px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink);cursor:pointer';
   nieuw.appendChild(iBedrag); nieuw.appendChild(iDatum); nieuw.appendChild(iOms); nieuw.appendChild(bToevoegen); wrap.appendChild(nieuw);
+  var uplLabel=document.createElement('label'); uplLabel.className='upl'; uplLabel.innerHTML='+ factuur uploaden (PDF/foto) — leest bedrag &amp; betaaldatum automatisch uit';
+  var uplInput=document.createElement('input'); uplInput.type='file'; uplInput.accept='application/pdf,image/*'; uplInput.style.display='none';
+  uplLabel.appendChild(uplInput); wrap.appendChild(uplLabel);
+  var aiBox=document.createElement('div'); aiBox.setAttribute('data-ai-post', postId); aiBox.style.marginTop='6px'; wrap.appendChild(aiBox);
+  uplInput.addEventListener('change', function(){
+    var file=uplInput.files&&uplInput.files[0]; uplInput.value=''; if(!file) return;
+    uploadBestandGeneriek({post_id:postId}, file, function(data){ toonAiPost(postId, data); });
+  });
   function ververs(){
     var lijstData=(S.data.betalingen||[]).filter(function(b){return b.post_id===postId;});
     var betaald=0; lijstData.forEach(function(b){ if(b.status==='betaald') betaald+=+b.bedrag; });
