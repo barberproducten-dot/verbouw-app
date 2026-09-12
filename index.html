@@ -886,7 +886,7 @@ function openForm(table, id){
     if(f[1]==='boolsel'){ el.value = val===true?'true':'false'; }
     else if(f[1]==='tijd'){ el.value = val? String(val).slice(0,5) : ''; }
     else if(f[1]==='catsel'){ el.value = val||'Overig'; }
-    else { el.value = val==null?'':String(val); }
+    else if(val!=null){ el.value = String(val); }
     velden[f[0]]=[el,f[1]]; pan.appendChild(el);
   });
   if(table==='posten' && id) renderBetalingenSectie(pan, id);
