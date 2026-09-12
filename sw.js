@@ -1,7 +1,7 @@
 // Verbouwhub service worker: caches the static app shell so it opens
 // instantly from the homescreen icon; data always comes fresh from the
 // Supabase edge function (never cached).
-var CACHE = 'verbouwhub-v1';
+var CACHE = 'verbouwhub-v2';
 var SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function (event) {
@@ -25,7 +25,7 @@ self.addEventListener('fetch', function (event) {
   if (url.hostname.indexOf('supabase.co') >= 0) return;
 
   event.respondWith(
-    fetch(req).then(function (resp) {
+    fetch(req, { cache: 'no-store' }).then(function (resp) {
       var copy = resp.clone();
       caches.open(CACHE).then(function (c) { c.put(req, copy); });
       return resp;
