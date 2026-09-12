@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F1EAE0">
+<meta name="theme-color" content="#F1EAE0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1913" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%236B7052'/%3E%3Cpath d='M32 15 L51 32 H45 V49 H36 V39 H28 V49 H19 V32 H13 Z' fill='%23F1EAE0'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -15,7 +16,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
+:root{color-scheme:light dark}
 :root{--zand:#F1EAE0;--card:#FBF7F0;--card2:#F5EEE3;--ink:#2E2921;--ink2:#7A7062;--ink3:#A89C8A;--olijf:#6B7052;--olijf-l:#E3E5D6;--olijf-t:#3E4230;--klei:#B4674E;--klei-l:#F3DFD7;--klei-t:#6E3A2A;--honing:#BE9055;--honing-l:#F2E6D2;--honing-t:#6A4C22;--lijn:#E1D6C4;--wit:#FFFDF9;--serif:'Fraunces',Georgia,serif;--sans:'IBM Plex Sans',system-ui,'Segoe UI',sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--zand:#1D1913;--card:#28231C;--card2:#302A22;--ink:#EFE6D8;--ink2:#B0A28E;--ink3:#7E7362;--olijf:#A3AB84;--olijf-l:#343A29;--olijf-t:#D5DBBD;--klei:#D28D74;--klei-l:#4A2F25;--klei-t:#F0C9B9;--honing:#D6AB6E;--honing-l:#463823;--honing-t:#F0D7AE;--lijn:#43392D;--wit:#2E2820}}
+:root[data-theme="dark"]{--zand:#1D1913;--card:#28231C;--card2:#302A22;--ink:#EFE6D8;--ink2:#B0A28E;--ink3:#7E7362;--olijf:#A3AB84;--olijf-l:#343A29;--olijf-t:#D5DBBD;--klei:#D28D74;--klei-l:#4A2F25;--klei-t:#F0C9B9;--honing:#D6AB6E;--honing-l:#463823;--honing-t:#F0D7AE;--lijn:#43392D;--wit:#2E2820}
+
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--zand);color:var(--ink);font:15px/1.55 var(--sans);padding-bottom:78px;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
@@ -88,7 +93,7 @@ main{padding:14px 0 20px;min-height:60vh}
 .subs{color:var(--olijf-t);font-weight:600}
 .loc{font-size:12px;color:var(--ink2);background:var(--card2);border-radius:6px;padding:3px 8px;display:inline-block;margin-top:5px;word-break:break-all}
 .veilig{background:var(--klei-l);border-left:3px solid var(--klei);border-radius:9px;padding:2px 12px;margin:9px 0}
-.veilig .taak{border-top-color:#E5C6BA}
+.veilig .taak{border-top-color:var(--klei-l)}
 .veilig .taak:first-child{border-top:0}
 .veilig .tt{color:var(--klei-t)}
 .betrij{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--lijn);font-size:13.5px}
@@ -153,11 +158,11 @@ label.upl input{display:none}
 
 @media(min-width:900px){
   body{padding-bottom:0}
-  .botnav{left:0;right:auto;top:0;bottom:0;width:154px;grid-template-columns:1fr;grid-auto-rows:min-content;background:var(--ink);border-top:0;border-right:1px solid #241F19;padding:16px 7px;gap:1px;align-content:start}
-  .botnav button{color:#B6AB98;padding:8px 10px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:13px}
+  .botnav{left:0;right:auto;top:0;bottom:0;width:154px;grid-template-columns:1fr;grid-auto-rows:min-content;background:var(--card2);border-top:0;border-right:1px solid var(--lijn);padding:16px 7px;gap:1px;align-content:start}
+  .botnav button{color:var(--ink2);padding:8px 10px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:13px}
   .botnav button.on{background:var(--olijf);color:var(--wit);border-radius:8px}
-  .botnav button.sidesub{display:flex;font-size:11.5px;padding:5px 10px 5px 22px;color:#8F8574}
-  .botnav button.sidesub.on{background:#4C5140;color:var(--wit);border-radius:6px;font-weight:500}
+  .botnav button.sidesub{display:flex;font-size:11.5px;padding:5px 10px 5px 22px;color:var(--ink3)}
+  .botnav button.sidesub.on{background:var(--olijf-l);color:var(--olijf-t);border-radius:6px;font-weight:500}
   .wrap{margin-left:154px;max-width:1100px}
   .addbtn{left:auto;right:24px;bottom:24px}
   .dekking{max-width:560px}
@@ -370,7 +375,7 @@ function rPlanning(){
   if(!ongepland.length) h+='<div class="leeg">Alles is aan een dag gekoppeld</div>';
   ongepland.forEach(function(t){
     h+='<div class="trij"><span class="tn" data-edit="taken:'+t.id+'">'+(t.is_veiligheid?'⚠ ':'')+esc(t.titel)+'</span>';
-    h+='<select data-verplaats="'+t.id+'" style="font-size:11.5px;padding:3px 6px;width:auto;border:1px solid var(--lijn);border-radius:7px;background:#FFFDF8;color:var(--ink2)"><option value="">dag ▾</option>';
+    h+='<select data-verplaats="'+t.id+'" style="font-size:11.5px;padding:3px 6px;width:auto;border:1px solid var(--lijn);border-radius:7px;background:var(--wit);color:var(--ink2)"><option value="">dag ▾</option>';
     S.data.klusdagen.forEach(function(kd){ h+='<option value="'+kd.id+'">'+dagKort(kd)+'</option>'; });
     h+='</select></div>';
   });
@@ -393,7 +398,7 @@ function rDagdetail(k, vandaag){
   if(nogdoen.length||gelukt.length){
     nogdoen.forEach(function(t){
       h+='<div class="taak"><input type="checkbox" data-check="'+t.id+'"><div style="flex:1"><span class="tt" data-edit="taken:'+t.id+'">'+(t.tijd?esc(t.tijd)+' — ':'')+esc(t.titel)+'</span> ';
-      h+='<select data-trekker-sel="'+t.id+'" style="font-size:11px;padding:2px 5px;width:auto;border:1px solid var(--lijn);border-radius:7px;background:#FFFDF8;color:var(--ink2)"><option value="">wie? ▾</option>';
+      h+='<select data-trekker-sel="'+t.id+'" style="font-size:11px;padding:2px 5px;width:auto;border:1px solid var(--lijn);border-radius:7px;background:var(--wit);color:var(--ink2)"><option value="">wie? ▾</option>';
       S.data.mensen.forEach(function(mp){ h+='<option value="'+esc(mp.naam)+'"'+(t.trekker===mp.naam?' selected':'')+'>'+esc(mp.naam)+'</option>'; });
       h+='</select></div></div>';
     });
@@ -414,31 +419,31 @@ function rPlannen(){ return rPlanning(); }
 
 var GELDSUBS=[['overzicht','Overzicht'],['budget','Budget'],['hypotheek','Hypotheek'],['offertes','Offertes']];
 function rGeldRegel(label, bedrag, teken, groot){
-  return '<div style="display:flex;justify-content:space-between;padding:'+(groot?'6px':'3px')+' 0'+(groot?';border-top:1px solid #E2D8C6;margin-top:3px':'')+';font-size:'+(groot?'14px':'12.5px')+'"><span style="color:'+(groot?'var(--ink)':'var(--ink2)')+';font-weight:'+(groot?'650':'400')+'">'+esc(label)+'</span><span style="font-weight:'+(groot?'650':'500')+'">'+(teken||'')+' '+eur(Math.abs(bedrag))+'</span></div>';
+  return '<div style="display:flex;justify-content:space-between;padding:'+(groot?'6px':'3px')+' 0'+(groot?';border-top:1px solid var(--lijn);margin-top:3px':'')+';font-size:'+(groot?'14px':'12.5px')+'"><span style="color:'+(groot?'var(--ink)':'var(--ink2)')+';font-weight:'+(groot?'650':'400')+'">'+esc(label)+'</span><span style="font-weight:'+(groot?'650':'500')+'">'+(teken||'')+' '+eur(Math.abs(bedrag))+'</span></div>';
 }
 function rGeldOverzicht(){
   var s=berekenFinancien(); var dk=dekkingRij();
   var h='<div class="card">';
-  h+='<div style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Er komt binnen</div>';
+  h+='<div style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:2px">Er komt binnen</div>';
   h+=rGeldRegel('Hypotheek nieuwe woning (incl. bouwdepot)', s.hyp, '+');
   h+=rGeldRegel('Overbruggingskrediet', s.overbrugging, '+');
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verkoop Bachstraat <span class="editcel" data-editcel="dekking:1:eigen_geld">'+eur(dk.eigen_geld||0)+'</span></span><span style="font-weight:500">+ '+eur(dk.eigen_geld||0)+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:#F5EFE4;font-size:13px"><span style="font-weight:650">Totaal binnen</span><span style="font-weight:650">'+eur(s.financiering)+'</span></div>';
-  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Er gaat af</div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:var(--card2);font-size:13px"><span style="font-weight:650">Totaal binnen</span><span style="font-weight:650">'+eur(s.financiering)+'</span></div>';
+  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:2px">Er gaat af</div>';
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Koopsom nieuwe woning <span class="editcel" data-editcel="dekking:1:koopsom">'+eur(dk.koopsom||0)+'</span></span><span style="font-weight:500">− '+eur(dk.koopsom||0)+'</span></div>';
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Aflossing hypotheek Bachstraat <span class="editcel" data-editcel="dekking:1:restschuld_oud">'+eur(dk.restschuld_oud||0)+'</span></span><span style="font-weight:500">− '+eur(dk.restschuld_oud||0)+'</span></div>';
   h+=rGeldRegel('Aflossing overbruggingskrediet', s.overbrugging, '−');
   h+=rGeldRegel('Aankoopkosten (advies, notaris, taxaties, makelaar)', s.aankoop, '−');
   h+='<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:12.5px"><span style="color:var(--ink2)">Verduurzaming — apart potje, niet vrij besteedbaar <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(dk.verduurzaming||0)+'</span></span><span style="font-weight:500">− '+eur(dk.verduurzaming||0)+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:#F5EFE4;font-size:13px"><span style="font-weight:650">Totaal eraf</span><span style="font-weight:650">− '+eur(s.koopsom+s.aflossingen+s.aankoop+s.verduurzaming)+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 12px;margin-top:10px;border-radius:8px;background:#2E2921"><span style="font-weight:650;color:#F1EAE0;font-size:15px">Klusbudget — vrij besteedbaar</span><span style="font-weight:650;color:#F1EAE0;font-size:20px">'+eur(s.verbouwbudget)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:5px 8px;margin-top:4px;border-radius:6px;background:var(--card2);font-size:13px"><span style="font-weight:650">Totaal eraf</span><span style="font-weight:650">− '+eur(s.koopsom+s.aflossingen+s.aankoop+s.verduurzaming)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 12px;margin-top:10px;border-radius:8px;background:var(--ink)"><span style="font-weight:650;color:var(--wit);font-size:15px">Klusbudget — vrij besteedbaar</span><span style="font-weight:650;color:var(--wit);font-size:20px">'+eur(s.verbouwbudget)+'</span></div>';
   h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">';
   h+='<span class="chip honing">bouwdepot <span class="editcel" data-editcel="dekking:1:hypotheek_bouwdepot" style="border-bottom-color:currentColor">'+eur(s.depot)+'</span></span>';
   h+='<span class="chip honing">vrij uit verkoop '+eur(s.vrijUitVerkoop)+'</span>';
   h+='<span class="chip">marge '+eur(s.marge)+'</span>';
   h+='</div>';
   h+='<div class="mut" style="margin-top:6px">apart gehouden: verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(s.verduurzaming)+'</span> — alleen voor ISDE-achtige energiemaatregelen, niet meegeteld in het klusbudget hierboven</div>';
-  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Daarvan gepland</div>';
+  h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);margin-bottom:2px">Daarvan gepland</div>';
   h+=rGeldRegel('Verbouwing gepland (excl. subsidie)', s.verbouwNetto, '−');
   var tW=0,tO=0,tB=0; S.data.posten.forEach(function(p){ if(p.categorie==='Aankoop & advies'||p.type==='subsidie') return; if(p.werkelijk!=null) tW+=+p.werkelijk; else if(p.offerte!=null) tO+=+p.offerte; else if(p.begroot!=null) tB+=+p.begroot; });
   var budget=s.verbouwbudget>0?s.verbouwbudget:(tW+tO+tB||1); var ruimteW=Math.max(0,budget-tW-tO-tB);
@@ -482,7 +487,7 @@ function rBegroting(){
     h+='<div class="begrij" data-scroll-cat="'+esc(c)+'"><span>'+esc(c)+'</span><span style="font-variant-numeric:tabular-nums;font-weight:500">'+(groepen[c]<0?'− ':'')+eur(Math.abs(groepen[c]))+'</span></div>';
   });
   h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--lijn);font-size:13px"><span style="font-weight:650">Totaal gepland</span><span style="font-weight:650">'+eur(s.verbouwNetto)+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;padding:6px 8px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'Tekort':'Nog te verdelen')+'</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 8px;border-radius:6px;background:'+(s.ruimte<0?'var(--klei-l)':'var(--olijf-l)')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'var(--klei-t)':'var(--olijf-t)')+'">'+(s.ruimte<0?'Tekort':'Nog te verdelen')+'</span><span style="font-weight:650;color:'+(s.ruimte<0?'var(--klei-t)':'var(--olijf-t)')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
   h+='<div class="mut" style="margin-top:6px">Aankoop &amp; advies '+eur(s.aankoop)+' staat hier niet tussen — die is al verrekend in het klusbudget. Tik een regel om naar die categorie te springen.</div>';
   h+='</div>';
   return h;
@@ -523,7 +528,7 @@ function rBudgetCat(vandaag){
   });
   h='<div style="overflow-x:auto">'+h+'</div>';
   h+='<div class="trij nieuw" data-nieuwe-categorie="1" style="background:var(--card);border:1px solid var(--lijn);border-radius:10px;padding:8px 12px;margin-top:8px"><span class="tn" style="color:var(--olijf);cursor:pointer">+ nieuwe categorie</span></div>';
-  h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:#D9CDB8">●</span> open — tik een bedrag om te typen (desktop: alle kolommen los), tik de naam voor het volledige formulier</div>';
+  h+='<div class="mut" style="margin-top:10px">● betaald · <span style="color:var(--honing)">●</span> akkoord · <span style="color:var(--ink3)">●</span> open — tik een bedrag om te typen (desktop: alle kolommen los), tik de naam voor het volledige formulier</div>';
   return h;
 }
 function rTaken(){
@@ -648,7 +653,7 @@ function koppel(m){
       var weergave=esc(p.naam)+(p.tijd?' · '+esc(p.tijd):'');
       el.innerHTML='';
       var inp=document.createElement('input'); inp.type='text'; inp.placeholder='tijd, bv 13:00'; inp.value=p.tijd||'';
-      inp.style.cssText='width:104px;border:1.5px solid var(--olijf);border-radius:5px;padding:1px 4px;font:inherit;font-size:12px;background:#FFFDF8';
+      inp.style.cssText='width:104px;border:1.5px solid var(--olijf);border-radius:5px;padding:1px 4px;font:inherit;font-size:12px;background:var(--wit)';
       el.appendChild(inp); inp.focus(); inp.select();
       var opgeslagen=false;
       function opslaan(){ if(opgeslagen) return; opgeslagen=true; var tijd=inp.value.trim()||null; api({action:'update',table:'klusdag_ploeg',id:id,data:{tijd:tijd}}).then(laad).catch(function(e){toast(e.message);}); }
@@ -807,7 +812,7 @@ function renderBetalingenSectie(pan, postId){
   var iBedrag=document.createElement('input'); iBedrag.placeholder='Bedrag €'; iBedrag.inputMode='decimal';
   var iDatum=document.createElement('input'); iDatum.type='date';
   var iOms=document.createElement('input'); iOms.placeholder='Omschrijving (bv. aanbetaling)'; iOms.style.gridColumn='1 / -1';
-  var bToevoegen=document.createElement('button'); bToevoegen.type='button'; bToevoegen.textContent='+ termijn toevoegen'; bToevoegen.style.gridColumn='1 / -1'; bToevoegen.style.cssText+='padding:9px;border-radius:8px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink);cursor:pointer';
+  var bToevoegen=document.createElement('button'); bToevoegen.type='button'; bToevoegen.textContent='+ termijn toevoegen'; bToevoegen.style.gridColumn='1 / -1'; bToevoegen.style.cssText+='padding:9px;border-radius:8px;border:1px solid var(--lijn);background:var(--card2);color:var(--ink);cursor:pointer';
   nieuw.appendChild(iBedrag); nieuw.appendChild(iDatum); nieuw.appendChild(iOms); nieuw.appendChild(bToevoegen); wrap.appendChild(nieuw);
   var uplLabel=document.createElement('label'); uplLabel.className='upl'; uplLabel.innerHTML='+ factuur uploaden (PDF/foto) — leest bedrag &amp; betaaldatum automatisch uit';
   var uplInput=document.createElement('input'); uplInput.type='file'; uplInput.accept='application/pdf,image/*'; uplInput.style.display='none';
@@ -848,7 +853,7 @@ function openPloegForm(klusdagId){
   var huidig=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===klusdagId;});
   var namen=huidig.map(function(p){return p.naam;});
   var wrap=document.createElement('div'); wrap.style.cssText='display:flex;flex-wrap:wrap;gap:6px;margin:10px 0';
-  function setActief(btn,on){ btn.setAttribute('data-actief', on?'1':'0'); btn.style.borderColor=on?'#6B7052':'#E2D8C6'; btn.style.background=on?'#6B7052':'#F5EFE4'; btn.style.color=on?'#FDFBF6':'#2E2921'; }
+  function setActief(btn,on){ btn.setAttribute('data-actief', on?'1':'0'); btn.style.borderColor=on?'var(--olijf)':'var(--lijn)'; btn.style.background=on?'var(--olijf)':'var(--card2)'; btn.style.color=on?'var(--wit)':'var(--ink)'; }
   S.data.mensen.forEach(function(mp){ var actief=namen.indexOf(mp.naam)>=0; var b=document.createElement('button'); b.type='button'; b.textContent=mp.naam; b.style.cssText='padding:6px 12px;border-radius:999px;font-size:13px;cursor:pointer;border:1px solid;'; b.setAttribute('data-naam',mp.naam); setActief(b,actief); b.onclick=function(){ setActief(b, b.getAttribute('data-actief')!=='1'); }; wrap.appendChild(b); });
   pan.appendChild(wrap);
   var lab=document.createElement('label'); lab.textContent='Andere naam toevoegen'; pan.appendChild(lab);
