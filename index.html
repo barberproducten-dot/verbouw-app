@@ -12,81 +12,85 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Verbouwhub">
 <title>Verbouwhub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
-:root{--zand:#F1EAE0;--card:#FBF7F0;--ink:#2E2921;--ink2:#7A7062;--olijf:#6B7052;--klei:#B4674E;--honing:#BE9055;--lijn:#E2D8C6}
+:root{--zand:#F1EAE0;--card:#FBF7F0;--card2:#F5EEE3;--ink:#2E2921;--ink2:#7A7062;--ink3:#A89C8A;--olijf:#6B7052;--olijf-l:#E3E5D6;--olijf-t:#3E4230;--klei:#B4674E;--klei-l:#F3DFD7;--klei-t:#6E3A2A;--honing:#BE9055;--honing-l:#F2E6D2;--honing-t:#6A4C22;--lijn:#E1D6C4;--wit:#FFFDF9;--serif:'Fraunces',Georgia,serif;--sans:'IBM Plex Sans',system-ui,'Segoe UI',sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--zand);color:var(--ink);font:15px/1.5 system-ui,'Segoe UI',sans-serif;padding-bottom:78px;overscroll-behavior-y:none}
+body{background:var(--zand);color:var(--ink);font:15px/1.55 var(--sans);padding-bottom:78px;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .wrap{max-width:1080px;margin:0 auto;padding:0 14px}
-header{padding:18px 0 2px}
-header h1{font-size:19px;font-weight:650}
-main{padding:12px 0 18px;min-height:60vh}
-.card{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:13px 14px;margin-bottom:10px}
-.kop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:16px 0 6px}
-.kop h2{font-size:14px;font-weight:650}
-.kop .som{font-size:13px;color:var(--ink2)}
-.groot{font-size:30px;font-weight:700;letter-spacing:-.5px}
+header{padding:20px 0 4px}
+header h1{font-family:var(--serif);font-weight:500;font-size:22px;letter-spacing:-.01em}
+main{padding:14px 0 20px;min-height:60vh}
+.card{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:14px 16px;margin-bottom:11px}
+.kop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:18px 0 7px}
+.kop h2{font-family:var(--serif);font-size:16px;font-weight:500}
+.kop .som{font-size:12.5px;color:var(--ink2);font-family:var(--mono)}
+.groot{font-family:var(--serif);font-size:28px;font-weight:500;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .mut{color:var(--ink2);font-size:12.5px}
-.chip{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink2);white-space:nowrap;cursor:pointer}
-.chip.groen{background:#E9EBE0;border-color:#C9CDB4;color:#4C513A}
-.chip.klei{background:#F2E3DC;border-color:#DDBBAD;color:#8C4A35}
-.chip.honing{background:#F3E8D5;border-color:#DFC9A3;color:#8A6428}
-.chip.actief{background:var(--olijf);border-color:var(--olijf);color:#FDFBF6;font-weight:600}
-.subnav{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto}
-.dot.open{background:#D9CDB8}.dot.akkoord{background:var(--honing)}.dot.betaald{background:var(--olijf)}
-.catkop{display:flex;justify-content:space-between;align-items:baseline;padding:12px 2px 4px;font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;color:#8A8574;font-weight:650}
-.catkop .cs{font-size:13px;letter-spacing:0;text-transform:none;color:var(--ink);font-weight:650}
-.tabel{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:2px 12px}
-.trij{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid #EFE7D8}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--lijn);background:var(--card2);color:var(--ink2);white-space:nowrap;cursor:pointer}
+.chip.groen{background:var(--olijf-l);border-color:var(--olijf-l);color:var(--olijf-t)}
+.chip.klei{background:var(--klei-l);border-color:var(--klei-l);color:var(--klei-t)}
+.chip.honing{background:var(--honing-l);border-color:var(--honing-l);color:var(--honing-t)}
+.chip.actief{background:var(--olijf);border-color:var(--olijf);color:var(--wit);font-weight:600}
+.subnav{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dot.open{background:var(--lijn)}.dot.akkoord{background:var(--honing)}.dot.betaald{background:var(--olijf)}
+.catkop{display:flex;justify-content:space-between;align-items:baseline;padding:13px 2px 5px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+.catkop .cs{font-size:13px;letter-spacing:0;text-transform:none;color:var(--ink);font-weight:600;font-family:var(--mono)}
+.tabel{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:2px 14px}
+.trij{display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid var(--lijn)}
 .trij:first-child{border-top:0}
 .trij .tn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .trij .tm{color:var(--ink2);font-size:11.5px}
-.trij .tb{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
-.trij.subs .tb{color:var(--olijf)}
-.balkwrap{background:#EADFCE;border-radius:6px;height:8px;overflow:hidden;margin-top:6px}
+.trij .tb{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.trij.subs .tb{color:var(--olijf-t)}
+.balkwrap{background:var(--card2);border-radius:6px;height:7px;overflow:hidden;margin-top:7px}
 .balk{height:100%;background:var(--olijf);border-radius:6px}
-.mijlp{display:flex;gap:9px;align-items:baseline;padding:7px 0;border-top:1px solid #EFE7D8;cursor:pointer;font-size:14px}
+.mijlp{display:flex;gap:9px;align-items:baseline;padding:8px 0;border-top:1px solid var(--lijn);cursor:pointer;font-size:14px}
 .mijlp:first-child{border-top:0}
 .ruit{color:var(--klei);font-size:13px;flex:0 0 auto}
 .matrixwrap{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:10px;overflow-x:auto}
 .matrix{display:grid;gap:3px;font-size:12px;min-width:460px}
-.mkop{font-weight:650;text-align:center;font-size:11.5px;padding:4px 2px;border-radius:6px;cursor:pointer;color:var(--ink2)}
-.mkop.actief{background:var(--olijf);color:#FDFBF6}
+.mkop{font-weight:600;text-align:center;font-size:11.5px;padding:4px 2px;border-radius:6px;cursor:pointer;color:var(--ink2)}
+.mkop.actief{background:var(--olijf);color:var(--wit)}
 .mrij{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:4px 2px;cursor:pointer}
-.mcel{text-align:center;border-radius:6px;padding:4px 1px;font-size:11px;cursor:pointer;background:#F5EFE4;color:#B4AC9A}
-.mcel.vol{background:#F3E8D5;color:#8A6428;font-weight:600}
-.mcel.kl{background:#E9EBE0;color:#4C513A;text-decoration:line-through}
-.mveilig{color:#8C4A35}
-.addbtn{position:fixed;right:16px;bottom:76px;width:52px;height:52px;border-radius:50%;background:var(--klei);color:#FDFBF6;border:0;font-size:27px;line-height:1;cursor:pointer;z-index:30;box-shadow:0 2px 8px rgba(46,41,33,.25)}
+.mcel{text-align:center;border-radius:6px;padding:4px 1px;font-size:11px;cursor:pointer;background:var(--card2);color:var(--ink3);font-family:var(--mono)}
+.mcel.vol{background:var(--honing-l);color:var(--honing-t);font-weight:600}
+.mcel.kl{background:var(--olijf-l);color:var(--olijf-t);text-decoration:line-through}
+.mveilig{color:var(--klei-t)}
+.addbtn{position:fixed;right:16px;bottom:76px;width:52px;height:52px;border-radius:50%;background:var(--klei);color:var(--wit);border:0;font-size:27px;line-height:1;cursor:pointer;z-index:30;box-shadow:0 4px 14px rgba(46,41,33,.22)}
 .botnav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--lijn);display:grid;grid-template-columns:repeat(5,1fr);z-index:25;padding-bottom:env(safe-area-inset-bottom)}
 .botnav button{background:none;border:0;padding:9px 2px 8px;font:inherit;font-size:10.5px;color:var(--ink2);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
-.botnav button.on{color:var(--olijf);font-weight:650}
+.botnav button.on{color:var(--olijf-t);font-weight:600}
 .botnav button.sidesub{display:none}
-.taak{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-top:1px solid #EFE7D8}
+.taak{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--lijn)}
 .taak:first-child{border-top:0}
-.taak input{width:18px;height:18px;margin-top:2px;accent-color:var(--olijf);flex:0 0 auto}
+.taak input{width:17px;height:17px;margin-top:2px;accent-color:var(--olijf);flex:0 0 auto}
 .taak .tt{cursor:pointer}
 .taak.klaar .tt{color:var(--ink2);text-decoration:line-through}
-.leeg{color:var(--ink2);text-align:center;padding:26px 0}
+.leeg{color:var(--ink2);text-align:center;padding:28px 0;font-size:13.5px}
 #overlay,#modal{position:fixed;inset:0;background:rgba(46,41,33,.45);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}
 #overlay.show,#modal.show{display:flex}
-.paneel{background:var(--card);border-radius:14px;padding:20px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto}
-.paneel h3{font-size:17px;margin-bottom:12px}
-.paneel label{display:block;font-size:12.5px;color:var(--ink2);margin:10px 0 3px}
-.paneel input,.paneel select,.paneel textarea{width:100%;padding:9px 10px;border:1px solid var(--lijn);border-radius:8px;background:#FFFDF8;font:inherit;font-size:15px;color:var(--ink)}
+.paneel{background:var(--card);border-radius:14px;padding:22px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto}
+.paneel h3{font-family:var(--serif);font-weight:500;font-size:19px;margin-bottom:12px}
+.paneel label{display:block;font-size:12px;letter-spacing:.02em;color:var(--ink2);margin:11px 0 4px}
+.paneel input,.paneel select,.paneel textarea{width:100%;padding:9px 10px;border:1px solid var(--lijn);border-radius:8px;background:var(--wit);font:inherit;font-size:15px;color:var(--ink)}
 .paneel textarea{min-height:74px;resize:vertical}
-.knoppen{display:flex;gap:8px;margin-top:16px}
-.knoppen button{flex:1;padding:11px;border-radius:9px;border:1px solid var(--lijn);background:#F5EFE4;color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
-.knoppen .prim{background:var(--olijf);border-color:var(--olijf);color:#FDFBF6;font-weight:600}
-.knoppen .del{background:none;border-color:#DDBBAD;color:var(--klei);flex:0 0 auto;padding:11px 14px}
-#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:var(--ink);color:#FDFBF6;padding:9px 16px;border-radius:9px;font-size:14px;display:none;z-index:50}
+.knoppen{display:flex;gap:8px;margin-top:18px}
+.knoppen button{flex:1;padding:11px;border-radius:9px;border:1px solid var(--lijn);background:var(--card2);color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
+.knoppen .prim{background:var(--olijf);border-color:var(--olijf);color:var(--wit);font-weight:600}
+.knoppen .del{background:none;border-color:var(--klei-l);color:var(--klei);flex:0 0 auto;padding:11px 14px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:var(--ink);color:var(--wit);padding:9px 16px;border-radius:9px;font-size:14px;display:none;z-index:50}
 .pinvak{text-align:center}
-.pinvak input{font-size:22px;text-align:center;letter-spacing:6px;margin-top:8px}
-.subs{color:var(--olijf);font-weight:600}
-.loc{font-size:12px;color:var(--ink2);background:#F5EFE4;border-radius:6px;padding:3px 8px;display:inline-block;margin-top:5px;word-break:break-all}
-.veilig{background:#F2E3DC;border:1px solid #DDBBAD;border-radius:9px;padding:2px 10px;margin:8px 0}
-.veilig .taak{border-top-color:#E7CFC1}
+.pinvak input{font-size:22px;text-align:center;letter-spacing:6px;margin-top:8px;font-family:var(--mono)}
+.subs{color:var(--olijf-t);font-weight:600}
+.loc{font-size:12px;color:var(--ink2);background:var(--card2);border-radius:6px;padding:3px 8px;display:inline-block;margin-top:5px;word-break:break-all}
+.veilig{background:var(--klei-l);border-left:3px solid var(--klei);border-radius:9px;padding:2px 12px;margin:9px 0}
+.veilig .taak{border-top-color:#E5C6BA}
 .veilig .taak:first-child{border-top:0}
+.veilig .tt{color:var(--klei-t)}
 .betrij{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--lijn);font-size:13.5px}
 .betrij:first-of-type{border-top:0}
 .betnieuw{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
@@ -94,38 +98,67 @@ main{padding:12px 0 18px;min-height:60vh}
 .bestrij{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--lijn);font-size:13px}
 .bestrij:first-of-type{border-top:0}
 .bestrij a{color:var(--ink);text-decoration:underline;cursor:pointer}
-label.upl{display:inline-block;margin-top:8px;padding:8px 12px;border-radius:8px;border:1px dashed var(--lijn);background:#F5EFE4;color:var(--ink2);font-size:12.5px;cursor:pointer;text-align:center;width:100%}
+label.upl{display:inline-block;margin-top:8px;padding:9px 12px;border-radius:8px;border:1px dashed var(--lijn);background:var(--card2);color:var(--ink2);font-size:12.5px;cursor:pointer;text-align:center;width:100%}
 label.upl input{display:none}
-.alert{background:#F2E3DC;border:1px solid #DDBBAD;border-radius:10px;padding:9px 12px;margin-bottom:10px}
-.alert b{color:#8C4A35;font-size:13px}
-.alert div{font-size:12.5px;color:#8C4A35;margin-top:2px}
-.dagdetail{border:1px solid var(--lijn);border-left:3px solid var(--olijf);border-radius:12px;background:var(--card);padding:13px 14px;margin-top:10px}
+.alert{background:var(--klei-l);border-left:3px solid var(--klei);border-radius:10px;padding:10px 13px;margin-bottom:11px}
+.alert b{color:var(--klei-t);font-size:13px}
+.alert div{font-size:12.5px;color:var(--klei-t);margin-top:2px}
+.dagdetail{border:1px solid var(--lijn);border-left:3px solid var(--olijf);border-radius:12px;background:var(--card);padding:14px 16px;margin-top:11px}
 .dekking{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
 .dkaart{background:var(--card);border:1px solid var(--lijn);border-radius:10px;padding:8px 10px}
-.dkaart.dkpos{background:#E9EBE0;border-color:#C9CDB4}
-.dkaart.dkneg{background:#F2E3DC;border-color:#DDBBAD}
-.dklabel{font-size:9px;color:var(--ink2);letter-spacing:.4px;text-transform:uppercase}
-.dkgroot{font-size:16px;font-weight:650}
-.dkneg .dkgroot{color:#8C4A35}
+.dkaart.dkpos{background:var(--olijf-l);border-color:var(--olijf-l)}
+.dkaart.dkneg{background:var(--klei-l);border-color:var(--klei-l)}
+.dklabel{font-size:9px;color:var(--ink2);letter-spacing:.06em;text-transform:uppercase}
+.dkgroot{font-family:var(--mono);font-size:16px;font-weight:600}
+.dkneg .dkgroot{color:var(--klei-t)}
 .dksub{font-size:10px;color:var(--ink2);margin-top:1px}
 .editcel{cursor:text;border-bottom:1px dashed transparent}
 .editcel:hover{border-bottom-color:var(--ink2)}
-.editcel input{width:70px;border:1.5px solid var(--olijf);border-radius:5px;padding:1px 4px;font:inherit;font-size:inherit;background:#FFFDF8;text-align:right}
+.editcel input{width:70px;border:1.5px solid var(--olijf);border-radius:5px;padding:1px 4px;font:inherit;font-size:inherit;background:var(--wit);text-align:right}
 .editcel.voorlopig{color:var(--ink2);font-weight:500;font-style:italic}
 .editcel.voorlopig:hover{border-bottom-color:var(--klei)}
 .trij.nieuw{padding:6px 0}
-.begrij{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-top:1px solid #EFE7D8;font-size:13.5px;cursor:pointer}
+.begrij{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--lijn);font-size:13.5px;cursor:pointer}
 .begrij:first-of-type{border-top:0}
-.begrij:hover span:first-child{color:var(--olijf)}
+.begrij:hover span:first-child{color:var(--olijf-t)}
 .trij-sd,.sdkop{display:none}
+
+/* overzicht: weekstrip, aandacht, fase-tijdlijn, staaf */
+.ovzgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:11px;margin-top:0}
+.ovk{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:13px 14px}
+.ovk h4{font-family:var(--serif);font-weight:500;font-size:14.5px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:baseline}
+.ovk h4 span{font-family:var(--sans);font-weight:500;font-size:11.5px;color:var(--ink2)}
+.weekstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.wstd{background:var(--card2);border-radius:8px;padding:7px 6px;font-size:11px;cursor:pointer}
+.wstd.vandaag{box-shadow:inset 0 0 0 1.5px var(--olijf)}
+.wstd b{font-family:var(--mono);font-size:12.5px;display:block}
+.wstd .m{color:var(--ink2);display:block;margin-top:1px}
+.wstd .m.klei{color:var(--klei-t);font-weight:600}
+.wstd .dots{display:flex;gap:2px;margin-top:4px;flex-wrap:wrap}
+.wstd .dots i{width:6px;height:6px;border-radius:50%;background:var(--olijf);display:block}
+.wstd .dots i.g{background:var(--klei)}
+.aandacht{display:grid;gap:6px}
+.aand-r{display:flex;gap:8px;align-items:baseline;font-size:12.5px;padding:6px 8px;border-radius:7px;background:var(--card2)}
+.aand-r.klei{background:var(--klei-l);color:var(--klei-t)}
+.aand-r.honing{background:var(--honing-l);color:var(--honing-t)}
+.aand-r .w{margin-left:auto;font-size:11px;font-family:var(--mono);white-space:nowrap;opacity:.85}
+.staaf{display:flex;height:9px;border-radius:5px;overflow:hidden;background:var(--card2);margin-top:9px}
+.staaf i{display:block;height:100%}
+.staaf i.w{background:var(--olijf)}
+.staaf i.o{background:var(--honing)}
+.staaf i.b{background:var(--ink3);opacity:.5}
+.staaflegenda{display:flex;gap:11px;flex-wrap:wrap;font-size:10.5px;color:var(--ink2);margin-top:7px}
+.staaflegenda i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+@media(max-width:760px){.ovzgrid{grid-template-columns:1fr}.weekstrip{grid-template-columns:repeat(5,minmax(56px,1fr));overflow-x:auto}}
+
 @media(min-width:900px){
   body{padding-bottom:0}
-  .botnav{left:0;right:auto;top:0;bottom:0;width:150px;grid-template-columns:1fr;grid-auto-rows:min-content;background:#454a3c;border-top:0;border-right:1px solid #363a2f;padding:14px 6px;gap:1px;align-content:start}
-  .botnav button{color:#B8B2A0;padding:8px 10px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:13px}
-  .botnav button.on{background:#6B7052;color:#FDFBF6;border-radius:8px}
-  .botnav button.sidesub{display:flex;font-size:11.5px;padding:5px 10px 5px 22px;color:#9B9683}
-  .botnav button.sidesub.on{background:#565c49;color:#FDFBF6;border-radius:6px;font-weight:500}
-  .wrap{margin-left:150px;max-width:1100px}
+  .botnav{left:0;right:auto;top:0;bottom:0;width:154px;grid-template-columns:1fr;grid-auto-rows:min-content;background:var(--ink);border-top:0;border-right:1px solid #241F19;padding:16px 7px;gap:1px;align-content:start}
+  .botnav button{color:#B6AB98;padding:8px 10px;flex-direction:row;justify-content:flex-start;text-align:left;font-size:13px}
+  .botnav button.on{background:var(--olijf);color:var(--wit);border-radius:8px}
+  .botnav button.sidesub{display:flex;font-size:11.5px;padding:5px 10px 5px 22px;color:#8F8574}
+  .botnav button.sidesub.on{background:#4C5140;color:var(--wit);border-radius:6px;font-weight:500}
+  .wrap{margin-left:154px;max-width:1100px}
   .addbtn{left:auto;right:24px;bottom:24px}
   .dekking{max-width:560px}
   .rij{grid-template-columns:1fr auto auto;align-items:center}
@@ -133,15 +166,15 @@ label.upl input{display:none}
   .subnav{display:none}
   .trij-compact{display:none}
   .trij-sd{display:grid;grid-template-columns:14px 2fr 1fr 1fr 1fr 1fr;gap:10px;align-items:center}
-  .sdkop{display:grid;grid-template-columns:14px 2fr 1fr 1fr 1fr 1fr;gap:10px;padding:0 12px 4px;font-size:10px;letter-spacing:.5px;color:#8A8574}
+  .sdkop{display:grid;grid-template-columns:14px 2fr 1fr 1fr 1fr 1fr;gap:10px;padding:0 12px 4px;font-size:10px;letter-spacing:.08em;color:var(--ink2)}
   .sdkop span:not(:first-child):not(:nth-child(2)){text-align:right}
-  .sdcel{text-align:right;font-variant-numeric:tabular-nums;font-size:13px}
+  .sdcel{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px}
   .sdcel.editcel{color:var(--ink2)}
   .sdcel.editcel:hover{color:var(--ink);border-bottom:1px dashed var(--olijf)}
   .sdcel.editcel input{width:76px}
-  .sdtotaal{padding:3px 12px;border-top:1px solid #E2D8C6;margin-top:2px}
-  .sdtotaal span{font-weight:650;font-size:12px}
-  .sdtotaal span:nth-child(2){color:var(--ink2);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:.4px}
+  .sdtotaal{padding:3px 12px;border-top:1px solid var(--lijn);margin-top:2px}
+  .sdtotaal span{font-weight:600;font-size:12px}
+  .sdtotaal span:nth-child(2){color:var(--ink2);font-weight:500;text-transform:uppercase;font-size:10px;letter-spacing:.06em}
 }
 </style>
 </head>
@@ -198,12 +231,19 @@ function gaNaarTab(tab){ if(S.tab===tab){ window.scrollTo(0,0); return; } S.tab=
 function gaNaarSubtab(tab, sub){ S.tab=tab; S.subtabs[tab]=sub; history.pushState(huidigeStaat(),'','#'+tab+'-'+sub); render(); }
 window.addEventListener('popstate', function(e){ if(e.state){ S.tab=e.state.tab; S.subtabs=Object.assign(S.subtabs, e.state.subtabs||{}); } else { S.tab='start'; } render(); });
 
+var SIDESUBS = {
+  doen: [['taken','Taken'],['spullen','Spullen'],['acties','Mijn acties']],
+  dossier: [['besluiten','Besluiten'],['documenten','Docs'],['notities','Notities']]
+};
 function render(){
   var nav=document.getElementById('botnav'); nav.innerHTML='';
   TOPTABS.forEach(function(t){
     var b=document.createElement('button'); if(S.tab===t[0]) b.className='on'; b.textContent=t[1]; b.onclick=function(){ gaNaarTab(t[0]); }; nav.appendChild(b);
     if(t[0]==='geld' && S.tab==='geld'){
       GELDSUBS.forEach(function(gs){ var sb=document.createElement('button'); sb.className='sidesub'+(S.subtabs.geld===gs[0]?' on':''); sb.textContent=gs[1]; sb.onclick=function(){ gaNaarSubtab('geld',gs[0]); }; nav.appendChild(sb); });
+    }
+    if(SIDESUBS[t[0]] && S.tab===t[0]){
+      SIDESUBS[t[0]].forEach(function(gs){ var sb=document.createElement('button'); sb.className='sidesub'+(S.subtabs[t[0]]===gs[0]?' on':''); sb.textContent=gs[1]; sb.onclick=function(){ gaNaarSubtab(t[0],gs[0]); }; nav.appendChild(sb); });
     }
   });
   var m=document.getElementById('main');
@@ -256,18 +296,33 @@ function rStart(){
   var eerstK=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;})[0];
   if(eerstK){ var ploegC=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===eerstK.id;}).length; var takenC=S.data.taken.filter(function(t){return t.klusdag_id===eerstK.id;}).length; if(!ploegC && takenC) alerts.push(klusdagLabel(eerstK)+' heeft nog niemand ingepland'); }
   var h='';
-  if(alerts.length){ h+='<div class="alert"><b>⚠ '+alerts.length+' ding'+(alerts.length===1?'':'en')+' vraagt aandacht</b>'; alerts.slice(0,4).forEach(function(a){ h+='<div>'+esc(a)+'</div>'; }); if(alerts.length>4) h+='<div>… en nog '+(alerts.length-4)+'</div>'; h+='</div>'; }
   var vm=S.data.mijlpalen.filter(function(m){return m.status!=='gehaald';})[0];
-  h+='<div class="card">';
-  if(vm) h+='<div style="display:flex;justify-content:space-between;gap:8px"><span><span class="ruit">◆</span> <b>'+esc(vm.titel)+'</b></span><span class="mut">'+(vm.datum?dnl(vm.datum):'datum invullen')+'</span></div>';
-  if(eerstK){
-    var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===eerstK.id;});
-    var taken=S.data.taken.filter(function(t){return t.klusdag_id===eerstK.id;});
-    var klaar=taken.filter(function(t){return t.status==='klaar';}).length;
-    h+='<div data-goto="plannen" style="cursor:pointer;margin-top:'+(vm?'8px':'0')+';padding-top:'+(vm?'8px':'0')+';'+(vm?'border-top:1px solid #EFE7D8':'')+'"><div style="display:flex;justify-content:space-between"><b>Klusdag '+klusdagLabel(eerstK)+'</b><span class="mut">→</span></div>';
-    h+='<div class="mut">'+(ploeg.length?ploeg.length+' helpers':'nog niemand')+(taken.length?' · '+klaar+'/'+taken.length+' klussen':' · nog geen klussen gekoppeld')+(eerstK.starttijd?' · start '+String(eerstK.starttijd).slice(0,5):'')+'</div></div>';
-  }
+  var komendeDagen=S.data.klusdagen.filter(function(k){return k.datum>=vandaag;}).slice(0,5);
+  h+='<div class="ovzgrid">';
+  h+='<div class="ovk"><h4>Deze week<span>'+komendeDagen.length+' klusdagen</span></h4>';
+  if(komendeDagen.length){
+    h+='<div class="weekstrip">';
+    komendeDagen.forEach(function(k,i){
+      var ploeg=S.data.klusdag_ploeg.filter(function(p){return p.klusdag_id===k.id;});
+      var taken=S.data.taken.filter(function(t){return t.klusdag_id===k.id;});
+      var veiligOpen=taken.filter(function(t){return t.is_veiligheid && t.status!=='klaar';}).length;
+      h+='<div class="wstd'+(i===0?' vandaag':'')+'" data-goto-day="'+k.id+'" data-goto="plannen"><b>'+esc(dagKort(k))+'</b>';
+      h+='<span class="m'+(!ploeg.length&&taken.length?' klei':'')+'">'+(ploeg.length?ploeg.length+' mensen':(taken.length?'niemand':'—'))+'</span>';
+      if(taken.length){ var klaarC=taken.filter(function(t){return t.status==='klaar';}).length; h+='<span class="dots">'; for(var d=0;d<Math.min(taken.length,5);d++) h+='<i'+(d<veiligOpen?' class="g"':'')+'></i>'; h+='</span>'; }
+      h+='</div>';
+    });
+    h+='</div>';
+  } else h+='<div class="mut">Nog geen klusdagen gepland</div>';
+  if(vm) h+='<div style="margin-top:11px;padding-top:9px;border-top:1px solid var(--lijn);display:flex;justify-content:space-between;gap:8px"><span><span class="ruit">◆</span> <b>'+esc(vm.titel)+'</b></span><span class="mut mono">'+(vm.datum?dnl(vm.datum):'datum invullen')+'</span></div>';
   h+='</div>';
+  h+='<div class="ovk"><h4>Wat nu aandacht vraagt<span>'+alerts.length+'</span></h4>';
+  if(alerts.length){
+    h+='<div class="aandacht">';
+    alerts.slice(0,5).forEach(function(a){ h+='<div class="aand-r klei">'+esc(a)+'</div>'; });
+    if(alerts.length>5) h+='<div class="mut" style="padding:2px 8px">… en nog '+(alerts.length-5)+'</div>';
+    h+='</div>';
+  } else h+='<div class="mut">Niets dat om aandacht vraagt ✔</div>';
+  h+='</div></div>';
   h+='<div class="kop"><h2>Nu doen</h2><span class="som" data-goto="doen" style="cursor:pointer">alles →</span></div><div class="tabel">';
   var open=openTaken().slice(0,5);
   if(!open.length) h+='<div class="leeg">Alles klaar ✔</div>';
@@ -385,8 +440,12 @@ function rGeldOverzicht(){
   h+='<div class="mut" style="margin-top:6px">apart gehouden: verduurzaming <span class="editcel" data-editcel="dekking:1:verduurzaming">'+eur(s.verduurzaming)+'</span> — alleen voor ISDE-achtige energiemaatregelen, niet meegeteld in het klusbudget hierboven</div>';
   h+='<div style="margin-top:10px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8A8574;margin-bottom:2px">Daarvan gepland</div>';
   h+=rGeldRegel('Verbouwing gepland (excl. subsidie)', s.verbouwNetto, '−');
-  h+='<div style="display:flex;justify-content:space-between;padding:8px 10px;margin-top:5px;border-radius:6px;background:'+(s.ruimte<0?'#F2E3DC':'#E9EBE0')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">Ruimte over</span><span style="font-weight:650;color:'+(s.ruimte<0?'#8C4A35':'#4C513A')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
-  h+='<div style="border-top:1px solid #E2D8C6;margin-top:12px;padding-top:8px;font-size:11.5px;color:var(--ink2)">';
+  var tW=0,tO=0,tB=0; S.data.posten.forEach(function(p){ if(p.categorie==='Aankoop & advies'||p.type==='subsidie') return; if(p.werkelijk!=null) tW+=+p.werkelijk; else if(p.offerte!=null) tO+=+p.offerte; else if(p.begroot!=null) tB+=+p.begroot; });
+  var budget=s.verbouwbudget>0?s.verbouwbudget:(tW+tO+tB||1); var ruimteW=Math.max(0,budget-tW-tO-tB);
+  h+='<div class="staaf" title="werkelijk '+eur(tW)+' · offertes '+eur(tO)+' · begroot '+eur(tB)+' · ruimte '+eur(ruimteW)+'"><i class="w" style="width:'+(tW/budget*100)+'%"></i><i class="o" style="width:'+(tO/budget*100)+'%"></i><i class="b" style="width:'+(tB/budget*100)+'%"></i></div>';
+  h+='<div class="staaflegenda"><span><i style="background:var(--olijf)"></i>werkelijk '+eur(tW)+'</span><span><i style="background:var(--honing)"></i>offertes '+eur(tO)+'</span><span><i style="background:var(--ink3);opacity:.5"></i>begroot '+eur(tB)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:8px 10px;margin-top:9px;border-radius:6px;background:'+(s.ruimte<0?'var(--klei-l)':'var(--olijf-l)')+'"><span style="font-weight:650;color:'+(s.ruimte<0?'var(--klei-t)':'var(--olijf-t)')+'">Ruimte over</span><span style="font-weight:650;color:'+(s.ruimte<0?'var(--klei-t)':'var(--olijf-t)')+'">'+(s.ruimte<0?'−':'+')+eur(Math.abs(s.ruimte))+'</span></div>';
+  h+='<div style="border-top:1px solid var(--lijn);margin-top:12px;padding-top:8px;font-size:11.5px;color:var(--ink2)">';
   h+='<div style="display:flex;justify-content:space-between;gap:10px"><span>Check adviseur: aflossingen '+eur(s.restschuld)+' + '+eur(s.overbrugging)+'</span><span>= '+eur(s.restschuld+s.overbrugging)+'</span></div>';
   h+='<div style="display:flex;justify-content:space-between;gap:10px"><span>Vrij uit verkoop: '+eur(s.verkoop)+' − '+eur(s.restschuld+s.overbrugging)+'</span><span>= '+eur(s.vrijUitVerkoop)+'</span></div>';
   h+='</div>';
