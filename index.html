@@ -247,11 +247,15 @@ var SIDESUBS = {
   dossier: [['besluiten','Besluiten'],['documenten','Docs'],['notities','Notities']]
 };
 function render(){
+  if(S.tab==='plannen' && S.data && S.data.fases.length && (S.faseFocus==null || !S.data.fases.some(function(f){return f.nummer===S.faseFocus;}))) S.faseFocus=kiesDefaultFase();
   var nav=document.getElementById('botnav'); nav.innerHTML='';
   TOPTABS.forEach(function(t){
     var b=document.createElement('button'); if(S.tab===t[0]) b.className='on'; b.textContent=t[1]; b.onclick=function(){ gaNaarTab(t[0]); }; nav.appendChild(b);
     if(t[0]==='geld' && S.tab==='geld'){
       GELDSUBS.forEach(function(gs){ var sb=document.createElement('button'); sb.className='sidesub'+(S.subtabs.geld===gs[0]?' on':''); sb.textContent=gs[1]; sb.onclick=function(){ gaNaarSubtab('geld',gs[0]); }; nav.appendChild(sb); });
+    }
+    if(t[0]==='plannen' && S.tab==='plannen' && S.data){
+      S.data.fases.forEach(function(f){ var sb=document.createElement('button'); sb.className='sidesub'+(S.faseFocus===f.nummer?' on':''); sb.textContent=f.nummer+'. '+f.naam; sb.onclick=function(){ S.faseFocus=f.nummer; render(); }; nav.appendChild(sb); });
     }
     if(SIDESUBS[t[0]] && S.tab===t[0]){
       SIDESUBS[t[0]].forEach(function(gs){ var sb=document.createElement('button'); sb.className='sidesub'+(S.subtabs[t[0]]===gs[0]?' on':''); sb.textContent=gs[1]; sb.onclick=function(){ gaNaarSubtab(t[0],gs[0]); }; nav.appendChild(sb); });
